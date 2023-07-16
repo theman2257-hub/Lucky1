@@ -1,0 +1,119 @@
+.heroSection {
+  background: url("../../images/bg.avif");
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: cover;
+  padding: 200px 0;
+}
+.textContainer {
+  max-width: 465px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+.title {
+  font-family: var(--fontFamily);
+  font-style: normal;
+  font-weight: 700;
+  font-size: 54px;
+  line-height: 152%;
+  text-transform: uppercase;
+  font-feature-settings: "cv11" on, "cv10" on, "cv09" on, "cv08" on, "cv07" on,
+    "sinf" on, "cv06" on, "cv05" on, "cv04" on, "cv03" on, "cv02" on, "cv01" on,
+    "ss04" on, "ss03" on, "ss02" on, "zero" on, "cpsp" on, "case" on, "liga" off,
+    "kern" off;
+
+  color: #ecddff;
+}
+.italic {
+  font-style: italic;
+  font-weight: 400;
+  text-transform: lowercase;
+}
+.text {
+  font-family: var(--fontFamily);
+  font-style: normal;
+  font-weight: 300;
+  font-size: 16px;
+  line-height: 200%;
+  font-feature-settings: "cv11" on, "cv10" on, "cv09" on, "cv08" on, "cv07" on,
+    "cv06" on, "cv05" on, "cv04" on, "cv03" on, "cv02" on, "cv01" on, "ss04" on,
+    "zero" on, "cpsp" on, "case" on, "liga" off, "kern" off;
+  color: rgba(229, 212, 251, 0.8);
+  padding: 15px 0;
+  padding-bottom: 40px;
+}
+.buttonContainer {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 12px;
+
+  padding-left: 15px;
+  background: #ecddff;
+  border-radius: 14px;
+}
+.buttonWrapper {
+  background: linear-gradient(114.79deg, #c040fc -17.76%, #4b3cff 99.88%);
+  border-radius: 10px;
+  padding: 8px;
+}
+.button {
+  background: rgb(236, 221, 255, 0.2);
+
+  border-radius: 4px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  outline: none;
+  border: none;
+  cursor: pointer;
+
+  padding: 0px 15px;
+}
+.arrow {
+  color: #fff;
+  font-size: 20px;
+}
+.buttonText {
+  font-family: "General Sans Variable";
+  font-style: normal;
+  font-weight: 600;
+  font-size: 16px;
+  line-height: 22px;
+  /* identical to box height */
+
+  text-transform: uppercase;
+  padding: 8px 8px;
+
+  /* GR */
+
+  background: linear-gradient(114.79deg, #c040fc -17.76%, #4b3cff 99.88%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  text-fill-color: transparent;
+}
+
+@media only screen and (max-width: 991px) {
+  .heroSection {
+    padding: 80px 0;
+    padding-top: 160px;
+  }
+  .title {
+    font-size: 44px;
+  }
+}
+@media only screen and (max-width: 520px) {
+  .textContainer {
+    align-items: center;
+  }
+  .title {
+    font-size: 38px;
+    text-align: center;
+  }
+  .text {
+    text-align: center;
+  }
+}

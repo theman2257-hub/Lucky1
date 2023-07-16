@@ -1,0 +1,75 @@
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap");
+body {
+  margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen",
+    "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue",
+    sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  background: #1e1e1e;
+}
+
+code {
+  font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
+    monospace;
+}
+:root {
+  --fontFamily: "Inter", sans-serif;
+  --chat-bg: #20212e;
+  --sender-msg-bg: linear-gradient(114.79deg, #c040fc -17.76%, #4b3cff 99.88%);
+  --reciver-msg-bg: #434151;
+  --secondary-bg: #30303e;
+  --text-color: #ecddff;
+}
+* {
+  margin: 0;
+  padding: 0;
+  text-decoration: none;
+  box-sizing: border-box;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h5,
+p {
+  margin: 0;
+}
+.container {
+  max-width: 1108px;
+  width: 95%;
+  margin: 0 auto;
+}
+
+input[type="number"] {
+  -moz-appearance: textfield;
+}
+
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  display: none;
+}
+input[type="date"]::-webkit-calendar-picker-indicator {
+  filter: invert(1);
+}
+/* ===== Scrollbar CSS ===== */
+/* Firefox */
+.grScrollbar {
+  scrollbar-width: thin;
+}
+
+/* Chrome, Edge, and Safari */
+.grScrollbar::-webkit-scrollbar {
+  width: 5px;
+}
+
+.grScrollbar::-webkit-scrollbar-track {
+  background: rgba(250, 250, 250, 0.2);
+}
+
+.grScrollbar::-webkit-scrollbar-thumb {
+  border-radius: 100vh;
+  border: none;
+}

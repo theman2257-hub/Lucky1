@@ -1,0 +1,189 @@
+.wrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+}
+.chatComp {
+  border-radius: 24px;
+  background-color: var(--chat-bg);
+  width: 100%;
+
+  padding: 20px;
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  flex-direction: column;
+}
+.chatHeader {
+  width: 100%;
+  box-shadow: 0px 18px 32px #20212e;
+  border-radius: 18px;
+  background-color: var(--secondary-bg);
+  padding: 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.chatHeader > h2 {
+  color: var(--text-color);
+  font-size: 16px;
+  font-weight: 600;
+}
+.statusBar {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+  background-color: #ecddff;
+  border-radius: 14px;
+  padding: 6px 7px;
+  padding-right: 12px;
+}
+.statusBar span {
+  background: var(--sender-msg-bg);
+  border-radius: 8px;
+  padding: 5px 10px;
+  color: var(--text-color);
+  font-weight: 600;
+  font-size: 12px;
+}
+.statusBar p {
+  background: var(--sender-msg-bg);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  text-fill-color: transparent;
+  font-weight: 600;
+  font-size: 14px;
+}
+/* //chats css---------------------------- */
+.chatRoom {
+  display: flex;
+  justify-content: flex-start;
+  align-items: flex-start;
+  flex-direction: column;
+  padding: 20px 0px;
+  width: 100%;
+  overflow-y: auto;
+  gap: 20px;
+  height: 330px;
+}
+/* Hide scrollbar for Chrome, Safari and Opera */
+.chatRoom::-webkit-scrollbar {
+  display: none;
+}
+
+/* Hide scrollbar for IE, Edge and Firefox */
+.chatRoom {
+  -ms-overflow-style: none; /* IE and Edge */
+  scrollbar-width: none; /* Firefox */
+}
+/* //input part css --------------- */
+.inputDiv {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  background-color: var(--secondary-bg);
+  border-radius: 18px;
+  padding: 0px 20px;
+  gap: 20px;
+  height: 70px;
+}
+.inputDiv input {
+  width: 100%;
+  background-color: transparent;
+  border: none;
+  outline: none;
+  height: 70%;
+  color: var(--text-color);
+  font-size: 18px;
+  padding: 0 8px;
+}
+.rightInput {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  gap: 10px;
+  border-left: 1px solid #ecddff33;
+  padding: 20px 0px;
+  padding-left: 20px;
+  height: 100%;
+}
+.rightInput button {
+  width: 46px;
+  height: 46px;
+  border-radius: 12px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  border: none;
+}
+.emojiWrapper {
+  position: relative;
+}
+.emoji {
+  width: 100%;
+  height: 100%;
+  background-color: #ecddff1a;
+  display: grid;
+  place-items: center;
+  aspect-ratio: 1/1;
+  object-fit: contain;
+}
+.send {
+  background-color: var(--text-color);
+}
+.emojiPicker {
+  position: absolute;
+  bottom: 120%;
+  right: 0;
+}
+
+@media screen and (max-width: 430px) {
+  .chatComp {
+    padding: 10px;
+  }
+  .chatHeader {
+    padding: 8px;
+  }
+  .chatHeader h2 {
+    font-size: 14px;
+  }
+  .statusBar p,
+  .statusBar span {
+    font-size: 12px;
+  }
+  .inputDiv {
+    height: 45px;
+    padding-block: 0px;
+    padding-inline: 10px;
+  }
+  .inputDiv input {
+    font-size: 14px;
+  }
+  .rightInput {
+    height: 45px;
+  }
+  .rightInput button {
+    width: 35px;
+    height: 35px;
+  }
+  .rightInput > button > img {
+    width: 20px;
+  }
+  .rightInput button {
+    width: 28px;
+    height: 28px;
+  }
+
+  .emojiWrapper {
+    width: 30px;
+    height: 30px;
+  }
+  .emojiPicker {
+    right: -50%;
+  }
+}

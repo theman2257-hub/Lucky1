@@ -1,0 +1,116 @@
+.createLotteryContainer {
+  padding: 100px 0;
+  padding-top: 150px;
+}
+
+.headingContainer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-bottom: 30px;
+}
+
+.title {
+  font-family: var(--fontFamily);
+  font-style: normal;
+  font-weight: 600;
+  font-size: 36px;
+  line-height: 172%;
+  font-feature-settings: "cv11" on, "cv10" on, "cv09" on, "cv08" on, "cv07" on,
+    "sinf" on, "cv06" on, "cv05" on, "cv04" on, "cv03" on, "cv02" on, "cv01" on,
+    "ss04" on, "ss03" on, "ss02" on, "zero" on, "cpsp" on, "case" on, "liga" off,
+    "kern" off;
+  color: #ecddff;
+}
+
+.text {
+  font-family: var(--fontFamily);
+  font-style: normal;
+  font-weight: 400;
+  font-size: 15px;
+  line-height: 187%;
+  text-transform: lowercase;
+  color: rgba(236, 221, 255, 0.3);
+}
+.headingContainer .text {
+  max-width: 330px;
+  text-transform: capitalize;
+}
+.wrapper {
+  display: grid;
+  grid-template-columns: 340px 2fr;
+  align-items: center;
+  gap: 15px;
+  background: #20212e;
+  border-radius: 24px;
+  padding: 18px;
+}
+.uploadingImage {
+  height: 100%;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.details {
+  display: flex;
+  flex-direction: column;
+
+  gap: 18px;
+  height: 100%;
+}
+.inputWrapper {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  align-items: center;
+  gap: 18px;
+}
+.button {
+  font-family: var(--fontFamily);
+  font-style: normal;
+  font-weight: 600;
+  font-size: 18px;
+  line-height: 133%;
+  text-transform: capitalize;
+
+  color: #ecddff;
+  background: linear-gradient(114.79deg, #c040fc -17.76%, #4b3cff 99.88%);
+  border-radius: 14px;
+  width: 100%;
+  border: none;
+  outline: none;
+  padding: 10px 18px;
+  cursor: pointer;
+}
+
+@media only screen and (max-width: 991px) {
+  .wrapper {
+    grid-template-columns: 1fr;
+    gap: 25px;
+  }
+  .createLotteryContainer {
+    padding: 100px 0;
+  }
+}
+
+@media only screen and (max-width: 767px) {
+  .headingContainer {
+    flex-direction: column;
+  }
+  .title {
+    text-align: center;
+  }
+  .headingContainer .text {
+    text-align: center;
+  }
+}
+@media only screen and (max-width: 575px) {
+  .inputWrapper {
+    grid-template-columns: 1fr;
+  }
+}
+@media only screen and (max-width: 520px) {
+  .headingContainer .text {
+    max-width: 100%;
+  }
+}

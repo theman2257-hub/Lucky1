@@ -1,0 +1,153 @@
+.container {
+  width: 95%;
+  max-width: 1280px;
+  margin: 0 auto;
+}
+.infoWrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 18px;
+  padding-bottom: 80px;
+
+  position: relative;
+  z-index: 1;
+}
+.nameAndImage {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+}
+.userImage {
+  border: 2px solid #000000;
+  width: 92px;
+  height: 92px;
+  border-radius: 50%;
+  margin-top: -46px;
+}
+.userName {
+  font-family: var(--fontFamily);
+  font-style: normal;
+  font-weight: 800;
+  font-size: 42px;
+  line-height: 130%;
+  text-align: center;
+  color: #ffffff;
+  position: relative;
+}
+.verified {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-35%);
+  color: #1d9bf0;
+  right: -30px;
+  font-size: 24px;
+}
+.info {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 15px;
+}
+.text {
+  font-family: var(--fontFamily);
+  font-style: normal;
+  font-weight: 700;
+  font-size: 14px;
+  line-height: 150%;
+  color: rgba(255, 255, 255, 0.5);
+}
+.value {
+  font-weight: 700;
+  color: #ffffff;
+}
+.buttonContainer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 8px;
+}
+.button {
+  font-family: var(--fontFamily);
+  font-style: normal;
+  font-weight: 700;
+  font-size: 14px;
+  line-height: 150%;
+  color: #ffffff;
+  border: 2px solid rgba(207, 219, 213, 0.15);
+  background: transparent;
+  border-radius: 23px;
+  outline: none;
+  cursor: pointer;
+  padding: 10px 20px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 5px;
+}
+.activeButton {
+  border: 2px solid #7a52f4;
+  background: #7a52f4;
+}
+.icon {
+  font-size: 18px;
+}
+.send,
+.more {
+  width: 46px;
+  height: 46px;
+  border-radius: 50%;
+  padding: 0;
+}
+.itemsCategory {
+  display: flex;
+  justify-content: center;
+  gap: 15px;
+  align-items: center;
+  padding-bottom: 25px;
+  width: 90%;
+  margin: 0 auto;
+  border-bottom: 1px solid rgb(207, 219, 213, 0.15);
+}
+.created,
+.participated {
+  font-family: var(--fontFamily);
+  font-style: normal;
+  font-weight: 700;
+  font-size: 14px;
+  line-height: 150%;
+  text-align: center;
+  color: rgba(255, 255, 255, 0.5);
+  background: #20212e;
+  padding: 8px 15px;
+  border-radius: 5px;
+  cursor: pointer;
+}
+.activeItems {
+  background: #7a52f4;
+  color: #ffffff;
+}
+@media only screen and (max-width: 400px) {
+  .userName {
+    font-size: 36px;
+  }
+  .buttonContainer {
+    gap: 4px;
+  }
+  .button {
+    padding: 8px 14px;
+  }
+  .send,
+  .more {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    padding: 0;
+  }
+  .icon {
+    font-size: 16px;
+  }
+}

@@ -1,0 +1,87 @@
+.card {
+  background: #20212e;
+  border-radius: 20px;
+  padding: 25px 22px;
+}
+.counter {
+  padding-bottom: 20px;
+}
+.image {
+  width: 100%;
+  border-radius: 14px;
+}
+.name {
+  font-family: var(--fontFamily);
+  font-style: normal;
+  font-weight: 600;
+  font-size: 25px;
+  line-height: 135%;
+  color: rgb(236, 221, 255, 0.8);
+  padding-top: 12px;
+  text-align: center;
+}
+.price {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  padding: 15px 0;
+  text-align: center;
+}
+.key {
+  font-family: var(--fontFamily);
+  font-style: normal;
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 135%;
+  text-align: center;
+  color: rgba(236, 221, 255, 0.5);
+}
+.usd {
+  font-family: var(--fontFamily);
+  font-style: normal;
+  font-weight: 400;
+  font-size: 12px;
+  line-height: 125%;
+
+  color: #ecddff;
+
+  opacity: 0.4;
+}
+.eth {
+  font-family: var(--fontFamily);
+  font-style: normal;
+  font-weight: 600;
+  font-size: 14px;
+  line-height: 125%;
+  color: #ecddff;
+  opacity: 0.6;
+  text-transform: uppercase;
+}
+.button {
+  font-family: var(--fontFamily);
+  font-style: normal;
+  font-weight: 600;
+  font-size: 14px;
+  line-height: 135%;
+  text-transform: capitalize;
+  color: #fff;
+  text-align: center;
+  width: 100%;
+  background: linear-gradient(114.79deg, #c040fc -17.76%, #4b3cff 99.88%);
+  border-radius: 14px;
+  border: none;
+  outline: none;
+  padding: 18px 15px;
+  display: block;
+}
+
+.button:hover {
+  background: #563cff;
+  opacity: 0.8;
+}
+.cardsWrapper {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(261px, 1fr));
+  gap: 15px;
+}

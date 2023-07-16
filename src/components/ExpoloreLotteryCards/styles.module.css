@@ -1,0 +1,225 @@
+.exploreLotteryContainer {
+  padding: 100px 0;
+}
+
+.headingContainer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-bottom: 30px;
+}
+
+.title {
+  font-family: var(--fontFamily);
+  font-style: normal;
+  font-weight: 600;
+  font-size: 36px;
+  line-height: 172%;
+  font-feature-settings: "cv11" on, "cv10" on, "cv09" on, "cv08" on, "cv07" on,
+    "sinf" on, "cv06" on, "cv05" on, "cv04" on, "cv03" on, "cv02" on, "cv01" on,
+    "ss04" on, "ss03" on, "ss02" on, "zero" on, "cpsp" on, "case" on, "liga" off,
+    "kern" off;
+  color: #ecddff;
+}
+
+.text {
+  font-family: var(--fontFamily);
+  font-style: normal;
+  font-weight: 400;
+  font-size: 15px;
+  line-height: 187%;
+  text-transform: lowercase;
+  color: rgba(236, 221, 255, 0.3);
+}
+.headingContainer .text {
+  max-width: 330px;
+}
+.topBar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 15px;
+  background: #20212e;
+  border-radius: 124px;
+  padding: 15px 20px;
+  margin-bottom: 20px;
+}
+.allCategory {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  gap: 15px;
+}
+
+.category {
+  font-family: var(--fontFamily);
+  font-style: normal;
+  font-weight: 600;
+  font-size: 14px;
+  line-height: 130%;
+  text-transform: capitalize;
+  color: rgba(236, 221, 255, 0.7);
+  border: 1px solid rgba(208, 220, 231, 0.15);
+  border-radius: 23px;
+  padding: 10px 25px;
+  cursor: pointer;
+
+  outline: none;
+  background: transparent;
+}
+.activeCategory {
+  background: linear-gradient(114.79deg, #c040fc -17.76%, #4b3cff 99.88%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  text-fill-color: transparent;
+  border: 1px solid rgb(75, 60, 255, 0.7);
+  background-color: #00f;
+}
+.searchAndFilter {
+  display: flex;
+  gap: 15px;
+  align-items: center;
+}
+.searchIcon {
+  color: #fff;
+  font-size: 18px;
+}
+.inputContainer {
+  display: flex;
+  align-items: center;
+
+  padding: 5px 15px;
+  background: #30303e;
+  border-radius: 31px;
+
+  width: 296px;
+}
+.input {
+  font-family: var(--fontFamily);
+  font-style: normal;
+  font-weight: 600;
+  font-size: 14px;
+  line-height: 130%;
+  color: rgba(236, 221, 255, 1);
+  width: 100%;
+  padding: 8px 10px;
+  background: transparent;
+  width: 100%;
+  border: none;
+  outline: none;
+}
+.dropdown {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  position: relative;
+  border: 1.4px solid rgba(208, 220, 231, 0.15);
+  background: #30303e;
+  border-radius: 31px;
+
+  padding: 7px 15px;
+}
+.dropDownItems {
+  position: absolute;
+  min-width: 100%;
+  top: 40px;
+  right: 0px;
+
+  border: 1.4px solid rgba(208, 220, 231, 0.15);
+  background: #30303e;
+  border-radius: 31px;
+  border-top: none;
+  border-radius: 10px;
+  padding: 8px 15px;
+
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 8px;
+}
+.dropDownItem {
+  font-family: var(--fontFamily);
+  font-style: normal;
+  font-weight: 600;
+  font-size: 14px;
+  line-height: 150%;
+  color: #d0dce7;
+  width: 100%;
+}
+.dropDownItems .dropDownItem {
+  padding-right: 20px;
+  text-align: right;
+  cursor: pointer;
+}
+.order {
+  opacity: 0.3;
+}
+.arrow {
+  color: #fff;
+  font-size: 24px;
+  cursor: pointer;
+}
+.cardsWrapper {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 15px;
+}
+
+@media only screen and (max-width: 1199px) {
+  .allCategory {
+    gap: 8px;
+  }
+  .inputContainer {
+    width: 220px;
+  }
+  .searchAndFilter {
+    gap: 8px;
+  }
+  .cardsWrapper {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+@media only screen and (max-width: 850px) {
+  .cardsWrapper {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+@media only screen and (max-width: 991px) {
+  .topBar {
+    flex-direction: column;
+    border-radius: 23px;
+  }
+  .allCategory {
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+  .searchAndFilter {
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+}
+
+@media only screen and (max-width: 767px) {
+  .headingContainer {
+    flex-direction: column;
+  }
+  .title {
+    text-align: center;
+  }
+  .headingContainer .text {
+    text-align: center;
+  }
+}
+@media only screen and (max-width: 575px) {
+  .cardsWrapper {
+    grid-template-columns: 1fr;
+    max-width: 400px;
+    margin: 0 auto;
+  }
+}
+@media only screen and (max-width: 520px) {
+  .headingContainer .text {
+    max-width: 100%;
+  }
+}

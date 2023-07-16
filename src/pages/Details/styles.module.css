@@ -1,0 +1,38 @@
+.detailsContainer {
+  padding-top: 130px;
+}
+.details {
+  width: 100%;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 18px;
+  justify-content: center;
+}
+.ticketAndDescription {
+  align-items: start;
+  padding-top: 18px;
+}
+.image {
+  width: 100%;
+  border-radius: 24px;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+}
+@media only screen and (max-width: 991px) {
+  .detailsContainer {
+    padding-top: 105px;
+  }
+  .details {
+    display: flex;
+    flex-direction: column;
+    max-width: 500px;
+    margin: 0 auto;
+  }
+}
+@media only screen and (max-width: 600px) {
+  .details {
+    display: flex;
+    flex-direction: column;
+  }
+}

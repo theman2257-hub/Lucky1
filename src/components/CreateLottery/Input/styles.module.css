@@ -1,0 +1,58 @@
+.inputContainer {
+  display: flex;
+  flex-direction: column;
+
+  width: 100%;
+}
+.inputDisabled {
+  background: #30303e;
+  filter: blur(1.5px);
+  border-radius: 14px;
+}
+.label {
+  display: block;
+  padding-bottom: 5px;
+  cursor: pointer;
+  text-transform: capitalize;
+}
+.swithcWrapper {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 5px;
+}
+.text {
+  font-family: var(--fontFamily);
+  font-style: normal;
+  font-weight: 600;
+  font-size: 14px;
+  line-height: 19px;
+  /* identical to box height */
+
+  color: rgba(236, 221, 255, 0.8);
+}
+
+.inputAndIcon {
+  display: flex;
+  align-items: center;
+  background: #30303e;
+  border-radius: 14px;
+
+  padding: 10px 12px;
+  gap: 12px;
+}
+.icon {
+  width: 20px;
+  height: 20px;
+}
+.input {
+  background: transparent;
+  display: block;
+  width: 100%;
+  margin: 0 auto;
+  border: none;
+
+  padding: 4px 12px;
+  outline: none;
+  border-left: 1px solid rgba(236, 221, 255, 0.3);
+}

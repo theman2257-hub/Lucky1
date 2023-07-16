@@ -1,0 +1,70 @@
+.chatBlockRecieved {
+  display: flex;
+  justify-content: flex-start;
+  align-items: flex-end;
+  align-self: flex-start;
+  gap: 10px;
+}
+.chatBlockSent {
+  display: flex;
+  flex-direction: row-reverse;
+  justify-content: flex-end;
+  align-items: flex-end;
+  gap: 10px;
+  align-self: flex-end;
+}
+.chatImg img {
+  width: 42px;
+  aspect-ratio: 1/1;
+  object-fit: cover;
+  border-radius: 50%;
+}
+.chatMessages {
+  display: flex;
+  justify-content: flex-start;
+  flex-direction: column;
+  gap: 4px;
+}
+.chatBlockReceived .chatMessages {
+  align-items: flex-start;
+}
+.chatBlockSent .chatMessages {
+  align-items: flex-end;
+}
+.chatMessages p {
+  font-family: var(--fontFamily);
+  padding: 12px 20px;
+  font-weight: 500;
+  font-size: 14px;
+  width: fit-content;
+  word-wrap: break-word;
+  color: var(--text-color);
+}
+.sentMsg {
+  border-radius: 20px 6px 20px 20px;
+  background: var(--sender-msg-bg);
+  text-align: right;
+}
+.recievedMsg {
+  background: var(--reciver-msg-bg);
+  border-radius: 6px 20px 20px 20px;
+}
+.firstMessageSent {
+  border-radius: 20px 20px 6px 20px;
+  background: var(--sender-msg-bg);
+  text-align: right;
+}
+.firstMessageReceived {
+  border-radius: 6px 20px 20px 6px;
+  background: var(--reciver-msg-bg);
+}
+@media only screen and (max-width: 480px) {
+  .chatMessages p {
+    font-size: 12px;
+  }
+}
+@media only screen and (max-width: 400px) {
+  .chatMessages p {
+    padding: 7px 14px;
+  }
+}
