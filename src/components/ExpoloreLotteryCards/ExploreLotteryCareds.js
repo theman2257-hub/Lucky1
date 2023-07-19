@@ -328,7 +328,7 @@ const ExploreLotteryCareds = () => {
       if (category === "all") {
         return true;
       } else if (category.toLocaleLowerCase() === "charity") {
-        return el.charityFee;
+        return el.charityFee > 0;
       } else if (category.toLocaleLowerCase() === "free") {
         return el.ticketPrice == 0;
       }
@@ -365,11 +365,10 @@ const ExploreLotteryCareds = () => {
             <div className={styles.allCategory}>
               {allCategory.map((el, i) => (
                 <button
-                  className={`${styles.category} ${
-                    category.toLocaleLowerCase() ===
-                      allCategory[i].toLocaleLowerCase() &&
+                  className={`${styles.category} ${category.toLocaleLowerCase() ===
+                    allCategory[i].toLocaleLowerCase() &&
                     styles.activeCategory
-                  }`}
+                    }`}
                   key={i}
                   onClick={() => setCategory(el)}
                 >
