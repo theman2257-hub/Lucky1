@@ -3,7 +3,7 @@ import { RxHamburgerMenu } from "react-icons/rx";
 import { MdOutlineClose } from "react-icons/md";
 import { NavLink } from "react-router-dom";
 import { logo } from "../../images/images";
-import Logo  from "../../images/Logo2.png"
+import Logo  from "../../images/logo.png"
 import styles from "./styles.module.css";
 import { useWeb3Modal } from "@web3modal/react";
 import { useAccount } from "wagmi";

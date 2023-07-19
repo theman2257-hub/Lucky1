@@ -9,8 +9,8 @@ const HeroSection = () => {
       <div className="container">
         <div className={styles.textContainer}>
           <h1 className={styles.title}>
-            Revolutionize <span className={styles.italic}>Your  </span> Lottery{" "}
-            <span className={styles.italic}>Experience</span>
+            Create <span className={styles.italic}>Your  </span> Own Lottery{" "}
+            <span className={styles.italic}>In 1Minute!</span>
           </h1>
           <p className={styles.text}>
             Join the future of gaming and win big with our revolutionary lottery crypto platform. Experience unparalleled transparency, security, and excitement as you participate in the world's most advanced lottery system.{" "}
