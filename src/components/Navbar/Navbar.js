@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { RxHamburgerMenu } from "react-icons/rx";
 import { MdOutlineClose } from "react-icons/md";
-import { NavLink } from "react-router-dom";
+import { NavLink,Link } from "react-router-dom";
 import { logo } from "../../images/images";
 import Logo  from "../../images/logo.png"
 import styles from "./styles.module.css";
@@ -22,7 +22,7 @@ const Navbar = () => {
     <section className={styles.navbar}>
       <div className="container">
         <div className={styles.navs}>
-          <img src={logo} width="150" alt="#" className={styles.logo} />
+        <Link to = "/"><img src={logo} width="150" alt="#" className={styles.logo} /></Link>
           <div className={`${styles.navItems} ${sidebar && styles.sidebar}`}>
             {navItems.map((el, i) => (
               <NavLink
