@@ -12,13 +12,13 @@ const FooterBottom = () => {
               Privacy Policy
             </a>
             <a href="#/" target="_blank" className={styles.text}>
-              License
+              Patten
             </a>
             <a href="#/" target="_blank" className={styles.text}>
               API
             </a>
             <p className={`${styles.copyRightText} ${styles.text}`}>
-              © 2021 All rights reserved
+              © 2023 All rights reserved
             </p>
           </div>
 
