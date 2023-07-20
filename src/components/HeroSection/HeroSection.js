@@ -20,7 +20,7 @@ const HeroSection = () => {
               </strong>
               {" "}
               <br/> on the ultimate decentralized crypto platform. <br/> Create your dreams or bet on your luck !<br/>  It's all in your hands!
-              With Lucky1; <br/> everyone has a shot at becoming <br/> a Crypto Millionaire! 🚀🌟
+              With Lucky1; <br/> everyone has a shot at becoming <br/> a  Crypto Millionaire! 🚀🌟
             </p>
           </h2>
           
