@@ -23,7 +23,7 @@ const Navbar = () => {
     <section className={styles.navbar}>
       <div className="container">
         <div className={styles.navs}>
-          <img src={logo} width="180" alt="#" className={styles.logo} />
+          <img src={logo} width="150" alt="#" className={styles.logo} />
           <div className={`${styles.navItems} ${sidebar && styles.sidebar}`}>
             {navItems.map((el, i) => (
               <NavLink
