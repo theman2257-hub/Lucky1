@@ -22,7 +22,7 @@ const Navbar = () => {
     <section className={styles.navbar}>
       <div className="container">
         <div className={styles.navs}>
-        <Link to = "/"><img src={logo} width="50" alt="#" className={styles.logo} /></Link>
+        <Link to = "/"><img src={logo} width="25" alt="#" className={styles.logo} /></Link>
           <div className={`${styles.navItems} ${sidebar && styles.sidebar}`}>
             {navItems.map((el, i) => (
               <NavLink
