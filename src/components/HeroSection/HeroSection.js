@@ -27,18 +27,18 @@ const HeroSection = () => {
           </h2>
           
           <div className={styles.buttonContainer}>
-            <span className={styles.buttonText}>Create a Lottery</span>
-            <Link to: "/createLottery" className={styles.buttonWrapper}>
+          <Link to= "/createLottery">
+            <span className={styles.buttonText}>Create a Lottery</span> </Link>
+            <Link className={styles.buttonWrapper}>
               <p className={styles.button}>
-                <CgArrowLongRight className={styles.arrow} />
-              </p>
-            </Link>
+              <Link to= "/createLottery"> <CgArrowLongRight className={styles.arrow} />
+              </Link>  </p>
+            </Link> 
           </div>
         </div>
       </div>
     </section>
   );
-};
 
 export default HeroSection;
 
