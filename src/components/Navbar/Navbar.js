@@ -13,7 +13,6 @@ const Navbar = () => {
   const { address } = useAccount();
   const [sidebar, setSidebar] = useState(false);
   const navItems = [
-    { navItem: "Home", to: "/" },
     { navItem: "Create Lottery", to: "/createLottery" },
     { navItem: "Contact us", to: "/" },
     { navItem: `${address ? `Profile` : ""}`, to: `${address ? `/profile/${address}` : ""}` },
