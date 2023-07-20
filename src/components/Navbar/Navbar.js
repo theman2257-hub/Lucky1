@@ -14,7 +14,6 @@ const Navbar = () => {
   const [sidebar, setSidebar] = useState(false);
   const navItems = [
     { navItem: "Home", to: "/" },
-    { navItem: "Social Media", to: "/" },
     { navItem: "Create Lottery", to: "/createLottery" },
     { navItem: "Contact us", to: "/" },
     { navItem: `${address ? `Profile` : ""}`, to: `${address ? `/profile/${address}` : ""}` },

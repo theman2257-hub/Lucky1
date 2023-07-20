@@ -8,15 +8,24 @@ const HeroSection = () => {
     <section className={`${styles.heroSection}`}>
       <div className="container">
         <div className={styles.textContainer}>
-          <h1 className={styles.title}>
-            Create <span className={styles.italic}>Your  </span> Own Lottery{" "}
-            <span className={styles.italic}>In 1Minute!</span>
+          <h1 className={`${styles.title} ${styles.spaceAbove}`}>
+            LUCKY1 <span className={styles.italic}>PROTOCOL </span> {" "}
           </h1>
-          <p className={styles.text}>
-            Join the future of gaming and win big with our revolutionary lottery crypto platform. Experience unparalleled transparency, security, and excitement as you participate in the world's most advanced lottery system.{" "}
-          </p>
+          <h2 className={`${styles.subtitle} ${styles.colderWhite}`}>
+            <p className={styles.text}>
+              <strong style={{ fontSize: "24px" }}>
+                <span>Create Lotteries,</span>{" "}
+                <span> Buy Tickets</span>{" "}
+                <span> and Win Big</span>{" "}
+              </strong>
+              {" "}
+              <br/> on the ultimate decentralized crypto platform. <br/> Create your dreams or bet on your luck !<br/>  It's all in your hands!
+              With Lucky1; <br/> everyone has a shot at becoming <br/> a Crypto Millionaire! 🚀🌟
+            </p>
+          </h2>
+          
           <div className={styles.buttonContainer}>
-            <span className={styles.buttonText}>Find lotteries</span>
+            <span className={styles.buttonText}>Create a Lottery</span>
             <Link className={styles.buttonWrapper}>
               <p className={styles.button}>
                 <CgArrowLongRight className={styles.arrow} />
@@ -30,3 +39,4 @@ const HeroSection = () => {
 };
 
 export default HeroSection;
+

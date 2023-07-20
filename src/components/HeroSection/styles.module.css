@@ -1,23 +1,25 @@
 .heroSection {
-  background: url("../../images/bg.png");
+  background: url("../../images/bg.png ");
+
   background-repeat: no-repeat;
   background-position: center;
   background-size: cover;
   padding: 200px 0;
 }
 .textContainer {
-  max-width: 465px;
+  max-width: 525px;
   display: flex;
   flex-direction: column;
+  justify-content: center;
   align-items: flex-start;
 }
 .title {
   font-family: var(--fontFamily);
   font-style: normal;
-  font-weight: 700;
+  font-weight: 400;
   font-size: 54px;
   line-height: 152%;
-  text-transform: uppercase;
+  
   font-feature-settings: "cv11" on, "cv10" on, "cv09" on, "cv08" on, "cv07" on,
     "sinf" on, "cv06" on, "cv05" on, "cv04" on, "cv03" on, "cv02" on, "cv01" on,
     "ss04" on, "ss03" on, "ss02" on, "zero" on, "cpsp" on, "case" on, "liga" off,
@@ -26,9 +28,9 @@
   color: #ecddff;
 }
 .italic {
-  font-style: italic;
-  font-weight: 400;
-  text-transform: lowercase;
+  font-style: normal;
+  font-weight: 600;
+  
 }
 .text {
   font-family: var(--fontFamily);
@@ -94,6 +96,10 @@
   -webkit-text-fill-color: transparent;
   background-clip: text;
   text-fill-color: transparent;
+}
+/* In your CSS file */
+.spaceAbove {
+  margin-top: 80px; /* Adjust the value to add space above the text */
 }
 
 @media only screen and (max-width: 991px) {
