@@ -28,7 +28,7 @@ const HeroSection = () => {
           
           <div className={styles.buttonContainer}>
             <span className={styles.buttonText}>Create a Lottery</span>
-            <Link className={styles.buttonWrapper}>
+            <Link to: "/createLottery" className={styles.buttonWrapper}>
               <p className={styles.button}>
                 <CgArrowLongRight className={styles.arrow} />
               </p>
