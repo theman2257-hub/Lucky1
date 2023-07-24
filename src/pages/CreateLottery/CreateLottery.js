@@ -260,7 +260,7 @@ const CreateLottery = () => {
 
 
 
-  let factoryContract = "0xb500536b0BC52c7db15Ab756B564D10F654f6CBC";
+  let factoryContract = "0xF27c7A96C5316DDe899b2f246C97677549031E9E";
   const { address } = useAccount();
   const { open } = useWeb3Modal();
 
