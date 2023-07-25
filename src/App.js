@@ -14,7 +14,8 @@ import { configureChains, createClient, WagmiConfig } from "wagmi";
 import { arbitrum, mainnet, bscTestnet, sepolia, bsc } from "wagmi/chains";
 import { ToastContainer, toast } from "react-toastify";
 import Profile from "./pages/Profile/Profile";
-
+import Privacy from "./components/Privacy/Privacy";
+import Contact from "./components/Contact/Contact";
 const chains = [bsc];
 const projectId = "e4600bbdb356ec1f0d2dd8930ce3e74c";
 
@@ -38,6 +39,8 @@ function App() {
           <Route path="/createLottery" element={<CreateLottery />}></Route>
           <Route path="/:id" element={<Details />}></Route>
           <Route path="/profile/:id" element={<Profile />}></Route>
+          <Route path="/privacy" element={<Privacy/>}> </Route>
+          <Route path="/contact" element={<Contact/>}> </Route>
         </Routes>
         <Footer />
       </WagmiConfig>

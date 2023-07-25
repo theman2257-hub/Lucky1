@@ -1,34 +1,31 @@
 import React from "react";
-import { settings, web } from "../../../images/images";
 import styles from "./styles.module.css";
-
+import { Link } from "react-router-dom";
+import {FaTwitter} from 'react-icons/fa';
+import {BsTelegram} from 'react-icons/bs'
 const FooterBottom = () => {
   return (
     <div className={styles.footerBottom}>
       <div className="container">
         <div className={styles.wrapper}>
           <div className={styles.items}>
+          <Link className={styles.text} to='/privacy'>Privacy Policy</Link>
+
             <a href="#/" target="_blank" className={styles.text}>
-              Privacy Policy
+            Patent (pending)
             </a>
-            <a href="#/" target="_blank" className={styles.text}>
-              Patten
-            </a>
-            <a href="#/" target="_blank" className={styles.text}>
-              API
-            </a>
+
             <p className={`${styles.copyRightText} ${styles.text}`}>
               © 2023 All rights reserved
             </p>
           </div>
 
-          <div className={styles.webAndSettings}>
-            <div className={styles.web}>
-              <p className={styles.text}>English</p>
-              <img src={web} alt="#" className={styles.icon} />
+          <div className={styles.socials}>
+            <div className={styles.twitter}>
+              <a href="https://twitter.com/@lucky1Protocol" className={styles.icon}> <FaTwitter /></a> 
             </div>
-            <div className={styles.iconContainer}>
-              <img src={settings} alt="#" className={styles.icon} />
+            <div className={styles.telegram}>
+            <a href=" https://telegram.me/@lucky1Protocol" className={styles.icon}> <BsTelegram /></a> 
             </div>
           </div>
         </div>

@@ -21,7 +21,7 @@
 
   color: #d0dce7;
 }
-.webAndSettings {
+.socials {
   display: flex;
   align-items: center;
   gap: 30px;
@@ -31,19 +31,21 @@
   align-items: center;
   gap: 25px;
 }
-.web {
+.twitter {
   display: flex;
   align-items: center;
   gap: 8px;
 }
-.iconContainer {
+.telegram {
   width: 46px;
   height: 46px;
   display: flex;
   align-items: center;
   justify-content: center;
-  border: 1px solid rgba(208, 220, 231, 0.15);
-  border-radius: 23px;
+}
+a{
+  text-decoration: none;
+  color: gray;
 }
 @media only screen and (max-width: 767px) {
   .wrapper {
