@@ -333,6 +333,10 @@ const CreateLottery = () => {
     maxTicketPerWallet: "1", // Preset to 1
   });
 
+  const onChange = (e) => {
+    setValues({ ...values, [e.target.name]: e.target.value });
+  };
+  
   const inputs = [
     {
       icon: textIcon,
@@ -470,9 +474,7 @@ const CreateLottery = () => {
       setDisable: setDisable,
     },
   ];
-const onChange = (e) => {
-  setValues({ ...values, [e.target.name]: e.target.value });
-};
+
 
   return (
     <section className={styles.createLotteryContainer}>
