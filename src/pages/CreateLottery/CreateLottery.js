@@ -336,7 +336,7 @@ const CreateLottery = () => {
   const onChange = (e) => {
     setValues({ ...values, [e.target.name]: e.target.value });
   };
-  
+
   const inputs = [
     {
       icon: textIcon,
@@ -344,6 +344,7 @@ const CreateLottery = () => {
       type: "text",
       name: "lotteryName",
       placeholder: "Enter name",
+      onChange: onChange,
     },
     {
       icon: dollar,
@@ -352,6 +353,7 @@ const CreateLottery = () => {
       min: 1,
       name: "entranceFee",
       placeholder: "Enter entrance fee",
+      onChange: onChange,
     },
 
     // {
@@ -367,6 +369,7 @@ const CreateLottery = () => {
       type: "text",
       name: "FeeToken",
       placeholder: "Enter token to pay fee",
+      onChange: onChange,
     },
 
     {
@@ -376,6 +379,7 @@ const CreateLottery = () => {
       min: 1,
       name: "numberofWinners",
       placeholder: "Enter number",
+      onChange: onChange,
     },
     {
       icon: usdt,
@@ -383,6 +387,7 @@ const CreateLottery = () => {
       type: "text",
       name: "CreatorFee",
       placeholder: "Enter creator fee",
+      onChange: onChange,
     },
 
     {
@@ -392,6 +397,7 @@ const CreateLottery = () => {
       name: "LotteryStartDate",
 
       placeholder: "Enter date",
+      onChange: onChange,
     },
     {
       icon: calender,
@@ -400,6 +406,7 @@ const CreateLottery = () => {
       name: "lottryEndDate",
 
       placeholder: "Enter date",
+      onChange: onChange,
     },
 
     {
@@ -409,6 +416,7 @@ const CreateLottery = () => {
       min: 1,
       name: "numberofTickets",
       placeholder: "Enter number of Tickets",
+      onChange: onChange,
     },
     // {
     //   icon: winner,
