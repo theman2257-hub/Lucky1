@@ -12,7 +12,6 @@ import { useSigner } from "wagmi";
 const CreateLottery = () => {
   const { data: signer } = useSigner();
   const [imgurl, setImgurl] = useState("");
-  //
 
   React.useEffect(() => {
     console.log(imgurl);
@@ -322,7 +321,6 @@ const CreateLottery = () => {
     lottrySymbol: "SML",
     lotteryPrize: "3000",
     entranceFee: "30",
-    //
     lottryEndDate: "",
     numberofWinners: "1",
     charityAddress: "0x62cEFa2920Aa80D67e38C00A84723b3Fc9fA866B",
@@ -331,6 +329,8 @@ const CreateLottery = () => {
     charityFee: "0",
     password: "",
     numberofTickets: "1",
+    prizeDistribution: "50,50",
+    maxTicketPerWallet: "1", // Preset to 1
   });
 
   const inputs = [
@@ -417,6 +417,37 @@ const CreateLottery = () => {
     //   disable: disable,
     //   setDisable: setDisable,
     // },
+    // Prize Distribution
+    {
+      icon: dollar,
+      label: "Prize Distribution",
+      type: "text",
+      name: "prizeDistribution",
+      placeholder: "Enter prize distribution",
+      preset: "50,50",
+      switchs: true,
+      disable: disable,
+      setDisable: setDisable,
+      onChange: (e) => {
+        setValues({ ...values, [e.target.name]: e.target.value });
+      },
+    },
+    // Max Ticket Per Wallet
+    {
+      icon: winner,
+      label: "Max Ticket Per Wallet",
+      type: "number",
+      min: 1,
+      name: "maxTicketPerWallet",
+      placeholder: "Enter max ticket per wallet",
+      preset: "1",
+      switchs: true,
+      disable: disable,
+      setDisable: setDisable,
+      onChange: (e) => {
+        setValues({ ...values, [e.target.name]: e.target.value });
+      },
+    },
     {
       icon: dollar,
       label: "Charity Fee",
@@ -439,9 +470,10 @@ const CreateLottery = () => {
       setDisable: setDisable,
     },
   ];
-  const onChange = (e) => {
-    setValues({ ...values, [e.target.name]: e.target.value });
-  };
+const onChange = (e) => {
+  setValues({ ...values, [e.target.name]: e.target.value });
+};
+
   return (
     <section className={styles.createLotteryContainer}>
       <div className="container">
@@ -454,15 +486,9 @@ const CreateLottery = () => {
         </div>
         <div className={styles.wrapper}>
           <form className={styles.details}>
-            {" "}
             <div className={styles.inputWrapper}>
               {inputs.map((input, i) => (
-                <Input
-                  {...input}
-                  key={i}
-                  value={values[input.name]}
-                  onChange={onChange}
-                />
+                <Input {...input} key={i} value={values[input.name]} />
               ))}
             </div>
             <button
