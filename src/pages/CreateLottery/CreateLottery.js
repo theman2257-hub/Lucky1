@@ -332,7 +332,7 @@ const CreateLottery = () => {
     prizeDistribution: "50,50",
     maxTicketPerWallet: "1", // Preset to 1
   });
-
+  
   const onChange = (e) => {
     setValues({ ...values, [e.target.name]: e.target.value });
   };
@@ -395,7 +395,6 @@ const CreateLottery = () => {
       label: "lottery Start Date",
       type: "date",
       name: "LotteryStartDate",
-
       placeholder: "Enter date",
       onChange: onChange,
     },
@@ -404,7 +403,6 @@ const CreateLottery = () => {
       label: "lottery end date",
       type: "date",
       name: "lottryEndDate",
-
       placeholder: "Enter date",
       onChange: onChange,
     },
@@ -470,6 +468,7 @@ const CreateLottery = () => {
       switchs: true,
       disable: disable,
       setDisable: setDisable,
+      onChange: onChange,
     },
     {
       icon: winner,
@@ -480,9 +479,9 @@ const CreateLottery = () => {
       switchs: true,
       disable: disable,
       setDisable: setDisable,
+      onChange: onChange,
     },
   ];
-
 
   return (
     <section className={styles.createLotteryContainer}>
