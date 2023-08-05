@@ -393,7 +393,7 @@ const CreateLottery = () => {
     {
       icon: calender,
       label: "lottery Start Date",
-      type: "date",
+      type: "datetime-local",
       name: "LotteryStartDate",
       placeholder: "Enter date",
       onChange: onChange,
@@ -401,7 +401,7 @@ const CreateLottery = () => {
     {
       icon: calender,
       label: "lottery end date",
-      type: "date",
+      type: "datetime-local",
       name: "lottryEndDate",
       placeholder: "Enter date",
       onChange: onChange,
