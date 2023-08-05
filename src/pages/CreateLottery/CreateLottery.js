@@ -12,6 +12,7 @@ import { useSigner } from "wagmi";
 const CreateLottery = () => {
   const { data: signer } = useSigner();
   const [imgurl, setImgurl] = useState("");
+  //
 
   React.useEffect(() => {
     console.log(imgurl);
@@ -259,7 +260,7 @@ const CreateLottery = () => {
 
 
 
-  let factoryContract = "0xF27c7A96C5316DDe899b2f246C97677549031E9E";
+  let factoryContract = "0x35cB8E0563b22edE007cb9B89b7C809E9e9cEED4";
   const { address } = useAccount();
   const { open } = useWeb3Modal();
 
@@ -321,6 +322,7 @@ const CreateLottery = () => {
     lottrySymbol: "SML",
     lotteryPrize: "3000",
     entranceFee: "30",
+    //
     lottryEndDate: "",
     numberofWinners: "1",
     charityAddress: "0x62cEFa2920Aa80D67e38C00A84723b3Fc9fA866B",
@@ -329,13 +331,7 @@ const CreateLottery = () => {
     charityFee: "0",
     password: "",
     numberofTickets: "1",
-    prizeDistribution: "50,50",
-    maxTicketPerWallet: "1", // Preset to 1
   });
-  
-  const onChange = (e) => {
-    setValues({ ...values, [e.target.name]: e.target.value });
-  };
 
   const inputs = [
     {
@@ -344,7 +340,6 @@ const CreateLottery = () => {
       type: "text",
       name: "lotteryName",
       placeholder: "Enter name",
-      onChange: onChange,
     },
     {
       icon: dollar,
@@ -353,7 +348,6 @@ const CreateLottery = () => {
       min: 1,
       name: "entranceFee",
       placeholder: "Enter entrance fee",
-      onChange: onChange,
     },
 
     // {
@@ -369,7 +363,6 @@ const CreateLottery = () => {
       type: "text",
       name: "FeeToken",
       placeholder: "Enter token to pay fee",
-      onChange: onChange,
     },
 
     {
@@ -379,7 +372,6 @@ const CreateLottery = () => {
       min: 1,
       name: "numberofWinners",
       placeholder: "Enter number",
-      onChange: onChange,
     },
     {
       icon: usdt,
@@ -387,24 +379,23 @@ const CreateLottery = () => {
       type: "text",
       name: "CreatorFee",
       placeholder: "Enter creator fee",
-      onChange: onChange,
     },
 
     {
       icon: calender,
       label: "lottery Start Date",
-      type: "datetime-local",
+      type: "date",
       name: "LotteryStartDate",
+
       placeholder: "Enter date",
-      onChange: onChange,
     },
     {
       icon: calender,
       label: "lottery end date",
-      type: "datetime-local",
+      type: "date",
       name: "lottryEndDate",
+
       placeholder: "Enter date",
-      onChange: onChange,
     },
 
     {
@@ -414,7 +405,6 @@ const CreateLottery = () => {
       min: 1,
       name: "numberofTickets",
       placeholder: "Enter number of Tickets",
-      onChange: onChange,
     },
     // {
     //   icon: winner,
@@ -427,37 +417,6 @@ const CreateLottery = () => {
     //   disable: disable,
     //   setDisable: setDisable,
     // },
-    // Prize Distribution
-    {
-      icon: dollar,
-      label: "Prize Distribution",
-      type: "text",
-      name: "prizeDistribution",
-      placeholder: "Enter prize distribution",
-      preset: "50,50",
-      switchs: true,
-      disable: disable,
-      setDisable: setDisable,
-      onChange: (e) => {
-        setValues({ ...values, [e.target.name]: e.target.value });
-      },
-    },
-    // Max Ticket Per Wallet
-    {
-      icon: winner,
-      label: "Max Ticket Per Wallet",
-      type: "number",
-      min: 1,
-      name: "maxTicketPerWallet",
-      placeholder: "Enter max ticket per wallet",
-      preset: "1",
-      switchs: true,
-      disable: disable,
-      setDisable: setDisable,
-      onChange: (e) => {
-        setValues({ ...values, [e.target.name]: e.target.value });
-      },
-    },
     {
       icon: dollar,
       label: "Charity Fee",
@@ -468,7 +427,6 @@ const CreateLottery = () => {
       switchs: true,
       disable: disable,
       setDisable: setDisable,
-      onChange: onChange,
     },
     {
       icon: winner,
@@ -479,10 +437,11 @@ const CreateLottery = () => {
       switchs: true,
       disable: disable,
       setDisable: setDisable,
-      onChange: onChange,
     },
   ];
-
+  const onChange = (e) => {
+    setValues({ ...values, [e.target.name]: e.target.value });
+  };
   return (
     <section className={styles.createLotteryContainer}>
       <div className="container">
@@ -495,9 +454,15 @@ const CreateLottery = () => {
         </div>
         <div className={styles.wrapper}>
           <form className={styles.details}>
+            {" "}
             <div className={styles.inputWrapper}>
               {inputs.map((input, i) => (
-                <Input {...input} key={i} value={values[input.name]} />
+                <Input
+                  {...input}
+                  key={i}
+                  value={values[input.name]}
+                  onChange={onChange}
+                />
               ))}
             </div>
             <button
