@@ -4,48 +4,32 @@ pragma solidity 0.8.17;
 import "@openzeppelin/contracts/token/ERC721/ERC721.sol";
 import "@openzeppelin/contracts/access/Ownable.sol";
 import "@openzeppelin/contracts/utils/Counters.sol";
+
 interface IERC20 {
-
-    function getAmountsOut(uint amountIn, address[] memory path) external view returns (uint[] memory amounts);
-    event Transfer(address indexed from, address indexed to, uint tokens);
-    event Approval(address indexed tokenOwner, address indexed spender, uint tokens);
-    function totalSupply() external view returns (uint256);
-    function balanceOf(address account) external view returns (uint256);
-    function stakes(address account) external view returns (uint256);
-    function transfer(address recipient, uint256 amount) external returns (bool);
-    function allowance(address owner, address spender) external view returns (uint256);
-    function approve(address spender, uint256 amount) external returns (bool);
-    function transferFrom(address sender, address recipient, uint256 amount) external returns (bool);
-    function decimals() external view returns(uint8);
+    // ... (function signatures of the IERC20 interface)
 }
-
-
-
 
 contract lotteryFactory {
     address[] public lotteries;
 
-    function createLottery  (string memory _name, string memory _shortName,  uint _lotteryPrize,
-    uint _ticketPrice) public payable {
-        // require(msg.value == 0.1 ether, 'fee not paid')
+    function createLottery(string memory _name, string memory _shortName, uint _lotteryPrize, uint _ticketPrice) public payable {
         address newLottery = address(new lottery(_name, _shortName, _lotteryPrize, _ticketPrice));
         lotteries.push(newLottery);
     }
 }
+
 contract lottery is ERC721, Ownable {
-    string public URI;
     using Counters for Counters.Counter;
     Counters.Counter private _tokenIdCounter;
 
-//
-
- struct details {
+    struct details {
         uint winningTicket;
         address[] winners;
         uint lotteryPrize;
         uint entrancePrice;
         bool isEnded;
         uint endTime;
+        uint maxTicketsPerWallet; // New field for max tickets per wallet
     }
 
     details public lotteryDetails;
@@ -62,16 +46,11 @@ contract lottery is ERC721, Ownable {
         _;
     }
 
-    constructor(string memory _name, 
-    string memory _shortName,
-    uint _lotteryPrize,
-    uint _ticketPrice
-    
-    ) ERC721(_name, _shortName) {
-        URI = 'https://app.com';
-        details.lotteryPrize = _lotteryPrize;
-        details.entrancePrice = _ticketPrice;
-        details.endTime = 1707583733;
+    constructor(string memory _name, string memory _shortName, uint _lotteryPrize, uint _ticketPrice, uint _maxTicketsPerWallet) ERC721(_name, _shortName) {
+        lotteryDetails.lotteryPrize = _lotteryPrize;
+        lotteryDetails.entrancePrice = _ticketPrice;
+        lotteryDetails.maxTicketsPerWallet = _maxTicketsPerWallet; // Initialize maxTicketsPerWallet
+        lotteryDetails.endTime = 1707583733;
     }
     function _baseURI() internal view override returns (string memory) {
         return URI;

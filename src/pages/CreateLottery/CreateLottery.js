@@ -12,7 +12,6 @@ import { useSigner } from "wagmi";
 const CreateLottery = () => {
   const { data: signer } = useSigner();
   const [imgurl, setImgurl] = useState("");
-  //
 
   React.useEffect(() => {
     console.log(imgurl);
@@ -21,226 +20,479 @@ const CreateLottery = () => {
 
   let provider = new ethers.providers.Web3Provider(window.ethereum);
   let factoryABI = [
-    {
-      inputs: [
         {
-          internalType: "string",
-          name: "name",
-          type: "string",
+          inputs: [
+            {
+              internalType: "string",
+              name: "_name",
+              type: "string"
+            },
+            {
+              internalType: "uint256",
+              name: "_ticketPrice",
+              type: "uint256"
+            },
+            {
+              internalType: "uint256",
+              name: "_maxTickets",
+              type: "uint256"
+            },
+            {
+              internalType: "uint256",
+              name: "_endDate",
+              type: "uint256"
+            },
+            {
+              internalType: "address",
+              name: "_charity",
+              type: "address"
+            },
+            {
+              internalType: "address",
+              name: "_feeToken",
+              type: "address"
+            },
+            {
+              internalType: "uint256",
+              name: "_creatorFee",
+              type: "uint256"
+            },
+            {
+              internalType: "uint256",
+              name: "_charityFee",
+              type: "uint256"
+            },
+            {
+              internalType: "uint256",
+              name: "_maxTicketsPerWallet",
+              type: "uint256"
+            },
+            {
+              internalType: "uint256[]",
+              name: "_prizeDistribution",
+              type: "uint256[]"
+            }
+          ],
+          name: "createLottery",
+          outputs: [],
+          stateMutability: "payable",
+          type: "function"
         },
         {
-          internalType: "string",
-          name: "symbol",
-          type: "string",
+          anonymous: false,
+          inputs: [
+            {
+              indexed: true,
+              internalType: "address",
+              name: "creator",
+              type: "address"
+            },
+            {
+              indexed: true,
+              internalType: "address",
+              name: "lottery",
+              type: "address"
+            },
+            {
+              indexed: false,
+              internalType: "uint256",
+              name: "ticketPrice",
+              type: "uint256"
+            },
+            {
+              indexed: false,
+              internalType: "uint256",
+              name: "maxTickets",
+              type: "uint256"
+            },
+            {
+              indexed: false,
+              internalType: "uint256",
+              name: "endDate",
+              type: "uint256"
+            },
+            {
+              indexed: false,
+              internalType: "address",
+              name: "charity",
+              type: "address"
+            },
+            {
+              indexed: false,
+              internalType: "address",
+              name: "feeToken",
+              type: "address"
+            },
+            {
+              indexed: false,
+              internalType: "uint256",
+              name: "creatorFee",
+              type: "uint256"
+            },
+            {
+              indexed: false,
+              internalType: "uint256",
+              name: "charityFee",
+              type: "uint256"
+            },
+            {
+              indexed: false,
+              internalType: "uint256",
+              name: "startTime",
+              type: "uint256"
+            },
+            {
+              indexed: false,
+              internalType: "uint256",
+              name: "maxTicketsPerWallet",
+              type: "uint256"
+            },
+            {
+              indexed: false,
+              internalType: "uint256",
+              name: "maxWinners",
+              type: "uint256"
+            }
+          ],
+          name: "LotteryCreated",
+          type: "event"
         },
         {
-          internalType: "uint256",
-          name: "_ticketPrice",
-          type: "uint256",
+          anonymous: false,
+          inputs: [
+            {
+              indexed: true,
+              internalType: "address",
+              name: "previousOwner",
+              type: "address"
+            },
+            {
+              indexed: true,
+              internalType: "address",
+              name: "newOwner",
+              type: "address"
+            }
+          ],
+          name: "OwnershipTransferred",
+          type: "event"
         },
         {
-          internalType: "uint256",
-          name: "_maxTickets",
-          type: "uint256",
-        },
-        {
-          internalType: "uint256",
-          name: "_maxWinners",
-          type: "uint256",
-        },
-        {
-          internalType: "uint256",
-          name: "_endDate",
-          type: "uint256",
-        },
-        {
-          internalType: "address",
+          inputs: [],
           name: "charity",
-          type: "address",
+          outputs: [
+            {
+              internalType: "address",
+              name: "",
+              type: "address"
+            }
+          ],
+          stateMutability: "view",
+          type: "function"
         },
         {
-          internalType: "address",
-          name: "_feeToken",
-          type: "address",
-        },
-        {
-          internalType: "uint256",
-          name: "_creatorFee",
-          type: "uint256",
-        },
-        {
-          internalType: "uint256",
-          name: "_charityFee",
-          type: "uint256",
-        },
-        {
-          internalType: "uint256",
-          name: "_startTime",
-          type: "uint256",
-        },
-      ],
-      name: "createLottery",
-      outputs: [],
-      stateMutability: "nonpayable",
-      type: "function",
-    },
-    {
-      anonymous: false,
-      inputs: [
-        {
-          indexed: true,
-          internalType: "address",
-          name: "creator",
-          type: "address",
-        },
-        {
-          indexed: true,
-          internalType: "address",
-          name: "lottery",
-          type: "address",
-        },
-        {
-          indexed: false,
-          internalType: "string",
-          name: "name",
-          type: "string",
-        },
-        {
-          indexed: false,
-          internalType: "string",
-          name: "symbol",
-          type: "string",
-        },
-        {
-          indexed: false,
-          internalType: "uint256",
-          name: "ticketPrice",
-          type: "uint256",
-        },
-        {
-          indexed: false,
-          internalType: "uint256",
-          name: "maxTickets",
-          type: "uint256",
-        },
-        {
-          indexed: false,
-          internalType: "uint256",
-          name: "maxWinners",
-          type: "uint256",
-        },
-        {
-          indexed: false,
-          internalType: "uint256",
-          name: "endDate",
-          type: "uint256",
-        },
-        {
-          indexed: false,
-          internalType: "address",
-          name: "charity",
-          type: "address",
-        },
-        {
-          indexed: false,
-          internalType: "address",
-          name: "feeToken",
-          type: "address",
-        },
-        {
-          indexed: false,
-          internalType: "uint256",
-          name: "creatorFee",
-          type: "uint256",
-        },
-        {
-          indexed: false,
-          internalType: "uint256",
+          inputs: [],
           name: "charityFee",
-          type: "uint256",
+          outputs: [
+            {
+              internalType: "uint256",
+              name: "",
+              type: "uint256"
+            }
+          ],
+          stateMutability: "view",
+          type: "function"
         },
         {
-          indexed: false,
-          internalType: "uint256",
+          inputs: [],
+          name: "creationFee",
+          outputs: [
+            {
+              internalType: "uint256",
+              name: "",
+              type: "uint256"
+            }
+          ],
+          stateMutability: "view",
+          type: "function"
+        },
+        {
+          inputs: [],
+          name: "creatorFee",
+          outputs: [
+            {
+              internalType: "uint256",
+              name: "",
+              type: "uint256"
+            }
+          ],
+          stateMutability: "view",
+          type: "function"
+        },
+        {
+          inputs: [],
+          name: "endDate",
+          outputs: [
+            {
+              internalType: "uint256",
+              name: "",
+              type: "uint256"
+            }
+          ],
+          stateMutability: "view",
+          type: "function"
+        },
+        {
+          inputs: [],
+          name: "feeToken",
+          outputs: [
+            {
+              internalType: "address",
+              name: "",
+              type: "address"
+            }
+          ],
+          stateMutability: "view",
+          type: "function"
+        },
+        {
+          inputs: [
+            {
+              internalType: "address",
+              name: "",
+              type: "address"
+            }
+          ],
+          name: "isWhitelisted",
+          outputs: [
+            {
+              internalType: "bool",
+              name: "",
+              type: "bool"
+            }
+          ],
+          stateMutability: "view",
+          type: "function"
+        },
+        {
+          inputs: [
+            {
+              internalType: "uint256",
+              name: "",
+              type: "uint256"
+            }
+          ],
+          name: "lotteries",
+          outputs: [
+            {
+              internalType: "contract Lottery",
+              name: "",
+              type: "address"
+            }
+          ],
+          stateMutability: "view",
+          type: "function"
+        },
+        {
+          inputs: [],
+          name: "maxTickets",
+          outputs: [
+            {
+              internalType: "uint256",
+              name: "",
+              type: "uint256"
+            }
+          ],
+          stateMutability: "view",
+          type: "function"
+        },
+        {
+          inputs: [],
+          name: "maxTicketsPerWallet",
+          outputs: [
+            {
+              internalType: "uint256",
+              name: "",
+              type: "uint256"
+            }
+          ],
+          stateMutability: "view",
+          type: "function"
+        },
+        {
+          inputs: [],
+          name: "maxWinners",
+          outputs: [
+            {
+              internalType: "uint256",
+              name: "",
+              type: "uint256"
+            }
+          ],
+          stateMutability: "view",
+          type: "function"
+        },
+        {
+          inputs: [
+            {
+              internalType: "uint256",
+              name: "_creationFee",
+              type: "uint256"
+            }
+          ],
+          name: "modifyCreationFee",
+          outputs: [],
+          stateMutability: "nonpayable",
+          type: "function"
+        },
+        {
+          inputs: [],
+          name: "name",
+          outputs: [
+            {
+              internalType: "string",
+              name: "",
+              type: "string"
+            }
+          ],
+          stateMutability: "view",
+          type: "function"
+        },
+        {
+          inputs: [],
+          name: "owner",
+          outputs: [
+            {
+              internalType: "address",
+              name: "",
+              type: "address"
+            }
+          ],
+          stateMutability: "view",
+          type: "function"
+        },
+        {
+          inputs: [
+            {
+              internalType: "uint256",
+              name: "",
+              type: "uint256"
+            }
+          ],
+          name: "prizeDistribution",
+          outputs: [
+            {
+              internalType: "uint256",
+              name: "",
+              type: "uint256"
+            }
+          ],
+          stateMutability: "view",
+          type: "function"
+        },
+        {
+          inputs: [],
+          name: "renounceOwnership",
+          outputs: [],
+          stateMutability: "nonpayable",
+          type: "function"
+        },
+        {
+          inputs: [],
           name: "startTime",
-          type: "uint256",
-        },
-      ],
-      name: "LotteryCreated",
-      type: "event",
-    },
-    {
-      anonymous: false,
-      inputs: [
-        {
-          indexed: true,
-          internalType: "address",
-          name: "previousOwner",
-          type: "address",
+          outputs: [
+            {
+              internalType: "uint256",
+              name: "",
+              type: "uint256"
+            }
+          ],
+          stateMutability: "view",
+          type: "function"
         },
         {
-          indexed: true,
-          internalType: "address",
-          name: "newOwner",
-          type: "address",
+          inputs: [],
+          name: "symbol",
+          outputs: [
+            {
+              internalType: "string",
+              name: "",
+              type: "string"
+            }
+          ],
+          stateMutability: "view",
+          type: "function"
         },
-      ],
-      name: "OwnershipTransferred",
-      type: "event",
-    },
-    {
-      inputs: [],
-      name: "renounceOwnership",
-      outputs: [],
-      stateMutability: "nonpayable",
-      type: "function",
-    },
-    {
-      inputs: [
         {
-          internalType: "address",
-          name: "newOwner",
-          type: "address",
+          inputs: [],
+          name: "ticketPrice",
+          outputs: [
+            {
+              internalType: "uint256",
+              name: "",
+              type: "uint256"
+            }
+          ],
+          stateMutability: "view",
+          type: "function"
         },
-      ],
-      name: "transferOwnership",
-      outputs: [],
-      stateMutability: "nonpayable",
-      type: "function",
-    },
-    {
-      inputs: [
         {
-          internalType: "uint256",
-          name: "",
-          type: "uint256",
+          inputs: [
+            {
+              internalType: "address",
+              name: "newOwner",
+              type: "address"
+            }
+          ],
+          name: "transferOwnership",
+          outputs: [],
+          stateMutability: "nonpayable",
+          type: "function"
         },
-      ],
-      name: "lotteries",
-      outputs: [
         {
-          internalType: "contract Lottery",
-          name: "",
-          type: "address",
+          inputs: [
+            {
+              internalType: "address",
+              name: "_address",
+              type: "address"
+            },
+            {
+              internalType: "bool",
+              name: "_status",
+              type: "bool"
+            }
+          ],
+          name: "whitelistAddress",
+          outputs: [],
+          stateMutability: "nonpayable",
+          type: "function"
         },
-      ],
-      stateMutability: "view",
-      type: "function",
-    },
-    {
-      inputs: [],
-      name: "owner",
-      outputs: [
         {
-          internalType: "address",
-          name: "",
-          type: "address",
+          inputs: [
+            {
+              internalType: "address[]",
+              name: "_addresses",
+              type: "address[]"
+            },
+            {
+              internalType: "bool[]",
+              name: "_statuses",
+              type: "bool[]"
+            }
+          ],
+          name: "whitelistAddresses",
+          outputs: [],
+          stateMutability: "nonpayable",
+          type: "function"
         },
-      ],
-      stateMutability: "view",
-      type: "function",
-    },
-  ];
+        {
+          inputs: [],
+          name: "withdrawEther",
+          outputs: [],
+          stateMutability: "nonpayable",
+          type: "function"
+        }
+      ];
+      
 
   const updateImage = async (add) => {
     let hash =
@@ -260,7 +512,7 @@ const CreateLottery = () => {
 
 
 
-  let factoryContract = "0xF27c7A96C5316DDe899b2f246C97677549031E9E";
+  let factoryContract = "0x5CC75Fe749A775B1762fa777728D16c1aF4eb887";
   const { address } = useAccount();
   const { open } = useWeb3Modal();
 
@@ -268,19 +520,22 @@ const CreateLottery = () => {
   let factory = new ethers.Contract(factoryContract, factoryABI, signer);
 
   const newLottery = async () => {
+    console.log (values);
+    
     let tx = await factory.createLottery(
       values.lotteryName,
-      "Lucky1",
+
       ethers.utils.parseEther(values.entranceFee),
       values.numberofTickets,
-      values.numberofWinners,
+
       // //convert date to epoch time
       new Date(values.lottryEndDate).getTime() / 1000,
-      "0x62cEFa2920Aa80D67e38C00A84723b3Fc9fA866B",
+      values.charityAddress,
       values.FeeToken,
       values.CreatorFee,
       values.charityFee,
-      new Date(values.LotteryStartDate).getTime() / 1000
+      values.maxTicketPerWallet,
+      values.prizeDistribution// Convert prize distribution percentages to numbers
     );
 
     let sleep = (ms) => {
@@ -300,6 +555,7 @@ const CreateLottery = () => {
       alert("*** Lottery Created Successfully ***Congratulations! Your lottery has been created.Please remember to add a description and image to enhance your lottery listing.Good luck!");
       window.open(`${window.location.origin}/profile/${address}`);
     }
+    
   };
 
   let buttonTitle = () => {
@@ -310,7 +566,7 @@ const CreateLottery = () => {
       };
     } else {
       return {
-        title: "Create Lottery - 0.1 tBNB",
+        title: "Create Lottery - 0.1 BNB",
         func: newLottery,
       };
     }
@@ -319,19 +575,23 @@ const CreateLottery = () => {
   const [disable, setDisable] = React.useState(true);
   const [values, setValues] = useState({
     lotteryName: "Sigma Lottery",
-    lottrySymbol: "SML",
-    lotteryPrize: "3000",
+    lottrySymbol: "LUCKY",
     entranceFee: "30",
-    //
+
     lottryEndDate: "",
-    numberofWinners: "1",
+
     charityAddress: "0x62cEFa2920Aa80D67e38C00A84723b3Fc9fA866B",
     FeeToken: "0x55d398326f99059fF775485246999027B3197955",
     CreatorFee: "15",
     charityFee: "0",
-    password: "",
-    numberofTickets: "1",
+    numberofTickets: "100",
+    maxTicketPerWallet: "1", // Preset to 1
+    prizeDistribution: ["50","50"],
   });
+
+  const onChange = (e) => {
+    setValues({ ...values, [e.target.name]: e.target.value });
+  };
 
   const inputs = [
     {
@@ -340,6 +600,7 @@ const CreateLottery = () => {
       type: "text",
       name: "lotteryName",
       placeholder: "Enter name",
+      onChange: onChange,
     },
     {
       icon: dollar,
@@ -348,6 +609,7 @@ const CreateLottery = () => {
       min: 1,
       name: "entranceFee",
       placeholder: "Enter entrance fee",
+      onChange: onChange,
     },
 
     // {
@@ -363,15 +625,7 @@ const CreateLottery = () => {
       type: "text",
       name: "FeeToken",
       placeholder: "Enter token to pay fee",
-    },
-
-    {
-      icon: winner,
-      label: "Number of winners",
-      type: "number",
-      min: 1,
-      name: "numberofWinners",
-      placeholder: "Enter number",
+      onChange: onChange,
     },
     {
       icon: usdt,
@@ -379,23 +633,16 @@ const CreateLottery = () => {
       type: "text",
       name: "CreatorFee",
       placeholder: "Enter creator fee",
-    },
-
-    {
-      icon: calender,
-      label: "lottery Start Date",
-      type: "date",
-      name: "LotteryStartDate",
-
-      placeholder: "Enter date",
+      onChange: onChange,
     },
     {
       icon: calender,
       label: "lottery end date",
-      type: "date",
+      type: "datetime-local",
       name: "lottryEndDate",
 
       placeholder: "Enter date",
+      onChange: onChange,
     },
 
     {
@@ -405,6 +652,7 @@ const CreateLottery = () => {
       min: 1,
       name: "numberofTickets",
       placeholder: "Enter number of Tickets",
+      onChange: onChange,
     },
     // {
     //   icon: winner,
@@ -417,6 +665,42 @@ const CreateLottery = () => {
     //   disable: disable,
     //   setDisable: setDisable,
     // },
+    // Prize Distribution
+    {
+      icon: dollar,
+      label: "Prize Distribution",
+      type: "text", // Use "text" type to allow comma-separated input
+      name: "prizeDistribution",
+      placeholder: "Enter prize distribution (comma-separated percentages)",
+      onChange: (e) => {
+        const inputValues = e.target.value;
+        const parsedDistribution = inputValues
+          .split(',')
+          .map((value) => value.trim());
+    
+        setValues({
+          ...values,
+          prizeDistribution: parsedDistribution,
+          formattedPrizeDistribution: `[${parsedDistribution.join(',')}]`,
+        });
+      },
+    },
+    // Max Ticket Per Wallet
+    {
+      icon: winner,
+      label: "Max Ticket Per Wallet",
+      type: "number",
+      min: 1,
+      name: "maxTicketPerWallet",
+      placeholder: "Enter max ticket per wallet",
+      preset: "1",
+      switchs: true,
+      disable: disable,
+      setDisable: setDisable,
+      onChange: (e) => {
+        setValues({ ...values, [e.target.name]: e.target.value });
+      },
+    },
     {
       icon: dollar,
       label: "Charity Fee",
@@ -427,6 +711,7 @@ const CreateLottery = () => {
       switchs: true,
       disable: disable,
       setDisable: setDisable,
+      onChange: onChange,
     },
     {
       icon: winner,
@@ -437,11 +722,10 @@ const CreateLottery = () => {
       switchs: true,
       disable: disable,
       setDisable: setDisable,
+      onChange: onChange,
     },
   ];
-  const onChange = (e) => {
-    setValues({ ...values, [e.target.name]: e.target.value });
-  };
+
   return (
     <section className={styles.createLotteryContainer}>
       <div className="container">
@@ -454,15 +738,10 @@ const CreateLottery = () => {
         </div>
         <div className={styles.wrapper}>
           <form className={styles.details}>
-            {" "}
+            
             <div className={styles.inputWrapper}>
               {inputs.map((input, i) => (
-                <Input
-                  {...input}
-                  key={i}
-                  value={values[input.name]}
-                  onChange={onChange}
-                />
+                <Input {...input} key={i} value={values[input.name]} />
               ))}
             </div>
             <button

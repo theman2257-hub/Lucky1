@@ -2,6 +2,8 @@ import React, { useState } from "react";
 import { MdClose } from "react-icons/md";
 import styles from "./Modal.module.css";
 import { middleStar } from "../../../images/images";
+import AddWhitelistModal from "../../../components/Details/NftDescription/AddWhitelistModal/AddWhitelistModal";
+import AddDescriptionModal from "../../../components/Details/NftDescription/AddDescriptionModal/AddDescriptionModal";
 
 const Modal = ({ setModal, setCompetitionEndedModal }) => {
   const [winnerNumber, setWinnerNumbers] = useState("");
@@ -63,6 +65,7 @@ const Modal = ({ setModal, setCompetitionEndedModal }) => {
         </div>
       </div>
       <div className={styles.overlay} onClick={() => setModal(false)}></div>
+      <AddDescriptionModal/>
     </>
   );
 };

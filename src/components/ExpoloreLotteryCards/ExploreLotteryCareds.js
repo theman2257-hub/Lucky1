@@ -259,12 +259,14 @@ const ExploreLotteryCareds = () => {
         symbol
         ticketPrice
         maxTickets
-        maxWinners
         endDate
         charity
         feeToken
         creatorFee
         charityFee
+        maxTicketsPerWallet
+        maxWinners
+        prizeDistribution
         startTime
         tokenSymbol
       }
@@ -301,6 +303,8 @@ const ExploreLotteryCareds = () => {
         feeToken: el.feeToken,
         creatorFee: el.creatorFee,
         charityFee: el.charityFee,
+        prizeDistribution: el.prizeDistribution,
+        maxTicketsPerWallet: el.maxTicketsPerWallet,
         startTime: el.startTime,
         tokenSymbol: el.tokenSymbol,
       };
