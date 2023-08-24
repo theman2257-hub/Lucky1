@@ -24,7 +24,7 @@ const AllTickets = () => {
   // categoryWiseFilter
   const [category, setCategory] = useState("All Tickets");
   const allCategory = ["all participants"];
-  let url = `https://api.thegraph.com/subgraphs/name/civa/lottery_lucky1`;
+  let url = `https://api..com/subgraphs/name/civa/lottery_lucky1`;
   const [allTicket, setAllTicket] = useState([]);
   const getTickets = async () => {
 

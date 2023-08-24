@@ -49,7 +49,7 @@ const TicketDetails = ({ setOwner, setCompetitionEndedModal, setImg, setDescript
     tokenSymbol
       }
     }`
-    let url = "https://api.thegraph.com/subgraphs/name/civa/lottery_lucky1";
+    let url = "https://api.thegraph.com/subgraphs/name/sallystix/test-lottery";
     const response = await axios.post(url, { query });
     const data = response.data;
     // let lotteryData = data.data.lotteries.map((el) => {

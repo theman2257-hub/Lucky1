@@ -271,7 +271,7 @@ const ExploreLotteryCareds = () => {
         tokenSymbol
       }
     }`;
-    let url = "https://api.thegraph.com/subgraphs/name/civa/lottery_lucky1";
+    let url = "https://api.thegraph.com/subgraphs/name/sallystix/test-lottery";
     const { data } = await axios.post(url, { query });
     console.log(data.data.lotteries);
     let rpc = "https://rpc.solidhash.io/public/bsc";

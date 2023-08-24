@@ -55,7 +55,7 @@ const AllItems = ({ setCreatedCount, participatedItems, setCreatedCountparticipa
       tokenSymbol
       }
     }`
-    let url = "https://api.thegraph.com/subgraphs/name/civa/lottery_lucky1";
+    let url = "https://api.thegraph.com/subgraphs/name/sallystix/test-lottery";
     try {
       const { data } = await axios.post(url, { query });
       let lot = (data.data.lotteries)
