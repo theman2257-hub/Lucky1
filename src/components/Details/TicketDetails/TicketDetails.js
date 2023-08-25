@@ -13,9 +13,17 @@ import axios from "axios";
 import "react-toastify/dist/ReactToastify.css";
 import { useParams } from "react-router-dom";
 
-const TicketDetails = ({ setOwner, setCompetitionEndedModal, setImg, setDescription, setHash, setNumberOfWinners }) => {
-  const [ended, setEnded] = useState(false)
-  const [time, setTime] = useState("")
+const TicketDetails = ({
+  setOwner,
+  setCompetitionEndedModal,
+  setImg,
+  setDescription,
+  setHash,
+  setNumberOfWinners,
+  setAddress,
+}) => {
+  const [ended, setEnded] = useState(false);
+  const [time, setTime] = useState("");
   const { id } = useParams();
   const txSuccess = (msg) =>
     toast.success(`Successfully Purchased ${msg} Tickets}`);
@@ -48,7 +56,7 @@ const TicketDetails = ({ setOwner, setCompetitionEndedModal, setImg, setDescript
     startTime
     tokenSymbol
       }
-    }`
+    }`;
     let url = "https://api.thegraph.com/subgraphs/name/sallystix/test-lottery";
     const response = await axios.post(url, { query });
     const data = response.data;
@@ -73,44 +81,54 @@ const TicketDetails = ({ setOwner, setCompetitionEndedModal, setImg, setDescript
     //     tokenSymbol: el.tokenSymbol,
     //   };
 
-    let lotteryData = data.data.lotteries[0]
-    console.log(data.data.lotteries[0])
-    setLotteryDetails(data.data.lotteries[0])
+    let lotteryData = data.data.lotteries[0];
+    console.log(data.data.lotteries[0]);
+    setLotteryDetails(data.data.lotteries[0]);
     // setLotteryDetails(lotteryData);
 
     setOwner(lotteryData.creator);
+    setAddress(lotteryData.lotteryAddress);
     if (lotteryData.description) setDescription(lotteryData.description);
 
-    let imageURL = `https://api.lucky1.io/images/${lotteryData.lotteryAddress}.png?${new Date().getTime()}`;
+    let imageURL = `https://api.lucky1.io/images/${
+      lotteryData.lotteryAddress
+    }.png?${new Date().getTime()}`;
     //check if image exists
-    axios.get(imageURL).then((res) => {
-      setImg(imageURL + "?time=" + new Date().getTime());
-    }).catch((err) => {
-      setImg("https://assets-global.website-files.com/637359c81e22b715cec245ad/63f5feb3302f223a19af4dca_Midnight%20society.png?2322232");
-    })
+    axios
+      .get(imageURL)
+      .then((res) => {
+        setImg(imageURL + "?time=" + new Date().getTime());
+      })
+      .catch((err) => {
+        setImg(
+          "https://assets-global.website-files.com/637359c81e22b715cec245ad/63f5feb3302f223a19af4dca_Midnight%20society.png?2322232"
+        );
+      });
   };
-  console.log("running")
+  console.log("running");
   const setModal = () => {
     if (lotteryDetails?.hash) {
-      setCompetitionEndedModal(true)
-      setNumberOfWinners(lotteryDetails?.numberOfWinners)
-      setHash(lotteryDetails?.hash)
+      setCompetitionEndedModal(true);
+      setNumberOfWinners(lotteryDetails?.numberOfWinners);
+      setHash(lotteryDetails?.hash);
     }
   };
 
   useEffect(() => {
-    setModal()
-  }, [lotteryDetails])
+    setModal();
+  }, [lotteryDetails]);
   const date = new Date(lotteryDetails?.endDate * 1000);
 
-  const dateString = date.toLocaleString('en-US', {
-    month: 'short',
-    day: '2-digit',
-    year: 'numeric',
-    hour: '2-digit',
-    minute: '2-digit',
-    second: '2-digit',
-  }).replace(',', '');
+  const dateString = date
+    .toLocaleString("en-US", {
+      month: "short",
+      day: "2-digit",
+      year: "numeric",
+      hour: "2-digit",
+      minute: "2-digit",
+      second: "2-digit",
+    })
+    .replace(",", "");
 
   useEffect(() => {
     getDetails();
@@ -124,8 +142,7 @@ const TicketDetails = ({ setOwner, setCompetitionEndedModal, setImg, setDescript
       setTimeout(() => {
         window.location.reload();
       }, 2000);
-    } catch (error) {
-    }
+    } catch (error) {}
   };
 
   const { address } = useAccount();
@@ -141,17 +158,16 @@ const TicketDetails = ({ setOwner, setCompetitionEndedModal, setImg, setDescript
     try {
       let tickets = await lotteryContract.balanceOf(address);
       setmyTickets(tickets);
-    } catch (error) {
-    }
+    } catch (error) {}
   };
 
   const getIsRunning = async () => {
     let isRunning = await lotteryContract.isRunning();
     if (!isRunning) {
-      setCompetitionEndedModal(true)
-      setEnded(true)
+      setCompetitionEndedModal(true);
+      setEnded(true);
     }
-  }
+  };
 
   getIsRunning();
   const getAllowance = async () => {
@@ -167,8 +183,7 @@ const TicketDetails = ({ setOwner, setCompetitionEndedModal, setImg, setDescript
       if (allowance > 0) {
         setAllowance(true);
       }
-    } catch (error) {
-    }
+    } catch (error) {}
   };
 
   getAllowance();
@@ -176,16 +191,17 @@ const TicketDetails = ({ setOwner, setCompetitionEndedModal, setImg, setDescript
   async function approve() {
     if (!lotteryDetails.feeToken) return;
     let contract = new ethers.Contract(lotteryDetails.feeToken, erc20Abi, data);
-    let tx = await contract.approve(lotteryAddress, ethers.constants.MaxUint256);
+    let tx = await contract.approve(
+      lotteryAddress,
+      ethers.constants.MaxUint256
+    );
     let reciept = await tx.wait();
     if (reciept && reciept.status) {
       setAllowance(true);
     }
   }
 
-  useEffect(() => {
-
-  }, [address]);
+  useEffect(() => {}, [address]);
 
   useEffect(() => {
     getMyTickets();
@@ -204,8 +220,8 @@ const TicketDetails = ({ setOwner, setCompetitionEndedModal, setImg, setDescript
         function: async () => {
           let url = `https://api.lucky1.io/end/end/${lotteryAddress}`;
           const { data } = await axios.post(url);
-          console.log(data)
-          alert("Lottery Ended")
+          console.log(data);
+          alert("Lottery Ended");
           setCompetitionEndedModal(true);
         },
       };
@@ -239,19 +255,23 @@ const TicketDetails = ({ setOwner, setCompetitionEndedModal, setImg, setDescript
   };
   return (
     <div className={styles.wrapper}>
-      <h2 className={styles.title}>{lotteryDetails?.maxTickets * (lotteryDetails.ticketPrice) / 10 ** 18} {lotteryDetails.tokenSymbol}</h2>
+      <h2 className={styles.title}>
+        {(lotteryDetails?.maxTickets * lotteryDetails.ticketPrice) / 10 ** 18}{" "}
+        {lotteryDetails.tokenSymbol}
+      </h2>
       <div className={styles.countDownContainer}>
         {" "}
         <div className={styles.header}>
           <p className={styles.text}></p>
           <div className={styles.infoButtons}>
-
-
             <button
               onClick={() => {
                 window.open("profile/" + lotteryDetails?.creator, "_blank");
               }}
-              className={styles.liveButton}>View Creator</button>
+              className={styles.liveButton}
+            >
+              View Creator
+            </button>
             <p className={styles.publicRound}>
               <span className={styles.publicRoundText}>
                 {" "}
@@ -259,18 +279,26 @@ const TicketDetails = ({ setOwner, setCompetitionEndedModal, setImg, setDescript
               </span>
             </p>
 
-            {lotteryDetails.charityFee > 0 && <p className={styles.publicRound}>
-              <span className={styles.circle}></span>
+            {lotteryDetails.charityFee > 0 && (
+              <p className={styles.publicRound}>
+                <span className={styles.circle}></span>
 
-              <span className={styles.publicRoundText}>Charity</span>
-            </p>}
-            {lotteryDetails.ticketPrice <= 0 && <p className={styles.publicRound}>
-              <span className={styles.circle}></span>
+                <span className={styles.publicRoundText}>Charity</span>
+              </p>
+            )}
+            {lotteryDetails.ticketPrice <= 0 && (
+              <p className={styles.publicRound}>
+                <span className={styles.circle}></span>
 
-              <span className={styles.publicRoundText}>Free</span>
-            </p>}
-            {lotteryDetails.status == 1 && <button className={styles.liveButton}>Ended</button>}
-            {lotteryDetails.endDate * 1000 > Date.now() && <button className={styles.liveButton}>Live</button>}
+                <span className={styles.publicRoundText}>Free</span>
+              </p>
+            )}
+            {lotteryDetails.status == 1 && (
+              <button className={styles.liveButton}>Ended</button>
+            )}
+            {lotteryDetails.endDate * 1000 > Date.now() && (
+              <button className={styles.liveButton}>Live</button>
+            )}
           </div>
         </div>
         <ToastContainer />

@@ -3,7 +3,12 @@ import styles from "./NftDescription.module.css";
 import AddDescriptionModal from "./AddDescriptionModal/AddDescriptionModal";
 import AddWhitelistModal from "./AddWhitelistModal/AddWhitelistModal";
 
-const NftDescription = ({ creator, description, setDescription }) => {
+const NftDescription = ({
+  lotteryAddress,
+  creator,
+  description,
+  setDescription,
+}) => {
   const [showList, setShowList] = useState(false);
   const [descriptionModal, setDescriptionModal] = useState(false);
   const [whitelistModal, setWhitelistModal] = useState(false);
@@ -67,6 +72,7 @@ const NftDescription = ({ creator, description, setDescription }) => {
         <AddWhitelistModal
           // Pass any necessary props to the AddWhitelistModal component
           // For example:
+          lotteryAddress={lotteryAddress}
           creator={creator}
           setModal={setWhitelistModal}
         />

@@ -3,9 +3,17 @@ import React, { useState } from "react";
 import { MdClose } from "react-icons/md";
 import styles from "./AddWhitelistModal.module.css";
 import { ethers } from "ethers"; // Import ethers library
-import { useAccount } from "wagmi";
+import { lotteryABI } from "../../../../constants/abis/abi";
+import { useAccount, useSigner } from "wagmi";
 
-const AddWhitelistModal = ({ contract, creator, setModal, onWhitelistAdded }) => {
+const AddWhitelistModal = ({
+  lotteryAddress,
+  creator,
+  setModal,
+  onWhitelistAdded,
+}) => {
+  const { data } = useSigner();
+
   const [addresses, setAddresses] = useState("");
   const { address } = useAccount(); // Assuming useAccount() gives the user's address
 
@@ -18,15 +26,19 @@ const AddWhitelistModal = ({ contract, creator, setModal, onWhitelistAdded }) =>
       return;
     }
 
-    const addressesArray = addresses.split(",").map((address) => address.trim());
+    const addressesArray = addresses
+      .split(",")
+      .map((address) => address.trim());
     const statusesArray = new Array(addressesArray.length).fill(true); // Assuming all addresses are to be whitelisted
 
     try {
-      // Call the function in the contract to whitelist the addresses
-      await contract.whitelistAddresses(addressesArray, statusesArray);
-
-      // Call the callback function to inform the parent component that whitelist has been updated
-      onWhitelistAdded();
+      let contract = new ethers.Contract(lotteryAddress, lotteryABI, data);
+      let tx = await contract.whitelistAddresses(addressesArray, statusesArray);
+      let reciept = await tx.wait();
+      if (reciept && reciept.status) {
+        // Call the callback function to inform the parent component that whitelist has been updated
+        onWhitelistAdded();
+      }
 
       // Close the modal
       setModal(false);
@@ -42,11 +54,16 @@ const AddWhitelistModal = ({ contract, creator, setModal, onWhitelistAdded }) =>
         <div className={styles.wrapper}>
           <div className={styles.header}>
             <h2 className={styles.title}>Whitelist wallet</h2>
-            <div className={styles.iconContainer} onClick={() => setModal(false)}>
+            <div
+              className={styles.iconContainer}
+              onClick={() => {
+                setModal(false);
+              }}
+            >
               <MdClose className={styles.icon} />
             </div>
           </div>
-          <form action="" className={styles.form}>
+          <div className={styles.form}>
             <div className={styles.inputAndIcon}>
               <textarea
                 className={`${styles.input} ${styles.textarea}`}
@@ -55,10 +72,15 @@ const AddWhitelistModal = ({ contract, creator, setModal, onWhitelistAdded }) =>
                 placeholder="Enter wallet addresses (comma-separated)"
               />
             </div>
-            <button className={styles.button} onClick={handleAddWhitelist}>
+            <button
+              className={styles.button}
+              onClick={() => {
+                handleAddWhitelist();
+              }}
+            >
               Submit
             </button>
-          </form>
+          </div>
         </div>
       </div>
       <div className={styles.overlay} onClick={() => setModal(false)}></div>
