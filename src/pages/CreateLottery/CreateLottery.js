@@ -20,478 +20,483 @@ const CreateLottery = () => {
 
   let provider = new ethers.providers.Web3Provider(window.ethereum);
   let factoryABI = [
+    {
+      "inputs": [
         {
-          inputs: [
-            {
-              internalType: "string",
-              name: "_name",
-              type: "string"
-            },
-            {
-              internalType: "uint256",
-              name: "_ticketPrice",
-              type: "uint256"
-            },
-            {
-              internalType: "uint256",
-              name: "_maxTickets",
-              type: "uint256"
-            },
-            {
-              internalType: "uint256",
-              name: "_endDate",
-              type: "uint256"
-            },
-            {
-              internalType: "address",
-              name: "_charity",
-              type: "address"
-            },
-            {
-              internalType: "address",
-              name: "_feeToken",
-              type: "address"
-            },
-            {
-              internalType: "uint256",
-              name: "_creatorFee",
-              type: "uint256"
-            },
-            {
-              internalType: "uint256",
-              name: "_charityFee",
-              type: "uint256"
-            },
-            {
-              internalType: "uint256",
-              name: "_maxTicketsPerWallet",
-              type: "uint256"
-            },
-            {
-              internalType: "uint256[]",
-              name: "_prizeDistribution",
-              type: "uint256[]"
-            }
-          ],
-          name: "createLottery",
-          outputs: [],
-          stateMutability: "payable",
-          type: "function"
+          "internalType": "string",
+          "name": "_name",
+          "type": "string"
         },
         {
-          anonymous: false,
-          inputs: [
-            {
-              indexed: true,
-              internalType: "address",
-              name: "creator",
-              type: "address"
-            },
-            {
-              indexed: true,
-              internalType: "address",
-              name: "lottery",
-              type: "address"
-            },
-            {
-              indexed: false,
-              internalType: "uint256",
-              name: "ticketPrice",
-              type: "uint256"
-            },
-            {
-              indexed: false,
-              internalType: "uint256",
-              name: "maxTickets",
-              type: "uint256"
-            },
-            {
-              indexed: false,
-              internalType: "uint256",
-              name: "endDate",
-              type: "uint256"
-            },
-            {
-              indexed: false,
-              internalType: "address",
-              name: "charity",
-              type: "address"
-            },
-            {
-              indexed: false,
-              internalType: "address",
-              name: "feeToken",
-              type: "address"
-            },
-            {
-              indexed: false,
-              internalType: "uint256",
-              name: "creatorFee",
-              type: "uint256"
-            },
-            {
-              indexed: false,
-              internalType: "uint256",
-              name: "charityFee",
-              type: "uint256"
-            },
-            {
-              indexed: false,
-              internalType: "uint256",
-              name: "startTime",
-              type: "uint256"
-            },
-            {
-              indexed: false,
-              internalType: "uint256",
-              name: "maxTicketsPerWallet",
-              type: "uint256"
-            },
-            {
-              indexed: false,
-              internalType: "uint256",
-              name: "maxWinners",
-              type: "uint256"
-            }
-          ],
-          name: "LotteryCreated",
-          type: "event"
+          "internalType": "uint256",
+          "name": "_ticketPrice",
+          "type": "uint256"
         },
         {
-          anonymous: false,
-          inputs: [
-            {
-              indexed: true,
-              internalType: "address",
-              name: "previousOwner",
-              type: "address"
-            },
-            {
-              indexed: true,
-              internalType: "address",
-              name: "newOwner",
-              type: "address"
-            }
-          ],
-          name: "OwnershipTransferred",
-          type: "event"
+          "internalType": "uint256",
+          "name": "_maxTickets",
+          "type": "uint256"
         },
         {
-          inputs: [],
-          name: "charity",
-          outputs: [
-            {
-              internalType: "address",
-              name: "",
-              type: "address"
-            }
-          ],
-          stateMutability: "view",
-          type: "function"
+          "internalType": "uint256",
+          "name": "_endDate",
+          "type": "uint256"
         },
         {
-          inputs: [],
-          name: "charityFee",
-          outputs: [
-            {
-              internalType: "uint256",
-              name: "",
-              type: "uint256"
-            }
-          ],
-          stateMutability: "view",
-          type: "function"
+          "internalType": "address",
+          "name": "_charity",
+          "type": "address"
         },
         {
-          inputs: [],
-          name: "creationFee",
-          outputs: [
-            {
-              internalType: "uint256",
-              name: "",
-              type: "uint256"
-            }
-          ],
-          stateMutability: "view",
-          type: "function"
+          "internalType": "address",
+          "name": "_feeToken",
+          "type": "address"
         },
         {
-          inputs: [],
-          name: "creatorFee",
-          outputs: [
-            {
-              internalType: "uint256",
-              name: "",
-              type: "uint256"
-            }
-          ],
-          stateMutability: "view",
-          type: "function"
+          "internalType": "uint256",
+          "name": "_creatorFee",
+          "type": "uint256"
         },
         {
-          inputs: [],
-          name: "endDate",
-          outputs: [
-            {
-              internalType: "uint256",
-              name: "",
-              type: "uint256"
-            }
-          ],
-          stateMutability: "view",
-          type: "function"
+          "internalType": "uint256",
+          "name": "_charityFee",
+          "type": "uint256"
         },
         {
-          inputs: [],
-          name: "feeToken",
-          outputs: [
-            {
-              internalType: "address",
-              name: "",
-              type: "address"
-            }
-          ],
-          stateMutability: "view",
-          type: "function"
+          "internalType": "uint256",
+          "name": "_maxTicketsPerWallet",
+          "type": "uint256"
         },
         {
-          inputs: [
-            {
-              internalType: "address",
-              name: "",
-              type: "address"
-            }
-          ],
-          name: "isWhitelisted",
-          outputs: [
-            {
-              internalType: "bool",
-              name: "",
-              type: "bool"
-            }
-          ],
-          stateMutability: "view",
-          type: "function"
-        },
-        {
-          inputs: [
-            {
-              internalType: "uint256",
-              name: "",
-              type: "uint256"
-            }
-          ],
-          name: "lotteries",
-          outputs: [
-            {
-              internalType: "contract Lottery",
-              name: "",
-              type: "address"
-            }
-          ],
-          stateMutability: "view",
-          type: "function"
-        },
-        {
-          inputs: [],
-          name: "maxTickets",
-          outputs: [
-            {
-              internalType: "uint256",
-              name: "",
-              type: "uint256"
-            }
-          ],
-          stateMutability: "view",
-          type: "function"
-        },
-        {
-          inputs: [],
-          name: "maxTicketsPerWallet",
-          outputs: [
-            {
-              internalType: "uint256",
-              name: "",
-              type: "uint256"
-            }
-          ],
-          stateMutability: "view",
-          type: "function"
-        },
-        {
-          inputs: [],
-          name: "maxWinners",
-          outputs: [
-            {
-              internalType: "uint256",
-              name: "",
-              type: "uint256"
-            }
-          ],
-          stateMutability: "view",
-          type: "function"
-        },
-        {
-          inputs: [
-            {
-              internalType: "uint256",
-              name: "_creationFee",
-              type: "uint256"
-            }
-          ],
-          name: "modifyCreationFee",
-          outputs: [],
-          stateMutability: "nonpayable",
-          type: "function"
-        },
-        {
-          inputs: [],
-          name: "name",
-          outputs: [
-            {
-              internalType: "string",
-              name: "",
-              type: "string"
-            }
-          ],
-          stateMutability: "view",
-          type: "function"
-        },
-        {
-          inputs: [],
-          name: "owner",
-          outputs: [
-            {
-              internalType: "address",
-              name: "",
-              type: "address"
-            }
-          ],
-          stateMutability: "view",
-          type: "function"
-        },
-        {
-          inputs: [
-            {
-              internalType: "uint256",
-              name: "",
-              type: "uint256"
-            }
-          ],
-          name: "prizeDistribution",
-          outputs: [
-            {
-              internalType: "uint256",
-              name: "",
-              type: "uint256"
-            }
-          ],
-          stateMutability: "view",
-          type: "function"
-        },
-        {
-          inputs: [],
-          name: "renounceOwnership",
-          outputs: [],
-          stateMutability: "nonpayable",
-          type: "function"
-        },
-        {
-          inputs: [],
-          name: "startTime",
-          outputs: [
-            {
-              internalType: "uint256",
-              name: "",
-              type: "uint256"
-            }
-          ],
-          stateMutability: "view",
-          type: "function"
-        },
-        {
-          inputs: [],
-          name: "symbol",
-          outputs: [
-            {
-              internalType: "string",
-              name: "",
-              type: "string"
-            }
-          ],
-          stateMutability: "view",
-          type: "function"
-        },
-        {
-          inputs: [],
-          name: "ticketPrice",
-          outputs: [
-            {
-              internalType: "uint256",
-              name: "",
-              type: "uint256"
-            }
-          ],
-          stateMutability: "view",
-          type: "function"
-        },
-        {
-          inputs: [
-            {
-              internalType: "address",
-              name: "newOwner",
-              type: "address"
-            }
-          ],
-          name: "transferOwnership",
-          outputs: [],
-          stateMutability: "nonpayable",
-          type: "function"
-        },
-        {
-          inputs: [
-            {
-              internalType: "address",
-              name: "_address",
-              type: "address"
-            },
-            {
-              internalType: "bool",
-              name: "_status",
-              type: "bool"
-            }
-          ],
-          name: "whitelistAddress",
-          outputs: [],
-          stateMutability: "nonpayable",
-          type: "function"
-        },
-        {
-          inputs: [
-            {
-              internalType: "address[]",
-              name: "_addresses",
-              type: "address[]"
-            },
-            {
-              internalType: "bool[]",
-              name: "_statuses",
-              type: "bool[]"
-            }
-          ],
-          name: "whitelistAddresses",
-          outputs: [],
-          stateMutability: "nonpayable",
-          type: "function"
-        },
-        {
-          inputs: [],
-          name: "withdrawEther",
-          outputs: [],
-          stateMutability: "nonpayable",
-          type: "function"
+          "internalType": "uint256[]",
+          "name": "_prizeDistribution",
+          "type": "uint256[]"
         }
-      ];
+      ],
+      "name": "createLottery",
+      "outputs": [],
+      "stateMutability": "payable",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "uint256",
+          "name": "_creationFee",
+          "type": "uint256"
+        }
+      ],
+      "name": "modifyCreationFee",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "stateMutability": "nonpayable",
+      "type": "constructor"
+    },
+    {
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": true,
+          "internalType": "address",
+          "name": "creator",
+          "type": "address"
+        },
+        {
+          "indexed": true,
+          "internalType": "address",
+          "name": "lottery",
+          "type": "address"
+        },
+        {
+          "indexed": false,
+          "internalType": "uint256",
+          "name": "ticketPrice",
+          "type": "uint256"
+        },
+        {
+          "indexed": false,
+          "internalType": "uint256",
+          "name": "maxTickets",
+          "type": "uint256"
+        },
+        {
+          "indexed": false,
+          "internalType": "uint256",
+          "name": "endDate",
+          "type": "uint256"
+        },
+        {
+          "indexed": false,
+          "internalType": "address",
+          "name": "charity",
+          "type": "address"
+        },
+        {
+          "indexed": false,
+          "internalType": "address",
+          "name": "feeToken",
+          "type": "address"
+        },
+        {
+          "indexed": false,
+          "internalType": "uint256",
+          "name": "creatorFee",
+          "type": "uint256"
+        },
+        {
+          "indexed": false,
+          "internalType": "uint256",
+          "name": "charityFee",
+          "type": "uint256"
+        },
+        {
+          "indexed": false,
+          "internalType": "uint256",
+          "name": "startTime",
+          "type": "uint256"
+        },
+        {
+          "indexed": false,
+          "internalType": "uint256",
+          "name": "maxTicketsPerWallet",
+          "type": "uint256"
+        },
+        {
+          "indexed": false,
+          "internalType": "uint256",
+          "name": "maxWinners",
+          "type": "uint256"
+        }
+      ],
+      "name": "LotteryCreated",
+      "type": "event"
+    },
+    {
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": true,
+          "internalType": "address",
+          "name": "previousOwner",
+          "type": "address"
+        },
+        {
+          "indexed": true,
+          "internalType": "address",
+          "name": "newOwner",
+          "type": "address"
+        }
+      ],
+      "name": "OwnershipTransferred",
+      "type": "event"
+    },
+    {
+      "inputs": [],
+      "name": "renounceOwnership",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "address",
+          "name": "newOwner",
+          "type": "address"
+        }
+      ],
+      "name": "transferOwnership",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "address",
+          "name": "_address",
+          "type": "address"
+        },
+        {
+          "internalType": "bool",
+          "name": "_status",
+          "type": "bool"
+        }
+      ],
+      "name": "whitelistAddress",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "address[]",
+          "name": "_addresses",
+          "type": "address[]"
+        },
+        {
+          "internalType": "bool[]",
+          "name": "_statuses",
+          "type": "bool[]"
+        }
+      ],
+      "name": "whitelistAddresses",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "withdrawEther",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "charity",
+      "outputs": [
+        {
+          "internalType": "address",
+          "name": "",
+          "type": "address"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "charityFee",
+      "outputs": [
+        {
+          "internalType": "uint256",
+          "name": "",
+          "type": "uint256"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "creationFee",
+      "outputs": [
+        {
+          "internalType": "uint256",
+          "name": "",
+          "type": "uint256"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "creatorFee",
+      "outputs": [
+        {
+          "internalType": "uint256",
+          "name": "",
+          "type": "uint256"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "endDate",
+      "outputs": [
+        {
+          "internalType": "uint256",
+          "name": "",
+          "type": "uint256"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "feeToken",
+      "outputs": [
+        {
+          "internalType": "address",
+          "name": "",
+          "type": "address"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "address",
+          "name": "",
+          "type": "address"
+        }
+      ],
+      "name": "isWhitelisted",
+      "outputs": [
+        {
+          "internalType": "bool",
+          "name": "",
+          "type": "bool"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "uint256",
+          "name": "",
+          "type": "uint256"
+        }
+      ],
+      "name": "lotteries",
+      "outputs": [
+        {
+          "internalType": "contract Lottery",
+          "name": "",
+          "type": "address"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "maxTickets",
+      "outputs": [
+        {
+          "internalType": "uint256",
+          "name": "",
+          "type": "uint256"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "maxTicketsPerWallet",
+      "outputs": [
+        {
+          "internalType": "uint256",
+          "name": "",
+          "type": "uint256"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "maxWinners",
+      "outputs": [
+        {
+          "internalType": "uint256",
+          "name": "",
+          "type": "uint256"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "name",
+      "outputs": [
+        {
+          "internalType": "string",
+          "name": "",
+          "type": "string"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "owner",
+      "outputs": [
+        {
+          "internalType": "address",
+          "name": "",
+          "type": "address"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "uint256",
+          "name": "",
+          "type": "uint256"
+        }
+      ],
+      "name": "prizeDistribution",
+      "outputs": [
+        {
+          "internalType": "uint256",
+          "name": "",
+          "type": "uint256"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "startTime",
+      "outputs": [
+        {
+          "internalType": "uint256",
+          "name": "",
+          "type": "uint256"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "symbol",
+      "outputs": [
+        {
+          "internalType": "string",
+          "name": "",
+          "type": "string"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "ticketPrice",
+      "outputs": [
+        {
+          "internalType": "uint256",
+          "name": "",
+          "type": "uint256"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    }
+  ]
       
 
   const updateImage = async (add) => {
@@ -512,7 +517,7 @@ const CreateLottery = () => {
 
 
 
-  let factoryContract = "0x5CC75Fe749A775B1762fa777728D16c1aF4eb887";
+  let factoryContract = "0xBaEe18394020eCBEFEf07afEfA6776fC8A0eACa3";
   const { address } = useAccount();
   const { open } = useWeb3Modal();
 
