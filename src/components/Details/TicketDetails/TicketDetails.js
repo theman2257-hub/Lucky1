@@ -57,7 +57,7 @@ const TicketDetails = ({
     tokenSymbol
       }
     }`;
-    let url = "https://api.thegraph.com/subgraphs/name/sallystix/test-lottery";
+    let url = "https://api.thegraph.com/subgraphs/name/theman2257-hub/lucky1final";
     const response = await axios.post(url, { query });
     const data = response.data;
     // let lotteryData = data.data.lotteries.map((el) => {
