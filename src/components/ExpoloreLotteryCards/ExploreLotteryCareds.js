@@ -274,7 +274,7 @@ const ExploreLotteryCareds = () => {
     let url = "https://api.thegraph.com/subgraphs/name/sallystix/test-lottery";
     const { data } = await axios.post(url, { query });
     console.log(data.data.lotteries);
-    let rpc = "https://rpc.solidhash.io/public/bsc";
+    let rpc = "https://bsc-dataseed1.binance.org/";
     let provider = new ethers.providers.JsonRpcProvider(rpc);
 
     const getSymbol = async (address) => {
@@ -358,7 +358,7 @@ const ExploreLotteryCareds = () => {
       <div className="container">
         <div className={styles.exploreLottery}>
           <div className={styles.headingContainer}>
-          <h2 className={styles.title}>Explore Existing lotteries</h2>
+            <h2 className={styles.title}>Explore Existing lotteries</h2>
             <p className={styles.text}>
               In the section, you can quickly filter and select lotteries based
               on the their details
@@ -369,10 +369,11 @@ const ExploreLotteryCareds = () => {
             <div className={styles.allCategory}>
               {allCategory.map((el, i) => (
                 <button
-                  className={`${styles.category} ${category.toLocaleLowerCase() ===
-                    allCategory[i].toLocaleLowerCase() &&
+                  className={`${styles.category} ${
+                    category.toLocaleLowerCase() ===
+                      allCategory[i].toLocaleLowerCase() &&
                     styles.activeCategory
-                    }`}
+                  }`}
                   key={i}
                   onClick={() => setCategory(el)}
                 >
