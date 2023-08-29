@@ -20,13 +20,13 @@ const Details = () => {
   const [img, setImg] = useState("");
   const [description, setDescription] = useState("");
   const [owner, setOwner] = useState("");
-
+  const [lotteryAddress, setLotteryAddress] = useState("");
 
   const fetchDescription = async () => {
     const { data } = await axios.get(`https://api.lucky1.io/getDesc/${id}`);
     console.log("data", data);
     setDescription(data.description);
-  }
+  };
 
   const fetchHash = async () => {
     const { data } = await axios.get(`https://api.lucky1.io/getHash/${id}`);
@@ -36,17 +36,18 @@ const Details = () => {
   React.useEffect(() => {
     fetchDescription();
     fetchHash();
-  }, [])
+  }, []);
 
-  console.log("owner", owner)
-  console.log("img", img)
+  console.log("owner", owner);
+  console.log("img", img);
   return (
     <>
       <div className={styles.detailsContainer}>
         <div className="container">
           {" "}
           <div className={styles.details}>
-            {img != "https://assets-global.website-files.com/637359c81e22b715cec245ad/63f5feb3302f223a19af4dca_Midnight%20society.png?2322232" ? (
+            {img !=
+            "https://assets-global.website-files.com/637359c81e22b715cec245ad/63f5feb3302f223a19af4dca_Midnight%20society.png?2322232" ? (
               <img src={img} alt="#" className={styles.image} />
             ) : (
               <ImageUpload owner={owner} />
@@ -59,6 +60,7 @@ const Details = () => {
               setDescription={setDescription}
               setCompetitionEndedModal={setCompetitionEndedModal}
               setImg={setImg}
+              setAddress={setLotteryAddress}
             />
           </div>
           <div
@@ -70,6 +72,7 @@ const Details = () => {
               creator={owner}
               description={description}
               setDescription={setDescription}
+              lotteryAddress={lotteryAddress}
             />
           </div>
         </div>
