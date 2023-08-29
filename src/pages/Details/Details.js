@@ -16,7 +16,7 @@ const Details = () => {
   const [buyNowModal, setBuyNowModal] = useState(false);
   const [competitionEndedModal, setCompetitionEndedModal] = useState(false);
   const [hash, setHash] = useState("");
-  const [numberOfWinners, setNumberOfWinners] = useState(1);
+  const [numberOfWinners, setNumberOfWinners] = useState("");
   const [img, setImg] = useState("");
   const [description, setDescription] = useState("");
   const [owner, setOwner] = useState("");

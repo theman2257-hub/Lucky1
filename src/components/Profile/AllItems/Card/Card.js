@@ -35,7 +35,7 @@ const Card = ({ name, ticketPrice, like, image, lotteryAddress, tokenSymbol, max
         <div className={styles.priceContainer}>
           <img src={eth} alt="#" className={styles.icon} />
           <span className={styles.from}></span>
-          <span className={styles.price}>{Number(ethers.utils.formatEther(ticketPrice)) * maxTickets} {tokenSymbol}</span>
+          <span className={styles.price}>{Number (ethers.utils.formatEther(ticketPrice)) * maxTickets} {tokenSymbol}</span>
         </div>
         <p className={styles.like}>
           {" "}

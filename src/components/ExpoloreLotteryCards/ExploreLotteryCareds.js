@@ -259,17 +259,19 @@ const ExploreLotteryCareds = () => {
         symbol
         ticketPrice
         maxTickets
-        maxWinners
         endDate
         charity
         feeToken
         creatorFee
         charityFee
+        maxTicketsPerWallet
+        maxWinners
+        prizeDistribution
         startTime
         tokenSymbol
       }
     }`;
-    let url = "https://api.thegraph.com/subgraphs/name/civa/lottery_lucky1";
+    let url = "https://api.thegraph.com/subgraphs/name/sallystix/test-lottery";
     const { data } = await axios.post(url, { query });
     console.log(data.data.lotteries);
     let rpc = "https://rpc.solidhash.io/public/bsc";
@@ -301,6 +303,8 @@ const ExploreLotteryCareds = () => {
         feeToken: el.feeToken,
         creatorFee: el.creatorFee,
         charityFee: el.charityFee,
+        prizeDistribution: el.prizeDistribution,
+        maxTicketsPerWallet: el.maxTicketsPerWallet,
         startTime: el.startTime,
         tokenSymbol: el.tokenSymbol,
       };

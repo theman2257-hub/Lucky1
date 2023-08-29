@@ -36,17 +36,20 @@ const TicketDetails = ({ setOwner, setCompetitionEndedModal, setImg, setDescript
     symbol
     ticketPrice
     maxTickets
-    maxWinners
+    
 		endDate
 		charity
 		feeToken
 		creatorFee
     charityFee
-		startTime
+    maxTicketsPerWallet
+    maxWinners
+    prizeDistribution
+    startTime
     tokenSymbol
       }
     }`
-    let url = "https://api.thegraph.com/subgraphs/name/civa/lottery_lucky1";
+    let url = "https://api.thegraph.com/subgraphs/name/sallystix/test-lottery";
     const response = await axios.post(url, { query });
     const data = response.data;
     // let lotteryData = data.data.lotteries.map((el) => {
@@ -64,9 +67,12 @@ const TicketDetails = ({ setOwner, setCompetitionEndedModal, setImg, setDescript
     //     feeToken: el.feeToken,
     //     creatorFee: el.creatorFee,
     //     charityFee: el.charityFee,
+    //     prizeDistribution: el.prizeDistribution,
+    //     maxTicketsPerWallet: el.maxTicketsPerWallet,
     //     startTime: el.startTime,
+    //     tokenSymbol: el.tokenSymbol,
     //   };
-    // })
+
     let lotteryData = data.data.lotteries[0]
     console.log(data.data.lotteries[0])
     setLotteryDetails(data.data.lotteries[0])

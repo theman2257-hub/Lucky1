@@ -82,7 +82,9 @@
 .buttonContainer {
   display: flex;
   justify-content: center;
+  gap: 10px; /* Add the desired spacing between the buttons */
 }
+
 .button {
   font-family: var(--fontFamily);
   font-style: normal;

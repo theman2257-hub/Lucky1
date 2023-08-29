@@ -1,21 +1,44 @@
 import React, { useState } from "react";
 import styles from "./NftDescription.module.css";
 import AddDescriptionModal from "./AddDescriptionModal/AddDescriptionModal";
+import AddWhitelistModal from "./AddWhitelistModal/AddWhitelistModal";
 
 const NftDescription = ({ creator, description, setDescription }) => {
   const [showList, setShowList] = useState(false);
-  const [modal, setModal] = useState(false);
+  const [descriptionModal, setDescriptionModal] = useState(false);
+  const [whitelistModal, setWhitelistModal] = useState(false);
   const data = [];
+
+  // Function to handle the "Whitelist wallet" button click
+  const handleAddWhitelist = () => {
+    // Show the AddWhitelistModal when the "Whitelist wallet" button is clicked
+    setWhitelistModal(true);
+  };
+
   return (
     <>
       <div className={styles.wrapper}>
-        <h2 className={styles.title}>Lottery Description </h2>
+        <h2 className={styles.title}>Lottery Description</h2>
         <p className={styles.text}>{description}</p>
 
         <div className={styles.buttonContainer}>
-          {description.length < 1 && <button onClick={() => setModal(true)} className={styles.button}>
-            Add Descripton
-          </button>}
+          {/* Add Description Button */}
+          {description.length < 1 && (
+            <button
+              onClick={() => setDescriptionModal(true)}
+              className={styles.button}
+            >
+              Add Description
+            </button>
+          )}
+
+          {/* Add some space between the two buttons */}
+          <div className={styles.buttonSpace} />
+
+          {/* Whitelist wallet Button */}
+          <button onClick={handleAddWhitelist} className={styles.button}>
+            Whitelist wallet
+          </button>
         </div>
         <div
           className={[
@@ -32,12 +55,20 @@ const NftDescription = ({ creator, description, setDescription }) => {
           ))}
         </div>
       </div>
-      {modal && (
+      {descriptionModal && (
         <AddDescriptionModal
           creator={creator}
-          setModal={setModal}
+          setModal={setDescriptionModal}
           description={description}
           setDescription={setDescription}
+        />
+      )}
+      {whitelistModal && (
+        <AddWhitelistModal
+          // Pass any necessary props to the AddWhitelistModal component
+          // For example:
+          creator={creator}
+          setModal={setWhitelistModal}
         />
       )}
     </>

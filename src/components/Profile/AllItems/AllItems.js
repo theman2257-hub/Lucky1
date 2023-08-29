@@ -38,21 +38,24 @@ const AllItems = ({ setCreatedCount, participatedItems, setCreatedCountparticipa
       lotteries(where: {creator: "${id}"}) {
         id
         creator
-    lotteryAddress
-    name
-    symbol
-    ticketPrice
-    maxTickets
-    maxWinners
-		endDate
-		charity
-		feeToken
-		creatorFee
-    charityFee
-		startTime
+      lotteryAddress
+      name
+      symbol
+      ticketPrice
+      maxTickets  
+      endDate
+      charity
+      feeToken
+      creatorFee
+      charityFee
+      maxTicketsPerWallet
+      maxWinners
+      prizeDistribution
+      startTime
+      tokenSymbol
       }
     }`
-    let url = "https://api.thegraph.com/subgraphs/name/civa/lottery_lucky1";
+    let url = "https://api.thegraph.com/subgraphs/name/theman2257-hub/lucky1final";
     try {
       const { data } = await axios.post(url, { query });
       let lot = (data.data.lotteries)
