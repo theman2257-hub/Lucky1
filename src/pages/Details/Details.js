@@ -27,8 +27,15 @@ const Details = () => {
     console.log("data", data);
     setDescription(data.description);
   }
+
+  const fetchHash = async () => {
+    const { data } = await axios.get(`https://api.lucky1.io/getHash/${id}`);
+    console.log("data", data);
+    setHash(data.hash);
+  };
   React.useEffect(() => {
     fetchDescription();
+    fetchHash();
   }, [])
 
   console.log("owner", owner)
