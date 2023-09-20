@@ -24,10 +24,9 @@ const AllTickets = () => {
   // categoryWiseFilter
   const [category, setCategory] = useState("All Tickets");
   const allCategory = ["all participants"];
-  let url = "https://api.thegraph.com/subgraphs/name/theman2257-hub/lucky1final";
+  let url = "https://api.thegraph.com/subgraphs/name/sallystix/test-lottery";
   const [allTicket, setAllTicket] = useState([]);
   const getTickets = async () => {
-
     let query = `
      {
       ticketPurchaseds(where : { lotteryAddress : "${id}"}, orderBy: blockNumber, orderDirection: desc) {
@@ -36,14 +35,13 @@ const AllTickets = () => {
 		    blockNumber
       }
     }
-    `
+    `;
     try {
       const { data } = await axios.post(url, { query });
       console.log(data);
       setAllTicket(data.data.ticketPurchaseds);
-    } catch (error) {
-    }
-  }
+    } catch (error) {}
+  };
 
   useEffect(() => {
     getTickets();
@@ -78,9 +76,10 @@ const AllTickets = () => {
         <div className={styles.allCategory}>
           {allCategory.map((el, i) => (
             <button
-              className={`${styles.category} ${category.toLocaleLowerCase() ===
-                allCategory[i].toLocaleLowerCase() && styles.activeCategory
-                }`}
+              className={`${styles.category} ${
+                category.toLocaleLowerCase() ===
+                  allCategory[i].toLocaleLowerCase() && styles.activeCategory
+              }`}
               key={i}
               onClick={() => setCategory(el)}
             >
@@ -149,11 +148,11 @@ const AllTickets = () => {
       <div className={styles.allTickets}>
         {allTicket.map((el, i) => (
           <div key={i} className={styles.ticketInfo}>
-            <p className={styles.ticketText}>{el.buyer.slice(0, 6)}...{el.buyer.slice(-4)}</p>
             <p className={styles.ticketText}>
-              {el.amount} Tickets
+              {el.buyer.slice(0, 6)}...{el.buyer.slice(-4)}
             </p>
-            <p className={styles.ticketText}>{(el.blockNumber)}</p>
+            <p className={styles.ticketText}>{el.amount} Tickets</p>
+            <p className={styles.ticketText}>{el.blockNumber}</p>
           </div>
         ))}
       </div>

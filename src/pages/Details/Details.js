@@ -12,7 +12,7 @@ import CompetitionEnded from "./Modal/CompetitionEnded";
 import ImageUpload from "../../components/Details/DropImage/ImageUpload";
 import axios from "axios";
 const Details = () => {
-  const { id } = useParams();
+  const { id, affiliateAddress } = useParams();
   const [buyNowModal, setBuyNowModal] = useState(false);
   const [competitionEndedModal, setCompetitionEndedModal] = useState(false);
   const [hash, setHash] = useState("");
@@ -61,6 +61,9 @@ const Details = () => {
               setCompetitionEndedModal={setCompetitionEndedModal}
               setImg={setImg}
               setAddress={setLotteryAddress}
+              affiliateAddress={
+                affiliateAddress || "0x0000000000000000000000000000000000000000"
+              }
             />
           </div>
           <div

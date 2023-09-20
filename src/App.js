@@ -16,7 +16,7 @@ import { ToastContainer, toast } from "react-toastify";
 import Profile from "./pages/Profile/Profile";
 import Privacy from "./components/Privacy/Privacy";
 import Contact from "./components/Contact/Contact";
-const chains = [bscTestnet];
+const chains = [bsc];
 const projectId = "e4600bbdb356ec1f0d2dd8930ce3e74c";
 
 const { provider } = configureChains(chains, [w3mProvider({ projectId })]);
@@ -40,7 +40,7 @@ function App() {
             path="/createLottery/:affiliateAddress?"
             element={<CreateLottery />}
           />
-          <Route path="/:id" element={<Details />}></Route>
+          <Route path="/:id/:affiliateAddress?" element={<Details />}></Route>
           <Route path="/profile/:id" element={<Profile />}></Route>
           <Route path="/privacy" element={<Privacy />}>
             {" "}

@@ -25,7 +25,11 @@ const CreateLottery = () => {
 
   let provider = new ethers.providers.Web3Provider(window.ethereum);
   let factoryABI = [
-    { inputs: [], stateMutability: "nonpayable", type: "constructor" },
+    {
+      inputs: [],
+      stateMutability: "nonpayable",
+      type: "constructor",
+    },
     {
       anonymous: false,
       inputs: [
@@ -127,49 +131,109 @@ const CreateLottery = () => {
     {
       inputs: [],
       name: "affiliateFee",
-      outputs: [{ internalType: "uint256", name: "", type: "uint256" }],
+      outputs: [
+        {
+          internalType: "uint256",
+          name: "",
+          type: "uint256",
+        },
+      ],
       stateMutability: "view",
       type: "function",
     },
     {
       inputs: [],
       name: "affiliateFeeOnCreation",
-      outputs: [{ internalType: "uint256", name: "", type: "uint256" }],
+      outputs: [
+        {
+          internalType: "uint256",
+          name: "",
+          type: "uint256",
+        },
+      ],
       stateMutability: "view",
       type: "function",
     },
     {
       inputs: [],
       name: "charity",
-      outputs: [{ internalType: "address", name: "", type: "address" }],
+      outputs: [
+        {
+          internalType: "address",
+          name: "",
+          type: "address",
+        },
+      ],
       stateMutability: "view",
       type: "function",
     },
     {
       inputs: [],
       name: "charityFee",
-      outputs: [{ internalType: "uint256", name: "", type: "uint256" }],
+      outputs: [
+        {
+          internalType: "uint256",
+          name: "",
+          type: "uint256",
+        },
+      ],
       stateMutability: "view",
       type: "function",
     },
     {
       inputs: [
-        { internalType: "string", name: "_name", type: "string" },
-        { internalType: "uint256", name: "_ticketPrice", type: "uint256" },
-        { internalType: "uint256", name: "_maxTickets", type: "uint256" },
-        { internalType: "uint256", name: "_endDate", type: "uint256" },
+        {
+          internalType: "string",
+          name: "_name",
+          type: "string",
+        },
+        {
+          internalType: "uint256",
+          name: "_ticketPrice",
+          type: "uint256",
+        },
+        {
+          internalType: "uint256",
+          name: "_maxTickets",
+          type: "uint256",
+        },
+        {
+          internalType: "uint256",
+          name: "_endDate",
+          type: "uint256",
+        },
         {
           components: [
-            { internalType: "address", name: "feeToken", type: "address" },
-            { internalType: "address", name: "charity", type: "address" },
+            {
+              internalType: "address",
+              name: "feeToken",
+              type: "address",
+            },
+            {
+              internalType: "address",
+              name: "charity",
+              type: "address",
+            },
             {
               internalType: "address payable",
               name: "affiliateWallet",
               type: "address",
             },
-            { internalType: "uint256", name: "creatorFee", type: "uint256" },
-            { internalType: "uint256", name: "charityFee", type: "uint256" },
-            { internalType: "uint256", name: "affiliateFee", type: "uint256" },
+            {
+              internalType: "uint256",
+              name: "creatorFee",
+              type: "uint256",
+            },
+            {
+              internalType: "uint256",
+              name: "charityFee",
+              type: "uint256",
+            },
+            {
+              internalType: "uint256",
+              name: "affiliateFee",
+              type: "uint256",
+            },
           ],
           internalType: "struct LotteryFactory.LotteryFee",
           name: "_feeParams",
@@ -194,43 +258,89 @@ const CreateLottery = () => {
     {
       inputs: [],
       name: "creationFee",
-      outputs: [{ internalType: "uint256", name: "", type: "uint256" }],
+      outputs: [
+        {
+          internalType: "uint256",
+          name: "",
+          type: "uint256",
+        },
+      ],
       stateMutability: "view",
       type: "function",
     },
     {
       inputs: [],
       name: "creatorFee",
-      outputs: [{ internalType: "uint256", name: "", type: "uint256" }],
+      outputs: [
+        {
+          internalType: "uint256",
+          name: "",
+          type: "uint256",
+        },
+      ],
       stateMutability: "view",
       type: "function",
     },
     {
       inputs: [],
       name: "endDate",
-      outputs: [{ internalType: "uint256", name: "", type: "uint256" }],
+      outputs: [
+        {
+          internalType: "uint256",
+          name: "",
+          type: "uint256",
+        },
+      ],
       stateMutability: "view",
       type: "function",
     },
     {
       inputs: [],
       name: "feeToken",
-      outputs: [{ internalType: "address", name: "", type: "address" }],
+      outputs: [
+        {
+          internalType: "address",
+          name: "",
+          type: "address",
+        },
+      ],
       stateMutability: "view",
       type: "function",
     },
     {
-      inputs: [{ internalType: "address", name: "", type: "address" }],
+      inputs: [
+        {
+          internalType: "address",
+          name: "",
+          type: "address",
+        },
+      ],
       name: "isWhitelisted",
-      outputs: [{ internalType: "bool", name: "", type: "bool" }],
+      outputs: [
+        {
+          internalType: "bool",
+          name: "",
+          type: "bool",
+        },
+      ],
       stateMutability: "view",
       type: "function",
     },
     {
-      inputs: [{ internalType: "uint256", name: "", type: "uint256" }],
+      inputs: [
+        {
+          internalType: "uint256",
+          name: "",
+          type: "uint256",
+        },
+      ],
       name: "lotteries",
       outputs: [
-        { internalType: "contract Lottery", name: "", type: "address" },
+        {
+          internalType: "contract Lottery",
+          name: "",
+          type: "address",
+        },
       ],
       stateMutability: "view",
       type: "function",
@@ -238,42 +348,84 @@ const CreateLottery = () => {
     {
       inputs: [],
       name: "maxTickets",
-      outputs: [{ internalType: "uint256", name: "", type: "uint256" }],
+      outputs: [
+        {
+          internalType: "uint256",
+          name: "",
+          type: "uint256",
+        },
+      ],
       stateMutability: "view",
       type: "function",
     },
     {
       inputs: [],
       name: "maxTicketsPerWallet",
-      outputs: [{ internalType: "uint256", name: "", type: "uint256" }],
+      outputs: [
+        {
+          internalType: "uint256",
+          name: "",
+          type: "uint256",
+        },
+      ],
       stateMutability: "view",
       type: "function",
     },
     {
       inputs: [],
       name: "maxWinners",
-      outputs: [{ internalType: "uint256", name: "", type: "uint256" }],
+      outputs: [
+        {
+          internalType: "uint256",
+          name: "",
+          type: "uint256",
+        },
+      ],
       stateMutability: "view",
       type: "function",
     },
     {
       inputs: [],
       name: "name",
-      outputs: [{ internalType: "string", name: "", type: "string" }],
+      outputs: [
+        {
+          internalType: "string",
+          name: "",
+          type: "string",
+        },
+      ],
       stateMutability: "view",
       type: "function",
     },
     {
       inputs: [],
       name: "owner",
-      outputs: [{ internalType: "address", name: "", type: "address" }],
+      outputs: [
+        {
+          internalType: "address",
+          name: "",
+          type: "address",
+        },
+      ],
       stateMutability: "view",
       type: "function",
     },
     {
-      inputs: [{ internalType: "uint256", name: "", type: "uint256" }],
+      inputs: [
+        {
+          internalType: "uint256",
+          name: "",
+          type: "uint256",
+        },
+      ],
       name: "prizeDistribution",
-      outputs: [{ internalType: "uint256", name: "", type: "uint256" }],
+      outputs: [
+        {
+          internalType: "uint256",
+          name: "",
+          type: "uint256",
+        },
+      ],
       stateMutability: "view",
       type: "function",
     },
@@ -286,7 +438,11 @@ const CreateLottery = () => {
     },
     {
       inputs: [
-        { internalType: "uint256", name: "_affiliateFee", type: "uint256" },
+        {
+          internalType: "uint256",
+          name: "_affiliateFee",
+          type: "uint256",
+        },
       ],
       name: "setAffiliateFeeOnCreate",
       outputs: [],
@@ -295,7 +451,11 @@ const CreateLottery = () => {
     },
     {
       inputs: [
-        { internalType: "uint256", name: "_creationFee", type: "uint256" },
+        {
+          internalType: "uint256",
+          name: "_creationFee",
+          type: "uint256",
+        },
       ],
       name: "setCreationFee",
       outputs: [],
@@ -304,7 +464,11 @@ const CreateLottery = () => {
     },
     {
       inputs: [
-        { internalType: "address", name: "_feeAddress", type: "address" },
+        {
+          internalType: "address",
+          name: "_feeAddress",
+          type: "address",
+        },
       ],
       name: "setPlatformAddress",
       outputs: [],
@@ -313,7 +477,11 @@ const CreateLottery = () => {
     },
     {
       inputs: [
-        { internalType: "uint256", name: "_platfomFee", type: "uint256" },
+        {
+          internalType: "uint256",
+          name: "_platfomFee",
+          type: "uint256",
+        },
       ],
       name: "setPlatformFee",
       outputs: [],
@@ -323,26 +491,50 @@ const CreateLottery = () => {
     {
       inputs: [],
       name: "startTime",
-      outputs: [{ internalType: "uint256", name: "", type: "uint256" }],
+      outputs: [
+        {
+          internalType: "uint256",
+          name: "",
+          type: "uint256",
+        },
+      ],
       stateMutability: "view",
       type: "function",
     },
     {
       inputs: [],
       name: "symbol",
-      outputs: [{ internalType: "string", name: "", type: "string" }],
+      outputs: [
+        {
+          internalType: "string",
+          name: "",
+          type: "string",
+        },
+      ],
       stateMutability: "view",
       type: "function",
     },
     {
       inputs: [],
       name: "ticketPrice",
-      outputs: [{ internalType: "uint256", name: "", type: "uint256" }],
+      outputs: [
+        {
+          internalType: "uint256",
+          name: "",
+          type: "uint256",
+        },
+      ],
       stateMutability: "view",
       type: "function",
     },
     {
-      inputs: [{ internalType: "address", name: "newOwner", type: "address" }],
+      inputs: [
+        {
+          internalType: "address",
+          name: "newOwner",
+          type: "address",
+        },
+      ],
       name: "transferOwnership",
       outputs: [],
       stateMutability: "nonpayable",
@@ -350,8 +542,16 @@ const CreateLottery = () => {
     },
     {
       inputs: [
-        { internalType: "address", name: "_address", type: "address" },
-        { internalType: "bool", name: "_status", type: "bool" },
+        {
+          internalType: "address",
+          name: "_address",
+          type: "address",
+        },
+        {
+          internalType: "bool",
+          name: "_status",
+          type: "bool",
+        },
       ],
       name: "whitelistAddress",
       outputs: [],
@@ -360,8 +560,16 @@ const CreateLottery = () => {
     },
     {
       inputs: [
-        { internalType: "address[]", name: "_addresses", type: "address[]" },
-        { internalType: "bool[]", name: "_statuses", type: "bool[]" },
+        {
+          internalType: "address[]",
+          name: "_addresses",
+          type: "address[]",
+        },
+        {
+          internalType: "bool[]",
+          name: "_statuses",
+          type: "bool[]",
+        },
       ],
       name: "whitelistAddresses",
       outputs: [],
@@ -377,9 +585,21 @@ const CreateLottery = () => {
     },
     {
       inputs: [
-        { internalType: "contract IERC20", name: "_token", type: "address" },
-        { internalType: "uint256", name: "_amount", type: "uint256" },
-        { internalType: "address", name: "_beneficiary", type: "address" },
+        {
+          internalType: "contract IERC20",
+          name: "_token",
+          type: "address",
+        },
+        {
+          internalType: "uint256",
+          name: "_amount",
+          type: "uint256",
+        },
+        {
+          internalType: "address",
+          name: "_beneficiary",
+          type: "address",
+        },
       ],
       name: "withdrawtoken",
       outputs: [],
@@ -404,7 +624,7 @@ const CreateLottery = () => {
     // window.open(`${window.location.origin}/profile/${address}`)
   };
 
-  let factoryContract = "0xE9ECC731AAf4060747642cb11Ba455fb5c5b944C";
+  let factoryContract = "0x5770168fB4a175f6117E8b18D589941c588238Fd";
   const { address } = useAccount();
   const { open } = useWeb3Modal();
 
@@ -416,11 +636,13 @@ const CreateLottery = () => {
     const lotteryFee = {
       feeToken: values.FeeToken,
       charity: values.charityAddress,
-      affiliateWallet: values.affiliateAddress,
+      affiliateWallet:
+        values.affiliateAddress || "0x0000000000000000000000000000000000000000",
       creatorFee: values.CreatorFee,
       charityFee: values.charityFee,
-      affiliateFee: 0,
+      affiliateFee: values.affiliateFee,
     };
+    console.log(lotteryFee);
 
     let tx = await factory.createLottery(
       values.lotteryName,
@@ -635,21 +857,6 @@ const CreateLottery = () => {
       onChange: onChange,
     },
   ];
-
-  if (affiliateAddress) {
-    inputs.push({
-      icon: dollar,
-      label: "Affiliate Address",
-      type: "text",
-      min: 1,
-      name: "affiliateAddress",
-      // placeholder: "Enter affiliate address",
-      switchs: true,
-      disable: disable,
-      setDisable: setDisable,
-      onChange: onChange,
-    });
-  }
 
   return (
     <section className={styles.createLotteryContainer}>
