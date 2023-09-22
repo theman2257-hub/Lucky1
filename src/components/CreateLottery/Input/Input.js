@@ -14,18 +14,29 @@ const Input = ({
   disable,
   setDisable,
 }) => {
+  // const handleKeyDown = (event) => {
+  //   if (event.key !== "Backspace" && !/[0-9]/.test(event.key)) {
+  //     event.preventDefault();
+  //   }
+  // };
   const handleKeyDown = (event) => {
-    if (event.key !== "Backspace" && !/[0-9]/.test(event.key)) {
+    if (
+      type === "number" &&
+      event.key !== "Backspace" &&
+      !/[0-9]/.test(event.key)
+    ) {
       event.preventDefault();
     }
   };
+
   return (
     <>
       <div className={`${styles.inputContainer}`}>
         <label
           htmlFor={name}
-          className={`${styles.label} ${styles.text} ${switchs && styles.swithcWrapper
-            }`}
+          className={`${styles.label} ${styles.text} ${
+            switchs && styles.swithcWrapper
+          }`}
         >
           {label}{" "}
           {switchs && (
@@ -38,8 +49,9 @@ const Input = ({
           )}
         </label>
         <div
-          className={` ${styles.inputAndIcon}  ${disable && styles.inputDisabled
-            }`}
+          className={` ${styles.inputAndIcon}  ${
+            disable && styles.inputDisabled
+          }`}
         >
           <img src={icon} alt="#" className={styles.icon} />
           <input
@@ -52,7 +64,7 @@ const Input = ({
             placeholder={placeholder}
             onChange={onChange}
             min={type === "number" ? 1 : ""}
-            onKeyDown={type === "number" && handleKeyDown}
+            onKeyDown={handleKeyDown}
           />
         </div>
       </div>

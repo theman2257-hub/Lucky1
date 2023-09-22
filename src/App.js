@@ -36,11 +36,18 @@ function App() {
 
         <Routes>
           <Route path="/" element={<Home />}></Route>{" "}
-          <Route path="/createLottery" element={<CreateLottery />}></Route>
-          <Route path="/:id" element={<Details />}></Route>
+          <Route
+            path="/createLottery/:affiliateAddress?"
+            element={<CreateLottery />}
+          />
+          <Route path="/:id/:affiliateAddress?" element={<Details />}></Route>
           <Route path="/profile/:id" element={<Profile />}></Route>
-          <Route path="/privacy" element={<Privacy/>}> </Route>
-          <Route path="/contact" element={<Contact/>}> </Route>
+          <Route path="/privacy" element={<Privacy />}>
+            {" "}
+          </Route>
+          <Route path="/contact" element={<Contact />}>
+            {" "}
+          </Route>
         </Routes>
         <Footer />
       </WagmiConfig>

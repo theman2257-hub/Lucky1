@@ -21,6 +21,7 @@ const TicketDetails = ({
   setHash,
   setNumberOfWinners,
   setAddress,
+  affiliateAddress,
 }) => {
   const [ended, setEnded] = useState(false);
   const [time, setTime] = useState("");
@@ -30,8 +31,6 @@ const TicketDetails = ({
   const { data } = useSigner();
   let lotteryAddress = id;
   let provider = "https://data-seed-prebsc-1-s1.binance.org:8545/";
-
-  let lotteryContract = new ethers.Contract(lotteryAddress, lotteryABI, data);
 
   const [lotteryDetails, setLotteryDetails] = useState({});
   let getDetails = async () => {
@@ -57,7 +56,7 @@ const TicketDetails = ({
     tokenSymbol
       }
     }`;
-    let url = "https://api.thegraph.com/subgraphs/name/theman2257-hub/lucky1final";
+    let url = "https://api.thegraph.com/subgraphs/name/sallystix/test-lottery";
     const response = await axios.post(url, { query });
     const data = response.data;
     // let lotteryData = data.data.lotteries.map((el) => {
@@ -135,8 +134,14 @@ const TicketDetails = ({
   }, []);
 
   const purchaseTickets = async (t) => {
+    console.log(affiliateAddress, String(t));
+    let lotteryContract = new ethers.Contract(lotteryAddress, lotteryABI, data);
+
     try {
-      let tx = await lotteryContract.purchaseLottery(String(t));
+      let tx = await lotteryContract.purchaseLottery(
+        affiliateAddress,
+        String(t)
+      );
       const reciept = await tx.wait();
       txSuccess(t);
       setTimeout(() => {
@@ -154,6 +159,8 @@ const TicketDetails = ({
   const [myTickets, setmyTickets] = useState(0);
 
   const getMyTickets = async () => {
+    let lotteryContract = new ethers.Contract(lotteryAddress, lotteryABI, data);
+
     if (!address) return;
     try {
       let tickets = await lotteryContract.balanceOf(address);
@@ -162,6 +169,8 @@ const TicketDetails = ({
   };
 
   const getIsRunning = async () => {
+    let lotteryContract = new ethers.Contract(lotteryAddress, lotteryABI, data);
+
     let isRunning = await lotteryContract.isRunning();
     if (!isRunning) {
       setCompetitionEndedModal(true);

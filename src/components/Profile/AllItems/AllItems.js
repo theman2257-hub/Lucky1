@@ -15,7 +15,12 @@ import axios from "axios";
 import { useAccount } from "wagmi";
 import Cards from "../../ExpoloreLotteryCards/Cards/Cards";
 
-const AllItems = ({ setCreatedCount, participatedItems, setCreatedCountparticipatedItems, setParticipatedItems }) => {
+const AllItems = ({
+  setCreatedCount,
+  participatedItems,
+  setCreatedCountparticipatedItems,
+  setParticipatedItems,
+}) => {
   const { address } = useAccount();
   const [userInfo, setUserInfo] = React.useState({
     _id: "64283390f049ad247602444c",
@@ -29,7 +34,6 @@ const AllItems = ({ setCreatedCount, participatedItems, setCreatedCountparticipa
   });
   const [useritems, setUserItems] = React.useState([]);
   const [participated, setParticipated] = useState([]);
-
 
   const { id } = useParams();
   let url = `https://api.lucky1.io/tickets/users/${id}`;
@@ -54,18 +58,17 @@ const AllItems = ({ setCreatedCount, participatedItems, setCreatedCountparticipa
       startTime
       tokenSymbol
       }
-    }`
-    let url = "https://api.thegraph.com/subgraphs/name/theman2257-hub/lucky1final";
+    }`;
+    let url = "https://api.thegraph.com/subgraphs/name/sallystix/test-lottery";
     try {
       const { data } = await axios.post(url, { query });
-      let lot = (data.data.lotteries)
-      console.log(lot)
+      let lot = data.data.lotteries;
+      console.log(lot);
       setUserItems(lot);
       setCreatedCount(lot.length);
       // setUserInfo(data.data.lotteries);
       // setUserItems(data.useritems);
-    } catch (error) {
-    }
+    } catch (error) {}
   };
 
   const getParticipated = async () => {
@@ -74,10 +77,8 @@ const AllItems = ({ setCreatedCount, participatedItems, setCreatedCountparticipa
       const { data } = await axios.get(u);
       setParticipated(data);
       // setParticipatedItems(data);
-
-    } catch (error) {
-    }
-  }
+    } catch (error) {}
+  };
   React.useEffect(() => {
     getUserInfo();
     getParticipated();
@@ -95,9 +96,7 @@ const AllItems = ({ setCreatedCount, participatedItems, setCreatedCountparticipa
   return (
     <div className={styles.wrapper}>
       <div className={styles.container}>
-        <div className={styles.buttons}>
-
-        </div>
+        <div className={styles.buttons}></div>
         <div className={styles.allItems}>
           {participatedItems
             ? participated.map((el, i) => <Cards key={i} {...el} />)
