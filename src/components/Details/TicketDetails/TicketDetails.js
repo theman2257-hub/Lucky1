@@ -134,13 +134,13 @@ const TicketDetails = ({
   }, []);
 
   const purchaseTickets = async (t) => {
-    console.log(affiliateAddress, String(t));
+    console.log(affiliateAddress, String(t), lotteryAddress);
     let lotteryContract = new ethers.Contract(lotteryAddress, lotteryABI, data);
 
     try {
       let tx = await lotteryContract.purchaseLottery(
-        affiliateAddress,
-        String(t)
+        String(t),
+        affiliateAddress
       );
       const reciept = await tx.wait();
       txSuccess(t);
@@ -158,16 +158,6 @@ const TicketDetails = ({
   const [allowance, setAllowance] = useState(0);
   const [myTickets, setmyTickets] = useState(0);
 
-  const getMyTickets = async () => {
-    let lotteryContract = new ethers.Contract(lotteryAddress, lotteryABI, data);
-
-    if (!address) return;
-    try {
-      let tickets = await lotteryContract.balanceOf(address);
-      setmyTickets(tickets);
-    } catch (error) {}
-  };
-
   const getIsRunning = async () => {
     let lotteryContract = new ethers.Contract(lotteryAddress, lotteryABI, data);
 
@@ -179,23 +169,6 @@ const TicketDetails = ({
   };
 
   getIsRunning();
-  const getAllowance = async () => {
-    if (!address) return;
-    if (!lotteryDetails?.feeToken) return;
-    try {
-      let contract = new ethers.Contract(
-        lotteryDetails.feeToken,
-        erc20Abi,
-        data
-      );
-      let allowance = await contract.allowance(address, lotteryAddress);
-      if (allowance > 0) {
-        setAllowance(true);
-      }
-    } catch (error) {}
-  };
-
-  getAllowance();
 
   async function approve() {
     if (!lotteryDetails.feeToken) return;
@@ -210,14 +183,45 @@ const TicketDetails = ({
     }
   }
 
-  useEffect(() => {}, [address]);
-
   useEffect(() => {
+    const getMyTickets = async () => {
+      let lotteryContract = new ethers.Contract(
+        lotteryAddress,
+        lotteryABI,
+        data
+      );
+
+      if (!address) return;
+      try {
+        let tickets = await lotteryContract.balanceOf(address);
+        setmyTickets(tickets);
+      } catch (error) {}
+    };
+
+    const getAllowance = async () => {
+      if (!address) return;
+      if (!lotteryDetails?.feeToken) return;
+      try {
+        let contract = new ethers.Contract(
+          lotteryDetails.feeToken,
+          erc20Abi,
+          data
+        );
+        let allowance = await contract.allowance(address, lotteryAddress);
+        console.log("IN ALLOWANCE FUNCTION", allowance);
+        if (allowance > 0) {
+          setAllowance(allowance);
+        }
+      } catch (error) {}
+    };
+
     getMyTickets();
     getAllowance();
-  }, [address, allowance]);
+  }, [address, lotteryDetails, data, lotteryAddress]);
 
   const titleAndFunction = () => {
+    const totalCost = quantity * lotteryDetails.ticketPrice;
+    console.log(allowance, totalCost);
     if (!address) {
       return {
         title: "Connect Wallet",
@@ -234,7 +238,7 @@ const TicketDetails = ({
           setCompetitionEndedModal(true);
         },
       };
-    } else if (!allowance) {
+    } else if (allowance < totalCost) {
       return {
         title: "Approve",
         function: () => approve(),
