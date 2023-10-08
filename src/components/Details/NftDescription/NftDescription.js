@@ -28,7 +28,8 @@ const NftDescription = ({
 
         <div className={styles.buttonContainer}>
           {/* Add Description Button */}
-          {description.length < 1 && (
+          {(description === null ||
+            (description && description.length < 1)) && (
             <button
               onClick={() => setDescriptionModal(true)}
               className={styles.button}
