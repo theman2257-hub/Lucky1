@@ -751,6 +751,7 @@ const CreateLottery = () => {
     {
       icon: dollar,
       label: "Entrance Fee",
+      labelExplainer: "Price of 1 ticket, in your Fee Token, e.g = 10",
       type: "text",
       min: 1,
       name: "entranceFee",
@@ -769,6 +770,8 @@ const CreateLottery = () => {
       icon: usdt,
       label: "Fee Token",
       type: "text",
+      labelExplainer:
+        "Your lottery tickets will only be purchased in this token",
       name: "FeeToken",
       placeholder: "Enter token to pay fee",
       onChange: onChange,
@@ -776,6 +779,8 @@ const CreateLottery = () => {
     {
       icon: usdt,
       label: "Creator Fee",
+      labelExplainer:
+        "Lottery creator’s fee to be rewarded for creating this lottery",
       type: "text",
       name: "CreatorFee",
       placeholder: "Enter creator fee",
@@ -794,6 +799,7 @@ const CreateLottery = () => {
     {
       icon: winner,
       label: "Number of tickets",
+      labelExplainer: "Total number of tickets to be sold for this lottery",
       type: "number",
       min: 1,
       name: "numberofTickets",
@@ -815,6 +821,7 @@ const CreateLottery = () => {
     {
       icon: dollar,
       label: "Prize Distribution",
+      labelExplainer: "In % e.g : 1 Winner=100, 2winner= 50,50",
       type: "text", // Use "text" type to allow comma-separated input
       name: "prizeDistribution",
       placeholder: "Enter prize distribution (comma-separated percentages)",
@@ -835,6 +842,8 @@ const CreateLottery = () => {
     {
       icon: winner,
       label: "Max Ticket Per Wallet",
+      labelExplainer:
+        "Maximum number of ticket a wallet can purchase for this lottery",
       type: "number",
       min: 1,
       name: "maxTicketPerWallet",
@@ -850,6 +859,8 @@ const CreateLottery = () => {
     {
       icon: dollar,
       label: "Charity Fee",
+      labelExplainer:
+        "The % of the lottery revenue that you want to share with a charity",
       type: "text",
       min: 1,
       name: "charityFee",
@@ -873,6 +884,8 @@ const CreateLottery = () => {
     {
       icon: dollar,
       label: "Affiliate Fee",
+      labelExplainer:
+        "Reward commission for those referring your project to others",
       type: "text",
       min: 1,
       name: "affiliateFee",

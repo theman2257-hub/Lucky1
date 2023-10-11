@@ -5,6 +5,7 @@ import styles from "./styles.module.css";
 const Input = ({
   icon,
   label,
+  labelExplainer,
   type,
   name,
   placeholder,
@@ -48,6 +49,7 @@ const Input = ({
             />
           )}
         </label>
+
         <div
           className={` ${styles.inputAndIcon}  ${
             disable && styles.inputDisabled
@@ -67,6 +69,16 @@ const Input = ({
             onKeyDown={handleKeyDown}
           />
         </div>
+        {labelExplainer && (
+          <label
+            htmlFor={name}
+            className={`${styles.labelExplainer} ${styles.text} ${
+              styles.secondary
+            } ${switchs && styles.swithcWrapper}`}
+          >
+            {labelExplainer}{" "}
+          </label>
+        )}
       </div>
     </>
   );

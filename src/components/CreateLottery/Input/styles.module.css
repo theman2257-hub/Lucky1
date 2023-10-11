@@ -3,6 +3,7 @@
   flex-direction: column;
 
   width: 100%;
+  height: 100%;
 }
 .inputDisabled {
   background: #30303e;
@@ -14,6 +15,12 @@
   padding-bottom: 5px;
   cursor: pointer;
   text-transform: capitalize;
+}
+.labelExplainer {
+  display: block;
+  padding-bottom: 5px;
+  cursor: pointer;
+  /* text-transform: capitalize; */
 }
 .swithcWrapper {
   display: flex;
@@ -30,6 +37,14 @@
   /* identical to box height */
 
   color: rgba(236, 221, 255, 0.8);
+}
+
+.secondary {
+  padding-top: 5px;
+  color: #5b5b63;
+  font-size: 12px;
+  font-weight: 500;
+  padding-bottom: 0px;
 }
 
 .inputAndIcon {
