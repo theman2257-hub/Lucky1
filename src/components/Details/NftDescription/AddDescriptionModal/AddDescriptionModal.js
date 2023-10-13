@@ -24,12 +24,13 @@ const AddDescriptionModal = ({
   };
 
   const submit = async () => {
-    if (ethers.utils.getAddress(address) == ethers.utils.getAddress(creator)) {
+    if (ethers.utils.getAddress(address) !== ethers.utils.getAddress(creator)) {
       alert(
         "****Unauthorized Transaction **** This transaction can only be performed by the Lottery Creator"
       );
       return;
     }
+    return;
     const { data: res } = await axios.post(url, data);
     console.log(res);
     if (res.status == "ok") {
