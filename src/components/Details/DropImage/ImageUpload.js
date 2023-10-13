@@ -10,7 +10,7 @@ function ImageUpload({ setImgurl, owner }) {
   let { address } = useAccount();
   const [dragging, setDragging] = useState(false);
   const [image, setImage] = useState(null);
-  const [imgLink, setImgLink] = useState('');
+  const [imgLink, setImgLink] = useState("");
 
   function handleDragEnter(e) {
     e.preventDefault();
@@ -51,7 +51,7 @@ function ImageUpload({ setImgurl, owner }) {
   }
 
   const updateImages = async (link) => {
-    console.log(id)
+    console.log(id);
     let url = `https://api.lucky1.io/updateImage`;
     const { data } = await axios.post(url, {
       // lotteryAddress: receipt.events[0].args.lottery,
@@ -63,17 +63,19 @@ function ImageUpload({ setImgurl, owner }) {
   };
 
   async function handleInputChange(e) {
-    console.log("in")
+    console.log("in");
     const file = e.target.files[0];
     if (file.size >= 4 * 1024 * 1024) {
       alert("File size must be less than 5 MB");
       return;
     }
 
-    // if (address != owner) {
-    //   alert("****Unauthorized Transaction **** This transaction can only be performed by the Lottery Creator")
-    //   return
-    // }
+    if (address != owner) {
+      alert(
+        "****Unauthorized Transaction **** This transaction can only be performed by the Lottery Creator"
+      );
+      return;
+    }
 
     let api = "c0b85f37e4766cfbb8a9155a76cbf379";
     let url = `https://api.imgbb.com/1/upload?expiration=600&key=${api}`;
@@ -99,7 +101,6 @@ function ImageUpload({ setImgurl, owner }) {
     };
     reader.readAsDataURL(file);
     window.location.reload();
-
   }
 
   return (
