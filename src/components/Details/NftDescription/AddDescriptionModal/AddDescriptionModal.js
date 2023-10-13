@@ -6,7 +6,12 @@ import { useParams } from "react-router-dom";
 import { useAccount } from "wagmi";
 import { ethers } from "ethers";
 
-const AddDescriptionModal = ({ creator, setModal, description, setDescription }) => {
+const AddDescriptionModal = ({
+  creator,
+  setModal,
+  description,
+  setDescription,
+}) => {
   const { id } = useParams();
   let { address } = useAccount();
 
@@ -16,11 +21,13 @@ const AddDescriptionModal = ({ creator, setModal, description, setDescription })
   let data = {
     description: description,
     lotteryAddress: id,
-  }
+  };
 
   const submit = async () => {
-    if (ethers.utils.getAddress(address) != ethers.utils.getAddress(creator)) {
-      alert("****Unauthorized Transaction **** This transaction can only be performed by the Lottery Creator");
+    if (ethers.utils.getAddress(address) == ethers.utils.getAddress(creator)) {
+      alert(
+        "****Unauthorized Transaction **** This transaction can only be performed by the Lottery Creator"
+      );
       return;
     }
     const { data: res } = await axios.post(url, data);
@@ -48,7 +55,6 @@ const AddDescriptionModal = ({ creator, setModal, description, setDescription })
           </div>
 
           <form action="" className={styles.form}>
-
             <div className={` ${styles.inputAndIcon} `}>
               <textarea
                 className={`${styles.input} ${styles.text}`}
@@ -66,7 +72,6 @@ const AddDescriptionModal = ({ creator, setModal, description, setDescription })
               onClick={() => {
                 setModal(false);
                 submit();
-
               }}
             >
               Sumbit

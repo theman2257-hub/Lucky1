@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import styles from "./NftDescription.module.css";
 import AddDescriptionModal from "./AddDescriptionModal/AddDescriptionModal";
 import AddWhitelistModal from "./AddWhitelistModal/AddWhitelistModal";
+import { useEffect } from "react";
 
 const NftDescription = ({
   lotteryAddress,
@@ -29,7 +30,7 @@ const NftDescription = ({
         <div className={styles.buttonContainer}>
           {/* Add Description Button */}
           {(description === null ||
-            (description && description.length < 1)) && (
+            (description !== null && description.length < 1)) && (
             <button
               onClick={() => setDescriptionModal(true)}
               className={styles.button}

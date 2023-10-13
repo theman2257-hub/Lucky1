@@ -26,9 +26,7 @@ const Modal = ({ setModal, setCompetitionEndedModal }) => {
               <MdClose className={styles.icon} />
             </div>
           </div>
-          <p className={styles.text}>
-            Enter Password to buy ticket
-          </p>
+          <p className={styles.text}>Enter Password to buy ticket</p>
           <form action="" className={styles.form}>
             <div className={`${styles.inputContainer}`}>
               <label
@@ -65,7 +63,7 @@ const Modal = ({ setModal, setCompetitionEndedModal }) => {
         </div>
       </div>
       <div className={styles.overlay} onClick={() => setModal(false)}></div>
-      <AddDescriptionModal/>
+      <AddDescriptionModal />
     </>
   );
 };
