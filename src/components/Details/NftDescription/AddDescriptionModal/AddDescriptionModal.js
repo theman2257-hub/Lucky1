@@ -30,7 +30,6 @@ const AddDescriptionModal = ({
       );
       return;
     }
-    return;
     const { data: res } = await axios.post(url, data);
     console.log(res);
     if (res.status == "ok") {
