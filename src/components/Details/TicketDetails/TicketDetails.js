@@ -345,7 +345,8 @@ const TicketDetails = ({
             <div className={styles.price}>
               <p className={styles.bnb}>
                 {lotteryDetails.ticketPrice
-                  ? ethers.utils.formatEther(lotteryDetails.ticketPrice)
+                  ? ethers.utils.formatEther(lotteryDetails.ticketPrice) *
+                    quantity
                   : 0}{" "}
                 {lotteryDetails.tokenSymbol}
               </p>
