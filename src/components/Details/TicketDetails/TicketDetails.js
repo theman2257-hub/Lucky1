@@ -12,6 +12,7 @@ import { ToastContainer, toast } from "react-toastify";
 import axios from "axios";
 import "react-toastify/dist/ReactToastify.css";
 import { useParams } from "react-router-dom";
+import Loader from "../../Loader";
 
 const TicketDetails = ({
   setOwner,
@@ -25,6 +26,7 @@ const TicketDetails = ({
 }) => {
   const [ended, setEnded] = useState(false);
   const [time, setTime] = useState("");
+  const [show, setShow] = useState(false);
   const { id } = useParams();
   const txSuccess = (msg) =>
     toast.success(`Successfully Purchased ${msg} Tickets}`);
@@ -56,7 +58,7 @@ const TicketDetails = ({
     tokenSymbol
       }
     }`;
-    let url = "https://api.thegraph.com/subgraphs/name/sallystix/test-lottery";
+    let url = "https://api.thegraph.com/subgraphs/name/sallystix/test-subgraph";
     const response = await axios.post(url, { query });
     const data = response.data;
     // let lotteryData = data.data.lotteries.map((el) => {
@@ -83,6 +85,7 @@ const TicketDetails = ({
     let lotteryData = data.data.lotteries[0];
     console.log(data.data.lotteries[0]);
     setLotteryDetails(data.data.lotteries[0]);
+
     // setLotteryDetails(lotteryData);
 
     setOwner(lotteryData.creator);
@@ -103,6 +106,28 @@ const TicketDetails = ({
           "https://assets-global.website-files.com/637359c81e22b715cec245ad/63f5feb3302f223a19af4dca_Midnight%20society.png?2322232"
         );
       });
+  };
+
+  let buyMax = async () => {
+    let query = `{
+      ticketPurchaseds( where: {lotteryAddress:"0x7e9e3133a64a3438d312881bb33cffca7dc5f8a3", buyer:"0xB91e327B776BCDa3D7931E4221744F928F796c78"}) {
+        id
+        lotteryAddress
+        buyer
+        amount
+      }
+    }`;
+    let url = "https://api.thegraph.com/subgraphs/name/sallystix/test-subgraph";
+    const response = await axios.post(url, { query });
+    const data = response.data;
+    const amountPurchased = data.data.ticketPurchaseds[0].amount;
+    const purchaseableAmount =
+      lotteryDetails.maxTicketsPerWallet - amountPurchased;
+    if (purchaseableAmount < 1) {
+      alert("Can't exceed max tickets per wallet");
+      return;
+    }
+    await purchaseTickets(purchaseableAmount);
   };
   console.log("running");
   const setModal = () => {
@@ -138,11 +163,13 @@ const TicketDetails = ({
     let lotteryContract = new ethers.Contract(lotteryAddress, lotteryABI, data);
 
     try {
+      setShow(true);
       let tx = await lotteryContract.purchaseLottery(
         String(t),
         affiliateAddress
       );
       const reciept = await tx.wait();
+      setShow(false);
       txSuccess(t);
       setTimeout(() => {
         window.location.reload();
@@ -173,11 +200,13 @@ const TicketDetails = ({
   async function approve() {
     if (!lotteryDetails.feeToken) return;
     let contract = new ethers.Contract(lotteryDetails.feeToken, erc20Abi, data);
+    setShow(true);
     let tx = await contract.approve(
       lotteryAddress,
       ethers.constants.MaxUint256
     );
     let reciept = await tx.wait();
+    setShow(false);
     if (reciept && reciept.status) {
       let newAllowance = await contract.allowance(address, lotteryAddress);
       setAllowance(newAllowance.toString());
@@ -250,7 +279,7 @@ const TicketDetails = ({
         function: () => purchaseTickets(quantity),
         title2: "Buy Max",
         function2: () => {
-          console.log("purchase max");
+          buyMax();
         },
       };
     }
@@ -393,6 +422,7 @@ const TicketDetails = ({
           )}
         </div>
       </div>
+      <Loader show={show} />
     </div>
   );
 };
