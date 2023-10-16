@@ -56,7 +56,7 @@ const TicketDetails = ({
     tokenSymbol
       }
     }`;
-    let url = "https://api.thegraph.com/subgraphs/name/sallystix/test-lottery";
+    let url = "https://api.thegraph.com/subgraphs/name/sallystix/test-subgraph";
     const response = await axios.post(url, { query });
     const data = response.data;
     // let lotteryData = data.data.lotteries.map((el) => {
@@ -179,7 +179,8 @@ const TicketDetails = ({
     );
     let reciept = await tx.wait();
     if (reciept && reciept.status) {
-      setAllowance(true);
+      let newAllowance = await contract.allowance(address, lotteryAddress);
+      setAllowance(newAllowance.toString());
     }
   }
 
@@ -247,6 +248,10 @@ const TicketDetails = ({
       return {
         title: "Buy Ticket",
         function: () => purchaseTickets(quantity),
+        title2: "Buy Max",
+        function2: () => {
+          console.log("purchase max");
+        },
       };
     }
   };
@@ -377,9 +382,16 @@ const TicketDetails = ({
             </div>
           </div>
         </div>
-        <button onClick={bigButton.function} className={styles.button}>
-          {bigButton.title}
-        </button>
+        <div className={styles.buttonContainer}>
+          <button onClick={bigButton.function} className={styles.button}>
+            {bigButton.title}
+          </button>
+          {bigButton.title2 && (
+            <button onClick={bigButton.function2} className={styles.button}>
+              {bigButton.title2}
+            </button>
+          )}
+        </div>
       </div>
     </div>
   );

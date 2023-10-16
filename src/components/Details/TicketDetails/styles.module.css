@@ -51,6 +51,12 @@
   align-items: center;
   flex-wrap: wrap;
 }
+.buttonContainer {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  gap: 10px; /* Add the desired spacing between the buttons */
+}
 .publicRound {
   display: flex;
   align-items: center;
@@ -351,8 +357,21 @@
     padding: 13px 10px;
   }
   .button {
-    padding: 8px 18px;
-    font-size: 14px;
+    font-family: var(--fontFamily);
+    font-style: normal;
+    font-weight: 600;
+    font-size: 18px;
+    line-height: 133%;
+    text-transform: capitalize;
+
+    color: #ecddff;
+    background: linear-gradient(114.79deg, #c040fc -17.76%, #4b3cff 99.88%);
+    border-radius: 14px;
+    width: 100%;
+    border: none;
+    outline: none;
+    padding: 15px 18px;
+    cursor: pointer;
   }
   .text {
     font-size: 10px;
