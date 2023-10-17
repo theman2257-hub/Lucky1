@@ -57,6 +57,12 @@
   justify-content: center;
   gap: 10px; /* Add the desired spacing between the buttons */
 }
+
+.headerContainer {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+}
 .publicRound {
   display: flex;
   align-items: center;

@@ -6,7 +6,7 @@ import { useAccount } from "wagmi";
 import { useWeb3Modal } from "@web3modal/react";
 import styles from "./styles.module.css";
 import { lotteryABI, erc20Abi } from "../../../constants/abis/abi";
-import { ethers } from "ethers";
+import { Signer, ethers } from "ethers";
 import { useSigner } from "wagmi";
 import { ToastContainer, toast } from "react-toastify";
 import axios from "axios";
@@ -27,6 +27,7 @@ const TicketDetails = ({
   const [ended, setEnded] = useState(false);
   const [time, setTime] = useState("");
   const [show, setShow] = useState(false);
+  const [totalTicketsPurchased, setTotalPurchased] = useState(0);
   const { id } = useParams();
   const txSuccess = (msg) =>
     toast.success(`Successfully Purchased ${msg} Tickets}`);
@@ -110,7 +111,7 @@ const TicketDetails = ({
 
   let buyMax = async () => {
     let query = `{
-      ticketPurchaseds( where: {lotteryAddress:"0x7e9e3133a64a3438d312881bb33cffca7dc5f8a3", buyer:"0xB91e327B776BCDa3D7931E4221744F928F796c78"}) {
+      ticketPurchaseds( where: {lotteryAddress:"${lotteryAddress}", buyer:"${address}"}) {
         id
         lotteryAddress
         buyer
@@ -121,6 +122,7 @@ const TicketDetails = ({
     const response = await axios.post(url, { query });
     const data = response.data;
     const amountPurchased = data.data.ticketPurchaseds[0].amount;
+    console.log(amountPurchased);
     const purchaseableAmount =
       lotteryDetails.maxTicketsPerWallet - amountPurchased;
     if (purchaseableAmount < 1) {
@@ -245,8 +247,31 @@ const TicketDetails = ({
       } catch (error) {}
     };
 
+    const getTotalTicketsPurchased = async () => {
+      let query = `
+      {
+        ticketPurchaseds(where:{lotteryAddress:"${lotteryAddress}"}) {
+          amount
+        }
+      }`;
+      let url =
+        "https://api.thegraph.com/subgraphs/name/sallystix/test-lottery";
+      const response = await axios.post(url, { query });
+      const data = response.data;
+
+      let totalPurchased = 0;
+      data.data.ticketPurchaseds.map((item) => {
+        totalPurchased += parseInt(item.amount);
+      });
+      console.log(totalPurchased);
+
+      setTotalPurchased(totalPurchased);
+      // setLotteryDetails(lotteryData);
+    };
+
     getMyTickets();
     getAllowance();
+    getTotalTicketsPurchased();
   }, [address, lotteryDetails, data, lotteryAddress]);
 
   const titleAndFunction = () => {
@@ -302,10 +327,20 @@ const TicketDetails = ({
   };
   return (
     <div className={styles.wrapper}>
-      <h2 className={styles.title}>
-        {(lotteryDetails?.maxTickets * lotteryDetails.ticketPrice) / 10 ** 18}{" "}
-        {lotteryDetails.tokenSymbol}
-      </h2>
+      <div className={styles.headerContainer}>
+        <div>
+          <h2 className={styles.title}>
+            {(lotteryDetails?.maxTickets * lotteryDetails.ticketPrice) /
+              10 ** 18}{" "}
+            {lotteryDetails.tokenSymbol}
+          </h2>
+        </div>
+        <div>
+          <h2 className={styles.title}>
+            {totalTicketsPurchased}/{lotteryDetails.maxTickets}
+          </h2>
+        </div>
+      </div>
       <div className={styles.countDownContainer}>
         {" "}
         <div className={styles.header}>
@@ -365,7 +400,9 @@ const TicketDetails = ({
       <div className={styles.contactAddress}>
         <p className={styles.text}>My Purchased Tickets:</p>
         <div className={styles.address}>
-          <p className={styles.text}>{parseInt(myTickets)} Tickets</p>
+          <p className={styles.text}>
+            {parseInt(myTickets)}/{lotteryDetails.maxTicketsPerWallet} Tickets
+          </p>
           {/* <img src={copy} alt="#" className={styles.copy} /> */}
         </div>
       </div>

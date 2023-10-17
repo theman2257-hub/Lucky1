@@ -8,10 +8,12 @@ import { useWeb3Modal } from "@web3modal/react";
 import { useAccount } from "wagmi";
 import { ethers } from "ethers";
 import { useSigner } from "wagmi";
+import Loader from "../../components/Loader";
 
 const CreateLottery = () => {
   const { data: signer } = useSigner();
   const [imgurl, setImgurl] = useState("");
+  const [showLoader, setShowLoader] = useState(false);
   const { affiliateAddress } = useParams();
 
   React.useEffect(() => {
@@ -670,16 +672,23 @@ const CreateLottery = () => {
     };
     console.log(lotteryFee);
 
-    let tx = await factory.createLottery(
-      values.lotteryName,
-      ethers.utils.parseEther(values.entranceFee),
-      values.numberofTickets,
-      // //convert date to epoch time
-      new Date(values.lottryEndDate).getTime() / 1000,
-      lotteryFee,
-      values.maxTicketPerWallet,
-      values.prizeDistribution // Convert prize distribution percentages to numbers
-    );
+    setShowLoader(true);
+    let tx;
+    try {
+      tx = await factory.createLottery(
+        values.lotteryName,
+        ethers.utils.parseEther(values.entranceFee),
+        values.numberofTickets,
+        // //convert date to epoch time
+        new Date(values.lottryEndDate).getTime() / 1000,
+        lotteryFee,
+        values.maxTicketPerWallet,
+        values.prizeDistribution // Convert prize distribution percentages to numbers
+      );
+    } catch (error) {
+      console.log(error);
+      setShowLoader(false);
+    }
 
     let sleep = (ms) => {
       return new Promise((resolve) => setTimeout(resolve, ms));
@@ -689,6 +698,7 @@ const CreateLottery = () => {
 
     if (receipt) {
       //direct to profile page
+      setShowLoader(false);
       console.log(receipt);
       let lotteryAddress = receipt.events[1].args.lottery;
       console.log(lotteryAddress);
@@ -710,7 +720,7 @@ const CreateLottery = () => {
       };
     } else {
       return {
-        title: "Create Lottery - 0.1 BNB",
+        title: "Create Lottery",
         func: newLottery,
       };
     }
@@ -926,6 +936,7 @@ const CreateLottery = () => {
           </form>
         </div>
       </div>
+      <Loader show={showLoader} />
     </section>
   );
 };
