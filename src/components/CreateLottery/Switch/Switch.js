@@ -2,7 +2,7 @@ import React from "react";
 import styles from "./styles.module.css";
 
 const Switch = ({ isOn, handleToggle, colorOne, colorTwo }) => {
-  console.log(colorOne, colorTwo)
+  // console.log(colorOne, colorTwo)
   return (
     <div className={styles.wrapper}>
       <label className={styles.text}>{!isOn ? "Enable" : "Disable"}</label>

@@ -27,6 +27,7 @@ const TicketDetails = ({
   const [ended, setEnded] = useState(false);
   const [time, setTime] = useState("");
   const [show, setShow] = useState(false);
+  const [showRemaining, setShowRemaining] = useState(false);
   const [totalTicketsPurchased, setTotalPurchased] = useState(0);
   const { id } = useParams();
   const txSuccess = (msg) =>
@@ -59,7 +60,7 @@ const TicketDetails = ({
     tokenSymbol
       }
     }`;
-    let url = "https://api.thegraph.com/subgraphs/name/sallystix/test-lottery";
+    let url = "https://api.thegraph.com/subgraphs/name/sallystix/test-subgraph";
     const response = await axios.post(url, { query });
     const data = response.data;
     // let lotteryData = data.data.lotteries.map((el) => {
@@ -118,7 +119,7 @@ const TicketDetails = ({
         amount
       }
     }`;
-    let url = "https://api.thegraph.com/subgraphs/name/sallystix/test-lottery";
+    let url = "https://api.thegraph.com/subgraphs/name/sallystix/test-subgraph";
     const response = await axios.post(url, { query });
     const data = response.data;
     const amountPurchased = data.data.ticketPurchaseds[0].amount;
@@ -131,7 +132,7 @@ const TicketDetails = ({
     }
     await purchaseTickets(purchaseableAmount);
   };
-  console.log("running");
+
   const setModal = () => {
     if (lotteryDetails?.hash) {
       setCompetitionEndedModal(true);
@@ -143,6 +144,16 @@ const TicketDetails = ({
   useEffect(() => {
     setModal();
   }, [lotteryDetails]);
+
+  useEffect(() => {
+    const blinkInterval = setInterval(() => {
+      setShowRemaining((prevShowRemaining) => !prevShowRemaining);
+    }, 1000);
+
+    // Clean up the interval when the component unmounts
+    return () => clearInterval(blinkInterval);
+  }, []);
+
   const date = new Date(lotteryDetails?.endDate * 1000);
 
   const dateString = date
@@ -157,6 +168,7 @@ const TicketDetails = ({
     .replace(",", "");
 
   useEffect(() => {
+    getIsRunning();
     getDetails();
   }, []);
 
@@ -188,30 +200,41 @@ const TicketDetails = ({
   const [myTickets, setmyTickets] = useState(0);
 
   const getIsRunning = async () => {
-    let lotteryContract = new ethers.Contract(lotteryAddress, lotteryABI, data);
+    try {
+      let lotteryContract = new ethers.Contract(
+        lotteryAddress,
+        lotteryABI,
+        data
+      );
 
-    let isRunning = await lotteryContract.isRunning();
-    if (!isRunning) {
-      setCompetitionEndedModal(true);
-      setEnded(true);
+      let isRunning = await lotteryContract.isRunning();
+      if (!isRunning) {
+        setCompetitionEndedModal(true);
+        setEnded(true);
+      }
+    } catch (err) {
+      console.log(err);
     }
   };
-
-  getIsRunning();
 
   async function approve() {
     if (!lotteryDetails.feeToken) return;
     let contract = new ethers.Contract(lotteryDetails.feeToken, erc20Abi, data);
     setShow(true);
-    let tx = await contract.approve(
-      lotteryAddress,
-      ethers.constants.MaxUint256
-    );
-    let reciept = await tx.wait();
-    setShow(false);
-    if (reciept && reciept.status) {
-      let newAllowance = await contract.allowance(address, lotteryAddress);
-      setAllowance(newAllowance.toString());
+    try {
+      let tx = await contract.approve(
+        lotteryAddress,
+        ethers.constants.MaxUint256
+      );
+      let reciept = await tx.wait();
+      setShow(false);
+      if (reciept && reciept.status) {
+        let newAllowance = await contract.allowance(address, lotteryAddress);
+        setAllowance(newAllowance.toString());
+      }
+    } catch (err) {
+      console.log(err);
+      setShow(false);
     }
   }
 
@@ -255,7 +278,7 @@ const TicketDetails = ({
         }
       }`;
       let url =
-        "https://api.thegraph.com/subgraphs/name/sallystix/test-lottery";
+        "https://api.thegraph.com/subgraphs/name/sallystix/test-subgraph";
       const response = await axios.post(url, { query });
       const data = response.data;
 
@@ -276,7 +299,6 @@ const TicketDetails = ({
 
   const titleAndFunction = () => {
     const totalCost = quantity * lotteryDetails.ticketPrice;
-    console.log(allowance, totalCost);
     if (!address) {
       return {
         title: "Connect Wallet",
@@ -336,9 +358,16 @@ const TicketDetails = ({
           </h2>
         </div>
         <div>
-          <h2 className={styles.title}>
-            {totalTicketsPurchased}/{lotteryDetails.maxTickets}
-          </h2>
+          {
+            <h2
+              className={
+                showRemaining ? styles.flashingTitleA : styles.flashingTitleB
+              }
+            >
+              only {lotteryDetails.maxTickets - totalTicketsPurchased || 0}/
+              {lotteryDetails.maxTickets || 0} tickets left
+            </h2>
+          }
         </div>
       </div>
       <div className={styles.countDownContainer}>
@@ -402,6 +431,7 @@ const TicketDetails = ({
         <div className={styles.address}>
           <p className={styles.text}>
             {parseInt(myTickets)}/{lotteryDetails.maxTicketsPerWallet} Tickets
+            per wallet
           </p>
           {/* <img src={copy} alt="#" className={styles.copy} /> */}
         </div>

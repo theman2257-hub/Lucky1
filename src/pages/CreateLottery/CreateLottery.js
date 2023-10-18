@@ -9,11 +9,16 @@ import { useAccount } from "wagmi";
 import { ethers } from "ethers";
 import { useSigner } from "wagmi";
 import Loader from "../../components/Loader";
+import SetPrizeAmountModal from "../../components/CreateLottery/SetPrizeAmountModal/SetPrizeAmountModal";
+import { erc20Abi } from "../../constants/abis/abi";
 
 const CreateLottery = () => {
   const { data: signer } = useSigner();
   const [imgurl, setImgurl] = useState("");
   const [showLoader, setShowLoader] = useState(false);
+  const [showPrizeAmountModal, setShowPrizeAmountModal] = useState(false);
+  const [prizeAmount, setPrizeAmount] = useState("");
+  const [lotteryAddress, setLotteryAddress] = useState("");
   const { affiliateAddress } = useParams();
 
   React.useEffect(() => {
@@ -652,7 +657,8 @@ const CreateLottery = () => {
     // window.open(`${window.location.origin}/profile/${address}`)
   };
 
-  let factoryContract = "0xEaf884ca7c53f2fB541daA0caf66025e112A06F3";
+  // let factoryContract = "0xEaf884ca7c53f2fB541daA0caf66025e112A06F3";
+  let factoryContract = "0x6A1dEB92664Caa00bc58a2A7286Dd3a998DC5F07";
   const { address } = useAccount();
   const { open } = useWeb3Modal();
 
@@ -700,15 +706,47 @@ const CreateLottery = () => {
       //direct to profile page
       setShowLoader(false);
       console.log(receipt);
-      let lotteryAddress = receipt.events[1].args.lottery;
-      console.log(lotteryAddress);
+      let lotteryAddress = receipt.events[3].args.lottery;
+      setLotteryAddress(lotteryAddress);
       await sleep(1000);
-      updateImage(receipt.events[0].args.lottery);
+      // updateImage(receipt.events[0].args.lottery);
       await sleep(1000);
       alert(
         "*** Lottery Created Successfully ***Congratulations! Your lottery has been created.Please remember to add a description and image to enhance your lottery listing.Good luck!"
       );
-      window.open(`${window.location.origin}/profile/${address}`);
+      if (values.entranceFee === "0") setShowPrizeAmountModal(true);
+      else {
+        window.open(`${window.location.origin}/profile/${address}`);
+      }
+    }
+  };
+
+  const depositPrizeAmount = async () => {
+    console.log(
+      "deposit funds",
+      prizeAmount,
+      ethers.utils.parseEther(prizeAmount).toString()
+    );
+    if (lotteryAddress === "") return;
+
+    let feeToken = new ethers.Contract(values.FeeToken, erc20Abi, signer);
+    try {
+      setShowLoader(true);
+      let tx = await feeToken.transfer(
+        lotteryAddress,
+        ethers.utils.parseEther(prizeAmount)
+      );
+
+      let receipt = await tx.wait();
+
+      if (receipt) {
+        setShowLoader(false);
+        setShowPrizeAmountModal(false);
+        alert("Prize Amount Deposited successfully!");
+        window.open(`${window.location.origin}/profile/${address}`);
+      }
+    } catch (error) {
+      console.log(error);
     }
   };
 
@@ -936,6 +974,14 @@ const CreateLottery = () => {
           </form>
         </div>
       </div>
+      {showPrizeAmountModal && (
+        <SetPrizeAmountModal
+          setModal={setShowPrizeAmountModal}
+          prizeAmount={prizeAmount}
+          setPrizeAmount={setPrizeAmount}
+          depositPrizeAmount={depositPrizeAmount}
+        />
+      )}
       <Loader show={showLoader} />
     </section>
   );

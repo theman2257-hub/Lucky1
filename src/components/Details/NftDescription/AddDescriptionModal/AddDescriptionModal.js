@@ -14,6 +14,7 @@ const AddDescriptionModal = ({
 }) => {
   const { id } = useParams();
   let { address } = useAccount();
+  const [value, setValue] = React.useState("");
 
   console.log("creator", creator);
   console.log("address", address);
@@ -34,6 +35,7 @@ const AddDescriptionModal = ({
     console.log(res);
     if (res.status == "ok") {
       alert("Description Updated Successfully");
+      setDescription(value);
     } else {
       alert("Something went wrong");
     }
@@ -63,7 +65,7 @@ const AddDescriptionModal = ({
                 cols="30"
                 rows="7"
                 placeholder="Write Description..."
-                onChange={(e) => setDescription(e.target.value)}
+                onChange={(e) => setValue(e.target.value)}
               ></textarea>
             </div>
 

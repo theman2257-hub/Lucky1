@@ -21,6 +21,32 @@
   color: #ecddff;
   padding-bottom: 8px;
 }
+
+.flashingTitleA {
+  display: flex;
+  font-family: var(--fontFamily);
+  font-style: normal;
+  font-weight: 500;
+  font-size: 18px;
+  line-height: 140%;
+  align-items: center;
+  justify-content: center;
+  color: #ecddff;
+  padding-top: 5px;
+}
+
+.flashingTitleB {
+  display: flex;
+  font-family: var(--fontFamily);
+  font-style: normal;
+  font-weight: 500;
+  font-size: 18px;
+  line-height: 140%;
+
+  color: #4b3cff;
+  padding-top: 5px;
+}
+
 .countDownContainer {
   display: flex;
   flex-direction: column;
@@ -278,6 +304,7 @@
     font-size: 22px;
     padding-bottom: 5px;
   }
+
   .publicRound {
     gap: 4px;
     padding: 4px 10px;
