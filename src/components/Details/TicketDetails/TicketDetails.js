@@ -60,7 +60,7 @@ const TicketDetails = ({
     tokenSymbol
       }
     }`;
-    let url = "https://api.thegraph.com/subgraphs/name/sallystix/test-subgraph";
+    let url = "https://api.thegraph.com/subgraphs/name/sallystix/test-lottery";
     const response = await axios.post(url, { query });
     const data = response.data;
     // let lotteryData = data.data.lotteries.map((el) => {
@@ -119,7 +119,7 @@ const TicketDetails = ({
         amount
       }
     }`;
-    let url = "https://api.thegraph.com/subgraphs/name/sallystix/test-subgraph";
+    let url = "https://api.thegraph.com/subgraphs/name/sallystix/test-lottery";
     const response = await axios.post(url, { query });
     const data = response.data;
     const amountPurchased = data.data.ticketPurchaseds[0].amount;
@@ -278,7 +278,7 @@ const TicketDetails = ({
         }
       }`;
       let url =
-        "https://api.thegraph.com/subgraphs/name/sallystix/test-subgraph";
+        "https://api.thegraph.com/subgraphs/name/sallystix/test-lottery";
       const response = await axios.post(url, { query });
       const data = response.data;
 

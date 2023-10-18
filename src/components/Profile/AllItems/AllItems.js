@@ -59,7 +59,7 @@ const AllItems = ({
       tokenSymbol
       }
     }`;
-    let url = "https://api.thegraph.com/subgraphs/name/sallystix/test-subgraph";
+    let url = "https://api.thegraph.com/subgraphs/name/sallystix/test-lottery";
     try {
       const { data } = await axios.post(url, { query });
       let lot = data.data.lotteries;

@@ -657,8 +657,8 @@ const CreateLottery = () => {
     // window.open(`${window.location.origin}/profile/${address}`)
   };
 
-  // let factoryContract = "0xEaf884ca7c53f2fB541daA0caf66025e112A06F3";
-  let factoryContract = "0x6A1dEB92664Caa00bc58a2A7286Dd3a998DC5F07";
+  let factoryContract = "0xEaf884ca7c53f2fB541daA0caf66025e112A06F3";
+  // let factoryContract = "0x6A1dEB92664Caa00bc58a2A7286Dd3a998DC5F07";
   const { address } = useAccount();
   const { open } = useWeb3Modal();
 

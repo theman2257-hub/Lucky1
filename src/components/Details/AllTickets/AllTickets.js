@@ -24,7 +24,7 @@ const AllTickets = () => {
   // categoryWiseFilter
   const [category, setCategory] = useState("All Tickets");
   const allCategory = ["all participants"];
-  let url = "https://api.thegraph.com/subgraphs/name/sallystix/test-subgraph";
+  let url = "https://api.thegraph.com/subgraphs/name/sallystix/test-lottery";
   const [allTicket, setAllTicket] = useState([]);
   const getTickets = async () => {
     let query = `
