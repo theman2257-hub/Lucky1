@@ -46,16 +46,6 @@ const AllTickets = () => {
   useEffect(() => {
     getTickets();
   }, [address]);
-  // const allTicket = [
-  //   {
-  //     ticketId: "00012A1",
-  //     ticketPrice: {
-  //       bnb: 82,
-  //       usd: 4001.41,
-  //     },
-  //     timeAndDate: "Mar 15 2023 05:30:01",
-  //   }
-  // ];
   const dateFormat = (inputDate) => {
     const date = new Date(inputDate);
     const newDate = date.toLocaleString("en-US", {

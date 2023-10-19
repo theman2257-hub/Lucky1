@@ -3,7 +3,7 @@ import React from "react";
 import Counter from "../../Counter/Counter/Counter";
 import styles from "./styles.module.css";
 import { ethers } from "ethers";
-import { useEnsName } from "wagmi";
+import { useSigner, useEnsName } from "wagmi";
 let abierc = [
   { inputs: [], stateMutability: "nonpayable", type: "constructor" },
   {
@@ -231,9 +231,11 @@ const Cards = ({
   lotteryAddress,
   maxTickets,
   tokenSymbol,
+  feeToken,
 }) => {
   const date = new Date(endDate * 1000);
-  const [sym, setSym] = React.useState();
+  const [prizeAmount, setPrizeAmount] = React.useState(0.0);
+  const { data } = useSigner();
   let rpc = "https://bsc-dataseed1.binance.org/";
 
   // getSymbol(lotteryAddress).then((res) => {
@@ -250,6 +252,25 @@ const Cards = ({
       second: "2-digit",
     })
     .replace(",", "");
+
+  React.useEffect(() => {
+    const getLotteryBalance = async () => {
+      let feeTokenContract = new ethers.Contract(feeToken, abierc, data);
+
+      try {
+        let res = await feeTokenContract.balanceOf(lotteryAddress);
+        console.log(ethers.utils.formatEther(res.toString()).toString());
+        setPrizeAmount(ethers.utils.formatEther(res.toString()).toString());
+      } catch (error) {}
+    };
+
+    if (ticketPrice === "0") {
+      console.log("feeToken", feeToken);
+
+      getLotteryBalance();
+    }
+  }, [data]);
+
   return (
     <>
       <div
@@ -280,7 +301,9 @@ const Cards = ({
         {/* <p className={styles.name}>{name}</p> */}
         <p className={styles.name}>
           {" "}
-          {Number(ticketPrice * (maxTickets / 10 ** 18)).toFixed(2)}{" "}
+          {ticketPrice !== "0"
+            ? Number(ticketPrice * (maxTickets / 10 ** 18)).toFixed(2)
+            : prizeAmount}{" "}
           {tokenSymbol}
         </p>
         <div className={styles.price}>

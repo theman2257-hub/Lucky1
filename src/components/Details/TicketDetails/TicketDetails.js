@@ -87,6 +87,7 @@ const TicketDetails = ({
     let lotteryData = data.data.lotteries[0];
     console.log(data.data.lotteries[0]);
     setLotteryDetails(data.data.lotteries[0]);
+    console.log(lotteryDetails);
 
     // setLotteryDetails(lotteryData);
 
