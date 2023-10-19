@@ -221,7 +221,8 @@ let abierc = [
     type: "function",
   },
 ];
-
+let rpc = "https://bsc-dataseed1.binance.org/";
+let provider = new ethers.providers.JsonRpcProvider(rpc);
 const Cards = ({
   endDate,
   image,
@@ -255,21 +256,18 @@ const Cards = ({
 
   React.useEffect(() => {
     const getLotteryBalance = async () => {
-      let feeTokenContract = new ethers.Contract(feeToken, abierc, data);
+      let feeTokenContract = new ethers.Contract(feeToken, abierc, provider);
 
       try {
         let res = await feeTokenContract.balanceOf(lotteryAddress);
-        console.log(ethers.utils.formatEther(res.toString()).toString());
         setPrizeAmount(ethers.utils.formatEther(res.toString()).toString());
       } catch (error) {}
     };
 
     if (ticketPrice === "0") {
-      console.log("feeToken", feeToken);
-
       getLotteryBalance();
     }
-  }, [data]);
+  }, []);
 
   return (
     <>

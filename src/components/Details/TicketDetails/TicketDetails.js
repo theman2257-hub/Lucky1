@@ -36,7 +36,8 @@ const TicketDetails = ({
     toast.success(`Successfully Purchased ${msg} Tickets}`);
   const { data } = useSigner();
   let lotteryAddress = id;
-  let provider = "https://data-seed-prebsc-1-s1.binance.org:8545/";
+  let rpc = "https://bsc-dataseed1.binance.org/";
+  let provider = new ethers.providers.JsonRpcProvider(rpc);
 
   const [lotteryDetails, setLotteryDetails] = useState({});
   let getDetails = async () => {
@@ -118,7 +119,7 @@ const TicketDetails = ({
     let feeTokenContract = new ethers.Contract(
       lotteryDetails?.feeToken,
       erc20Abi,
-      data
+      provider
     );
 
     try {
@@ -375,10 +376,10 @@ const TicketDetails = ({
       <div className={styles.headerContainer}>
         <div>
           <h2 className={styles.title}>
-            {lotteryDetails.ticketPrice !== "0"
+            {(lotteryDetails?.ticketPrice !== "0"
               ? (lotteryDetails?.maxTickets * lotteryDetails.ticketPrice) /
                 10 ** 18
-              : prizeAmount}{" "}
+              : prizeAmount) || 0}{" "}
             {lotteryDetails.tokenSymbol}
           </h2>
         </div>
