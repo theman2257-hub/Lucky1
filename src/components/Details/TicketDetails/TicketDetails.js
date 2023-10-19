@@ -11,7 +11,7 @@ import { useSigner } from "wagmi";
 import { ToastContainer, toast } from "react-toastify";
 import axios from "axios";
 import "react-toastify/dist/ReactToastify.css";
-import { useParams } from "react-router-dom";
+import { redirectDocument, useParams } from "react-router-dom";
 import Loader from "../../Loader";
 
 const TicketDetails = ({
@@ -29,6 +29,8 @@ const TicketDetails = ({
   const [show, setShow] = useState(false);
   const [showRemaining, setShowRemaining] = useState(false);
   const [totalTicketsPurchased, setTotalPurchased] = useState(0);
+  const [prizeAmount, setPrizeAmount] = React.useState(0);
+
   const { id } = useParams();
   const txSuccess = (msg) =>
     toast.success(`Successfully Purchased ${msg} Tickets}`);
@@ -111,6 +113,23 @@ const TicketDetails = ({
       });
   };
 
+  const getLotteryBalance = async () => {
+    if (!lotteryDetails.feeToken || !lotteryDetails.lotteryAddress) return;
+    let feeTokenContract = new ethers.Contract(
+      lotteryDetails?.feeToken,
+      erc20Abi,
+      data
+    );
+
+    try {
+      let res = await feeTokenContract.balanceOf(
+        lotteryDetails?.lotteryAddress
+      );
+      console.log(ethers.utils.formatEther(res.toString()).toString());
+      setPrizeAmount(ethers.utils.formatEther(res.toString()).toString());
+    } catch (error) {}
+  };
+
   let buyMax = async () => {
     let query = `{
       ticketPurchaseds( where: {lotteryAddress:"${lotteryAddress}", buyer:"${address}"}) {
@@ -143,6 +162,8 @@ const TicketDetails = ({
   };
 
   useEffect(() => {
+    getLotteryBalance();
+
     setModal();
   }, [lotteryDetails]);
 
@@ -354,8 +375,10 @@ const TicketDetails = ({
       <div className={styles.headerContainer}>
         <div>
           <h2 className={styles.title}>
-            {(lotteryDetails?.maxTickets * lotteryDetails.ticketPrice) /
-              10 ** 18}{" "}
+            {lotteryDetails.ticketPrice !== "0"
+              ? (lotteryDetails?.maxTickets * lotteryDetails.ticketPrice) /
+                10 ** 18
+              : prizeAmount}{" "}
             {lotteryDetails.tokenSymbol}
           </h2>
         </div>
