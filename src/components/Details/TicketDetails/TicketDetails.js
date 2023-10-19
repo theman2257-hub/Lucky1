@@ -170,7 +170,7 @@ const TicketDetails = ({
   useEffect(() => {
     getIsRunning();
     getDetails();
-  }, []);
+  }, [data]);
 
   const purchaseTickets = async (t) => {
     console.log(affiliateAddress, String(t), lotteryAddress);
@@ -208,6 +208,7 @@ const TicketDetails = ({
       );
 
       let isRunning = await lotteryContract.isRunning();
+
       if (!isRunning) {
         setCompetitionEndedModal(true);
         setEnded(true);
