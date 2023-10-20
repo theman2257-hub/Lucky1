@@ -29,6 +29,7 @@ const TicketDetails = ({
   const [show, setShow] = useState(false);
   const [showRemaining, setShowRemaining] = useState(false);
   const [totalTicketsPurchased, setTotalPurchased] = useState(0);
+  const [affiliateFee, setAffiliateFee] = useState(0);
   const [prizeAmount, setPrizeAmount] = React.useState(0);
 
   const { id } = useParams();
@@ -163,6 +164,7 @@ const TicketDetails = ({
   };
 
   useEffect(() => {
+    if (lotteryDetails?.ticketPrice !== 0) return;
     getLotteryBalance();
 
     setModal();
@@ -316,9 +318,25 @@ const TicketDetails = ({
       // setLotteryDetails(lotteryData);
     };
 
+    const getAffiliateFee = async () => {
+      if (!lotteryDetails.lotteryAddress) return;
+      let lotteryContract = new ethers.Contract(
+        lotteryDetails?.lotteryAddress,
+        lotteryABI,
+        provider
+      );
+
+      try {
+        let res = await lotteryContract.affiliateFee();
+        setAffiliateFee(res.toString());
+        // setPrizeAmount(ethers.utils.formatEther(res.toString()).toString());
+      } catch (error) {}
+    };
+
     getMyTickets();
     getAllowance();
     getTotalTicketsPurchased();
+    getAffiliateFee();
   }, [address, lotteryDetails, data, lotteryAddress]);
 
   const titleAndFunction = () => {
@@ -328,7 +346,10 @@ const TicketDetails = ({
         title: "Connect Wallet",
         function: open,
       };
-    } else if (lotteryDetails.endDate * 1000 < Date.now()) {
+    } else if (
+      lotteryDetails.endDate * 1000 < Date.now() ||
+      lotteryDetails.maxTickets - totalTicketsPurchased === 0
+    ) {
       return {
         title: "End Lottery",
         function: async () => {
@@ -376,6 +397,7 @@ const TicketDetails = ({
       <div className={styles.headerContainer}>
         <div>
           <h2 className={styles.title}>
+            Up to{" "}
             {(lotteryDetails?.ticketPrice !== "0"
               ? (lotteryDetails?.maxTickets * lotteryDetails.ticketPrice) /
                 10 ** 18
@@ -413,6 +435,12 @@ const TicketDetails = ({
               <span className={styles.publicRoundText}>
                 {" "}
                 {lotteryDetails.creatorFee} % Creator Fee
+              </span>
+            </p>
+            <p className={styles.publicRound}>
+              <span className={styles.publicRoundText}>
+                {" "}
+                {affiliateFee} % Affiliate Fee
               </span>
             </p>
 

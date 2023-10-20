@@ -1,5 +1,5 @@
 import React from "react";
-
+import axios from "axios";
 import Counter from "../../Counter/Counter/Counter";
 import styles from "./styles.module.css";
 import { ethers } from "ethers";
@@ -235,7 +235,16 @@ const Cards = ({
   feeToken,
 }) => {
   const date = new Date(endDate * 1000);
+  const pastDate = new Date(
+    1970,
+    0,
+    1,
+    date.getHours(),
+    date.getMinutes(),
+    date.getSeconds()
+  );
   const [prizeAmount, setPrizeAmount] = React.useState(0.0);
+  const [totalTicketsPurchased, setTotalPurchased] = React.useState(0);
   const { data } = useSigner();
   let rpc = "https://bsc-dataseed1.binance.org/";
 
@@ -254,7 +263,40 @@ const Cards = ({
     })
     .replace(",", "");
 
+  const pastDateString = pastDate
+    .toLocaleString("en-US", {
+      month: "short",
+      day: "2-digit",
+      year: "numeric",
+      hour: "2-digit",
+      minute: "2-digit",
+      second: "2-digit",
+    })
+    .replace(",", "");
+
   React.useEffect(() => {
+    const getTotalTicketsPurchased = async () => {
+      let query = `
+      {
+        ticketPurchaseds(where:{lotteryAddress:"${lotteryAddress}"}) {
+          amount
+        }
+      }`;
+      let url =
+        "https://api.thegraph.com/subgraphs/name/sallystix/test-lottery";
+      const response = await axios.post(url, { query });
+      const data = response.data;
+
+      let totalPurchased = 0;
+      data.data.ticketPurchaseds.map((item) => {
+        totalPurchased += parseInt(item.amount);
+      });
+      console.log(totalPurchased);
+
+      setTotalPurchased(totalPurchased);
+      // setLotteryDetails(lotteryData);
+    };
+
     const getLotteryBalance = async () => {
       let feeTokenContract = new ethers.Contract(feeToken, abierc, provider);
 
@@ -266,6 +308,7 @@ const Cards = ({
 
     if (ticketPrice === "0") {
       getLotteryBalance();
+      getTotalTicketsPurchased();
     }
   }, []);
 
@@ -286,7 +329,13 @@ const Cards = ({
         }}
       >
         <div className={styles.counter}>
-          <Counter time={dateString} />
+          <Counter
+            time={
+              maxTickets - totalTicketsPurchased > 0
+                ? dateString
+                : pastDateString
+            }
+          />
         </div>
         <img
           onError={(ev) => {
