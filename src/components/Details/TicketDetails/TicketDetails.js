@@ -122,7 +122,6 @@ const TicketDetails = ({
       erc20Abi,
       provider
     );
-
     try {
       let res = await feeTokenContract.balanceOf(
         lotteryDetails?.lotteryAddress
@@ -164,7 +163,12 @@ const TicketDetails = ({
   };
 
   useEffect(() => {
-    if (lotteryDetails?.ticketPrice !== 0) return;
+    console.log("GET LOTTERY BALANCE 1", lotteryDetails?.ticketPrice);
+    if (lotteryDetails?.ticketPrice !== "0") {
+      return;
+    }
+    console.log("GET LOTTERY BALANCE 2");
+
     getLotteryBalance();
 
     setModal();
@@ -397,11 +401,11 @@ const TicketDetails = ({
       <div className={styles.headerContainer}>
         <div>
           <h2 className={styles.title}>
-            Up to{" "}
-            {(lotteryDetails?.ticketPrice !== "0"
+            Up to {prizeAmount}{" "}
+            {/* {(lotteryDetails?.ticketPrice !== "0"
               ? (lotteryDetails?.maxTickets * lotteryDetails.ticketPrice) /
                 10 ** 18
-              : prizeAmount) || 0}{" "}
+              : prizeAmount) || 0}{" "} */}
             {lotteryDetails.tokenSymbol}
           </h2>
         </div>
