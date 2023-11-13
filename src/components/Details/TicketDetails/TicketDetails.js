@@ -163,7 +163,6 @@ const TicketDetails = ({
   };
 
   useEffect(() => {
-    console.log("GET LOTTERY BALANCE 1", lotteryDetails?.ticketPrice);
     if (lotteryDetails?.ticketPrice !== "0") {
       return;
     }
