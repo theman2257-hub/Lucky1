@@ -33,9 +33,28 @@ const CreateLottery = () => {
   let provider = new ethers.providers.Web3Provider(window.ethereum);
   let factoryABI = [
     {
-      inputs: [],
+      inputs: [
+        {
+          internalType: "address",
+          name: "_vrfCoordinator",
+          type: "address",
+        },
+      ],
       stateMutability: "nonpayable",
       type: "constructor",
+    },
+    {
+      anonymous: false,
+      inputs: [
+        {
+          indexed: true,
+          internalType: "address",
+          name: "consumer",
+          type: "address",
+        },
+      ],
+      name: "ConsumerRemoved",
+      type: "event",
     },
     {
       anonymous: false,
@@ -136,6 +155,32 @@ const CreateLottery = () => {
       type: "event",
     },
     {
+      anonymous: false,
+      inputs: [
+        {
+          indexed: true,
+          internalType: "address",
+          name: "consumer",
+          type: "address",
+        },
+      ],
+      name: "TriggerUpkeepLog",
+      type: "event",
+    },
+    {
+      inputs: [
+        {
+          internalType: "uint64",
+          name: "_subId",
+          type: "uint64",
+        },
+      ],
+      name: "acceptSubscriptionOwnership",
+      outputs: [],
+      stateMutability: "nonpayable",
+      type: "function",
+    },
+    {
       inputs: [],
       name: "affiliateFee",
       outputs: [
@@ -156,19 +201,6 @@ const CreateLottery = () => {
           internalType: "uint256",
           name: "",
           type: "uint256",
-        },
-      ],
-      stateMutability: "view",
-      type: "function",
-    },
-    {
-      inputs: [],
-      name: "apiWallet",
-      outputs: [
-        {
-          internalType: "address",
-          name: "",
-          type: "address",
         },
       ],
       stateMutability: "view",
@@ -328,6 +360,19 @@ const CreateLottery = () => {
       type: "function",
     },
     {
+      inputs: [],
+      name: "forwarder",
+      outputs: [
+        {
+          internalType: "address",
+          name: "",
+          type: "address",
+        },
+      ],
+      stateMutability: "view",
+      type: "function",
+    },
+    {
       inputs: [
         {
           internalType: "address",
@@ -450,8 +495,39 @@ const CreateLottery = () => {
       type: "function",
     },
     {
+      inputs: [
+        {
+          internalType: "address",
+          name: "_consumer",
+          type: "address",
+        },
+        {
+          internalType: "address",
+          name: "_upkeepCaller",
+          type: "address",
+        },
+      ],
+      name: "removeConsumer",
+      outputs: [],
+      stateMutability: "nonpayable",
+      type: "function",
+    },
+    {
       inputs: [],
       name: "renounceOwnership",
+      outputs: [],
+      stateMutability: "nonpayable",
+      type: "function",
+    },
+    {
+      inputs: [
+        {
+          internalType: "address",
+          name: "_newOwner",
+          type: "address",
+        },
+      ],
+      name: "requestSubscriptionOwnerTransfer",
       outputs: [],
       stateMutability: "nonpayable",
       type: "function",
@@ -465,19 +541,6 @@ const CreateLottery = () => {
         },
       ],
       name: "setAffiliateFeeOnCreate",
-      outputs: [],
-      stateMutability: "nonpayable",
-      type: "function",
-    },
-    {
-      inputs: [
-        {
-          internalType: "address",
-          name: "_apiWallet",
-          type: "address",
-        },
-      ],
-      name: "setApiAddress",
       outputs: [],
       stateMutability: "nonpayable",
       type: "function",
@@ -522,6 +585,24 @@ const CreateLottery = () => {
       type: "function",
     },
     {
+      inputs: [
+        {
+          internalType: "address",
+          name: "_upkeep",
+          type: "address",
+        },
+        {
+          internalType: "address",
+          name: "_forwarder",
+          type: "address",
+        },
+      ],
+      name: "setUpkeep",
+      outputs: [],
+      stateMutability: "nonpayable",
+      type: "function",
+    },
+    {
       inputs: [],
       name: "startTime",
       outputs: [
@@ -529,6 +610,19 @@ const CreateLottery = () => {
           internalType: "uint256",
           name: "",
           type: "uint256",
+        },
+      ],
+      stateMutability: "view",
+      type: "function",
+    },
+    {
+      inputs: [],
+      name: "subId",
+      outputs: [
+        {
+          internalType: "uint64",
+          name: "",
+          type: "uint64",
         },
       ],
       stateMutability: "view",
@@ -571,6 +665,45 @@ const CreateLottery = () => {
       name: "transferOwnership",
       outputs: [],
       stateMutability: "nonpayable",
+      type: "function",
+    },
+    {
+      inputs: [
+        {
+          internalType: "address",
+          name: "_consumer",
+          type: "address",
+        },
+      ],
+      name: "triggerUpkeep",
+      outputs: [],
+      stateMutability: "nonpayable",
+      type: "function",
+    },
+    {
+      inputs: [],
+      name: "upkeep",
+      outputs: [
+        {
+          internalType: "contract ILogAutomation",
+          name: "",
+          type: "address",
+        },
+      ],
+      stateMutability: "view",
+      type: "function",
+    },
+    {
+      inputs: [],
+      name: "vrfCoordinator",
+      outputs: [
+        {
+          internalType: "contract VRFCoordinatorV2Interface",
+          name: "",
+          type: "address",
+        },
+      ],
+      stateMutability: "view",
       type: "function",
     },
     {
@@ -657,7 +790,7 @@ const CreateLottery = () => {
     // window.open(`${window.location.origin}/profile/${address}`)
   };
 
-  let factoryContract = "0xEaf884ca7c53f2fB541daA0caf66025e112A06F3";
+  let factoryContract = "0x8D703eBaFad9DCCBfAE307b56B812e496071f1dD";
   // let factoryContract = "0x6A1dEB92664Caa00bc58a2A7286Dd3a998DC5F07";
   const { address } = useAccount();
   const { open } = useWeb3Modal();

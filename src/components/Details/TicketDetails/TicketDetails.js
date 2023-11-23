@@ -5,7 +5,11 @@ import { copy, bnb } from "../../../images/images";
 import { useAccount } from "wagmi";
 import { useWeb3Modal } from "@web3modal/react";
 import styles from "./styles.module.css";
-import { lotteryABI, erc20Abi } from "../../../constants/abis/abi";
+import {
+  lotteryABI,
+  erc20Abi,
+  lotteryFactoryABI,
+} from "../../../constants/abis/abi";
 import { Signer, ethers } from "ethers";
 import { useSigner } from "wagmi";
 import { ToastContainer, toast } from "react-toastify";
@@ -39,6 +43,9 @@ const TicketDetails = ({
   let lotteryAddress = id;
   let rpc = "https://bsc-dataseed1.binance.org/";
   let provider = new ethers.providers.JsonRpcProvider(rpc);
+  let webSocketProvider = new ethers.providers.WebSocketProvider(
+    "wss://frequent-greatest-haze.bsc-testnet.quiknode.pro/d471a8b557359426948060e08a30e1eb762d6c60/"
+  );
 
   const [lotteryDetails, setLotteryDetails] = useState({});
   let getDetails = async () => {
@@ -166,7 +173,6 @@ const TicketDetails = ({
     if (lotteryDetails?.ticketPrice !== "0") {
       return;
     }
-    console.log("GET LOTTERY BALANCE 2");
 
     getLotteryBalance();
 
@@ -342,6 +348,42 @@ const TicketDetails = ({
     getAffiliateFee();
   }, [address, lotteryDetails, data, lotteryAddress]);
 
+  useEffect(() => {
+    let factoryContract = new ethers.Contract(
+      "0x8D703eBaFad9DCCBfAE307b56B812e496071f1dD",
+      lotteryFactoryABI,
+      webSocketProvider
+    );
+
+    const listenForEvent = async () => {
+      let lotteryContract = new ethers.Contract(
+        lotteryAddress,
+        lotteryABI,
+        data
+      );
+
+      // now listen for event
+      const checksumAddress = ethers.utils.getAddress(lotteryContract.address); // Convert to checksum address
+      console.log(checksumAddress);
+
+      const filter = factoryContract.filters.TriggerUpkeepLog(checksumAddress);
+
+      factoryContract.on(filter, (consumer, event) => {
+        // Handle the event
+        console.log("Filtered Event triggered:", consumer, event);
+        alert("Lottery Ended");
+        setCompetitionEndedModal(true);
+        setShow(false);
+      });
+    };
+
+    listenForEvent();
+
+    return () => {
+      factoryContract.removeAllListeners();
+    };
+  }, []);
+
   const titleAndFunction = () => {
     const totalCost = quantity * lotteryDetails.ticketPrice;
     if (!address) {
@@ -356,11 +398,16 @@ const TicketDetails = ({
       return {
         title: "End Lottery",
         function: async () => {
-          let url = `https://api.lucky1.io/end/end/${lotteryAddress}`;
-          const { data } = await axios.post(url);
-          console.log(data);
-          alert("Lottery Ended");
-          setCompetitionEndedModal(true);
+          setShow(true);
+          // end lottery thru contract
+          let lotteryContract = new ethers.Contract(
+            "0x6E96100c22Be0Fb4aa7B9858C05f9BB2E0e48381",
+            lotteryABI,
+            data
+          );
+
+          const tx = await lotteryContract.testEndLottery();
+          await tx.wait();
         },
       };
     } else if (allowance < totalCost) {
