@@ -409,7 +409,7 @@ const TicketDetails = ({
             data
           );
 
-          const tx = await lotteryContract.endLottery("700000");
+          const tx = await lotteryContract.endLottery("1000000");
           await tx.wait();
         },
       };
