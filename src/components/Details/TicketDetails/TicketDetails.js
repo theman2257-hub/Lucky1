@@ -404,7 +404,7 @@ const TicketDetails = ({
           setShow(true);
           // end lottery thru contract
           let lotteryContract = new ethers.Contract(
-            "0x6E96100c22Be0Fb4aa7B9858C05f9BB2E0e48381",
+            lotteryAddress,
             lotteryABI,
             data
           );
