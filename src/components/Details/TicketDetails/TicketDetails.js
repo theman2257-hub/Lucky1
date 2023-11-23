@@ -150,7 +150,10 @@ const TicketDetails = ({
     let url = "https://api.thegraph.com/subgraphs/name/sallystix/test-lottery";
     const response = await axios.post(url, { query });
     const data = response.data;
-    const amountPurchased = data.data.ticketPurchaseds[0].amount;
+    const amountPurchased =
+      data.data.ticketPurchaseds.length > 0
+        ? data.data.ticketPurchaseds[0].amount
+        : 0;
     console.log(amountPurchased);
     const purchaseableAmount =
       lotteryDetails.maxTicketsPerWallet - amountPurchased;
