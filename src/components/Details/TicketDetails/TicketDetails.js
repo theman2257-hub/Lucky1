@@ -150,10 +150,7 @@ const TicketDetails = ({
     let url = "https://api.thegraph.com/subgraphs/name/sallystix/test-lottery";
     const response = await axios.post(url, { query });
     const data = response.data;
-    const amountPurchased =
-      data.data.ticketPurchaseds.length > 0
-        ? data.data.ticketPurchaseds[0].amount
-        : 0;
+    const amountPurchased = data.data.ticketPurchaseds[0].amount;
     console.log(amountPurchased);
     const purchaseableAmount =
       lotteryDetails.maxTicketsPerWallet - amountPurchased;
@@ -404,12 +401,12 @@ const TicketDetails = ({
           setShow(true);
           // end lottery thru contract
           let lotteryContract = new ethers.Contract(
-            lotteryAddress,
+            "0x6E96100c22Be0Fb4aa7B9858C05f9BB2E0e48381",
             lotteryABI,
             data
           );
 
-          const tx = await lotteryContract.endLottery("1000000");
+          const tx = await lotteryContract.testEndLottery();
           await tx.wait();
         },
       };
