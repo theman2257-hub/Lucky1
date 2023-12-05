@@ -9,6 +9,7 @@ const NftDescription = ({
   creator,
   description,
   setDescription,
+  setModal,
 }) => {
   const [showList, setShowList] = useState(false);
   const [descriptionModal, setDescriptionModal] = useState(false);
@@ -20,6 +21,10 @@ const NftDescription = ({
     // Show the AddWhitelistModal when the "Whitelist wallet" button is clicked
     setWhitelistModal(true);
   };
+
+  useEffect(() => {
+    setDescriptionModal(setModal);
+  }, [setModal]);
 
   return (
     <>

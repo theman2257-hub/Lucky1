@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { useParams } from "react-router-dom";
+import { useParams, useLocation } from "react-router-dom";
 import { beast } from "../../images/images";
 import AllTickets from "../../components/Details/AllTickets/AllTickets";
 import TicketDetails from "../../components/Details/TicketDetails/TicketDetails";
@@ -21,6 +21,8 @@ const Details = () => {
   const [description, setDescription] = useState("");
   const [owner, setOwner] = useState("");
   const [lotteryAddress, setLotteryAddress] = useState("");
+  const [descriptionModal, setDescriptionModal] = useState(false);
+  const location = useLocation();
 
   const fetchDescription = async () => {
     const { data } = await axios.get(`https://api.lucky1.io/getDesc/${id}`);
@@ -29,14 +31,25 @@ const Details = () => {
   };
 
   const fetchHash = async () => {
-    const { data } = await axios.get(`https://api.lucky1.io/getHash/${id}`);
-    console.log("data", data);
-    setHash(data.hash);
+    // const { data } = await axios.get(`https://api.lucky1.io/getHash/${id}`);
+    // console.log("data", data);
+    /**
+     * @todo: change this back
+     */
+    setHash("HASHHHH");
   };
   React.useEffect(() => {
     fetchDescription();
     fetchHash();
   }, []);
+
+  React.useEffect(() => {
+    if (location.state) {
+      // pop up the description modal
+      console.log(location.state);
+      setDescriptionModal(location.state.createdNow);
+    }
+  }, [location.state]);
 
   console.log("owner", owner);
   console.log("img", img);
@@ -76,6 +89,7 @@ const Details = () => {
               description={description}
               setDescription={setDescription}
               lotteryAddress={lotteryAddress}
+              setModal={descriptionModal}
             />
           </div>
         </div>

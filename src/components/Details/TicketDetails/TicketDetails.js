@@ -31,6 +31,8 @@ const TicketDetails = ({
   const [totalTicketsPurchased, setTotalPurchased] = useState(0);
   const [affiliateFee, setAffiliateFee] = useState(0);
   const [prizeAmount, setPrizeAmount] = React.useState(0);
+  const [maxWinners, setMaxWinners] = React.useState(0);
+  const [distribution, setDistribution] = useState([]);
 
   const { id } = useParams();
   const txSuccess = (msg) =>
@@ -131,6 +133,25 @@ const TicketDetails = ({
     } catch (error) {}
   };
 
+  const getMaxWinners = async () => {
+    if (!lotteryDetails.lotteryAddress) return;
+    let lotteryContract = new ethers.Contract(
+      lotteryDetails?.lotteryAddress,
+      lotteryABI,
+      provider
+    );
+    try {
+      let res = await lotteryContract.maxWinners();
+      const distribution = [];
+      for (let i = 0; i < res; i++) {
+        let res2 = await lotteryContract.prizeDistribution(i);
+        distribution.push(res2.toString());
+      }
+      setDistribution(distribution);
+      setMaxWinners(res.toString());
+    } catch (error) {}
+  };
+
   let buyMax = async () => {
     let query = `{
       ticketPurchaseds( where: {lotteryAddress:"${lotteryAddress}", buyer:"${address}"}) {
@@ -163,10 +184,18 @@ const TicketDetails = ({
   };
 
   useEffect(() => {
-    if (lotteryDetails?.ticketPrice !== "0") {
+    if (lotteryDetails?.ticketPrice && lotteryDetails?.ticketPrice !== "0") {
+      setPrizeAmount(
+        ethers.utils
+          .formatEther(
+            (
+              parseInt(lotteryDetails?.ticketPrice) * lotteryDetails?.maxTickets
+            ).toString()
+          )
+          .toString()
+      );
       return;
     }
-    console.log("GET LOTTERY BALANCE 2");
 
     getLotteryBalance();
 
@@ -340,6 +369,7 @@ const TicketDetails = ({
     getAllowance();
     getTotalTicketsPurchased();
     getAffiliateFee();
+    getMaxWinners();
   }, [address, lotteryDetails, data, lotteryAddress]);
 
   const titleAndFunction = () => {
@@ -434,6 +464,7 @@ const TicketDetails = ({
             >
               View Creator
             </button>
+
             <p className={styles.publicRound}>
               <span className={styles.publicRoundText}>
                 {" "}
@@ -489,6 +520,23 @@ const TicketDetails = ({
           <p className={styles.text}>
             {parseInt(myTickets)}/{lotteryDetails.maxTicketsPerWallet} Tickets
             per wallet
+          </p>
+          {/* <img src={copy} alt="#" className={styles.copy} /> */}
+        </div>
+      </div>
+      <div className={styles.contactAddress}>
+        <p className={styles.text}>Max Winners:</p>
+        <div className={styles.address}>
+          <p className={styles.text}>{maxWinners}</p>
+          {/* <img src={copy} alt="#" className={styles.copy} /> */}
+        </div>
+        <p className={styles.text}>Distribution:</p>
+        <div className={styles.address}>
+          <p className={styles.text}>
+            {distribution.map(
+              (item, index) =>
+                item + "%" + (index === distribution.length - 1 ? "" : ", ")
+            )}
           </p>
           {/* <img src={copy} alt="#" className={styles.copy} /> */}
         </div>

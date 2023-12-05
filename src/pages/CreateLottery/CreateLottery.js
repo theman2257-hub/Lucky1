@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import Input from "../../components/CreateLottery/Input/Input";
 import { textIcon, dollar, usdt, calender, winner } from "../../images/images";
 import styles from "./styles.module.css";
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import axios from "axios";
 import { useWeb3Modal } from "@web3modal/react";
 import { useAccount } from "wagmi";
@@ -20,6 +20,7 @@ const CreateLottery = () => {
   const [prizeAmount, setPrizeAmount] = useState("");
   const [lotteryAddress, setLotteryAddress] = useState("");
   const { affiliateAddress } = useParams();
+  const navigate = useNavigate();
 
   React.useEffect(() => {
     console.log(imgurl);
@@ -716,7 +717,7 @@ const CreateLottery = () => {
       );
       if (values.entranceFee === "0") setShowPrizeAmountModal(true);
       else {
-        window.open(`${window.location.origin}/profile/${address}`);
+        navigate(`/${lotteryAddress}`, { state: { createdNow: true } });
       }
     }
   };

@@ -19,7 +19,7 @@
   font-weight: 400;
   font-size: 54px;
   line-height: 152%;
-  
+
   font-feature-settings: "cv11" on, "cv10" on, "cv09" on, "cv08" on, "cv07" on,
     "sinf" on, "cv06" on, "cv05" on, "cv04" on, "cv03" on, "cv02" on, "cv01" on,
     "ss04" on, "ss03" on, "ss02" on, "zero" on, "cpsp" on, "case" on, "liga" off,
@@ -30,7 +30,6 @@
 .italic {
   font-style: normal;
   font-weight: 600;
-  
 }
 .text {
   font-family: var(--fontFamily);
