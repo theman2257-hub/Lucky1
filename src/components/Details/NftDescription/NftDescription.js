@@ -48,9 +48,9 @@ const NftDescription = ({
           <div className={styles.buttonSpace} />
 
           {/* Whitelist wallet Button */}
-          <button onClick={handleAddWhitelist} className={styles.button}>
+          {/* <button onClick={handleAddWhitelist} className={styles.button}>
             Whitelist wallet
-          </button>
+          </button> */}
         </div>
         <div
           className={[
