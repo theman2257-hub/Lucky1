@@ -24,14 +24,20 @@ const CreateLottery = () => {
 
   React.useEffect(() => {
     console.log(imgurl);
-    updateImage("0xC822B224981983B6c5606c1a743E41d2E56F7c18");
+    // updateImage("0xC822B224981983B6c5606c1a743E41d2E56F7c18");
   }, [imgurl]);
 
   React.useEffect(() => {
     setValues({ ...values, ["affiliateAddress"]: affiliateAddress });
   }, [affiliateAddress]);
 
-  let provider = new ethers.providers.Web3Provider(window.ethereum);
+  let provider;
+  if (typeof window.ethereum !== "undefined") {
+    // Initialize your app's web3 functionality here
+    provider = new ethers.providers.Web3Provider(window.ethereum);
+  } else {
+    // Display a message to the user or implement alternative logic
+  }
   let factoryABI = [
     {
       inputs: [],
@@ -663,7 +669,7 @@ const CreateLottery = () => {
   const { address } = useAccount();
   const { open } = useWeb3Modal();
 
-  let signer2 = new ethers.providers.Web3Provider(window.ethereum).getSigner();
+  // let signer2 = new ethers.providers.Web3Provider(window.ethereum).getSigner();
   let factory = new ethers.Contract(factoryContract, factoryABI, signer);
 
   const newLottery = async () => {
