@@ -15,7 +15,7 @@ const Navbar = () => {
   const navItems = [
 
     { navItem: "Create Lottery", to: "/createLottery" },
-    { navItem: "Contact us", to: "/contact" },
+    { navItem: "Contact u", to: "/contact" },
     { navItem: `${address ? `Profile` : ""}`, to: `${address ? `/profile/${address}` : ""}` },
   ];
   return (
