@@ -31,12 +31,12 @@ const Details = () => {
   };
 
   const fetchHash = async () => {
-    // const { data } = await axios.get(`https://api.lucky1.io/getHash/${id}`);
-    // console.log("data", data);
+    const { data } = await axios.get(`https://api.lucky1.io/getHash/${id}`);
+    console.log("data", data);
     /**
      * @todo: change this back
      */
-    setHash("HASHHHH");
+    setHash(data.hash);
   };
   React.useEffect(() => {
     fetchDescription();

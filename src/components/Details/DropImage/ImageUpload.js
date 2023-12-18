@@ -70,6 +70,7 @@ function ImageUpload({ setImgurl, owner }) {
       return;
     }
 
+    console.log(address, owner);
     if (address != owner) {
       alert(
         "****Unauthorized Transaction **** This transaction can only be performed by the Lottery Creator"
