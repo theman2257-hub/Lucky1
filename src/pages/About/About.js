@@ -41,7 +41,9 @@ const About = () => {
   <div className={styles.person}>
     <a href="https://www.linkedin.com/in/emmanuel-theman/"><img src={TheMan} alt="Emmanuel Tunda"/></a>
     <p className={styles.text}>
-      Emmanuel Tunda, Co-Founder and CEO: Emmanuel brings over seven years of experience in the finance industry, 
+       <span className={styles.name}>Emmanuel Tunda </span> <br/>
+      <span className={styles.title}>Co-Founder and CEO : </span><br/>
+       Emmanuel brings over seven years of experience in the finance industry, 
       with a focus on insurance management and investments in both the stock market and cryptocurrency.
     </p>
   </div>
@@ -49,7 +51,8 @@ const About = () => {
   <div className={styles.person}>
     <a href="https://www.linkedin.com/in/ganza-manegabe"><img src={Darious} alt="Ganza Managegabe"/></a>
     <p className={styles.text}>
-      Ganza Managegabe, Co-Founder and COO: With a rich background in operational management and strategic planning, 
+    <span className={styles.name}>Ganza Managegabe</span><br/>
+    <span className={styles.title}>Co-Founder and COO : </span> <br/>With a rich background in operational management and strategic planning, 
       Ganza's expertise lies in steering companies towards efficiency and growth. 
       His experience in the tech and finance sectors has been instrumental in shaping the operational backbone of Lucky1.
     </p>
@@ -58,7 +61,8 @@ const About = () => {
   <div className={styles.person}>
     <a href="https://www.linkedin.com/in/brice-aminou"><img src={Bruce} alt="Brice Aminou"/></a>
     <p className={styles.text}>
-      Brice Aminou, Co-Founder and CTO: Brice is a technology visionary with extensive experience in blockchain and crypto technologies.
+    <span className={styles.name}> Brice Aminou </span> <br/>
+    <span className={styles.title}>Co-Founder and CTO : </span> <br/> Brice is a technology visionary with extensive experience in blockchain and crypto technologies.
       His innovative approach to tech solutions has been pivotal in developing Lucky1's robust and secure platform.
     </p>
   </div>

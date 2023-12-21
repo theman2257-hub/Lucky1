@@ -20,8 +20,6 @@ const Navbar = () => {
     { navItem: "How it Works", to: "/HowitWorks" },
     { navItem: "Contact us", to: "/contact" },
 
-    { navItem: "Contact u", to: "/contact" },
-
     { navItem: `${address ? `Profile` : ""}`, to: `${address ? `/profile/${address}` : ""}` },
   ];
   return (

@@ -4,6 +4,10 @@
     background-position: 80%;
     background-size: 50%;
   }
+  .name {
+    font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
+    font-weight: normal;
+  }
 
   .textContainer {
     max-width: 546px;
