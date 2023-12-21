@@ -341,7 +341,7 @@ const Cards = ({
           onError={(ev) => {
             ev.target.src = "https://i.ibb.co/QmfT760/Untitled-500-500-px.png";
           }}
-          src={`https://api.lucky1.io/images/${lotteryAddress}.png?32437828`}
+          src={`https://api.lucky1.io/images/${lotteryAddress}.png`}
           alt="#"
           className={styles.image}
         />
