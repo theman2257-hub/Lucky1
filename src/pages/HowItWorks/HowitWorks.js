@@ -8,7 +8,7 @@ const HowitWorks = () => {
     <div className={styles.textContainer}>
       <h2 className={styles.mainTitle}>How It Works</h2>
 
-        <p className={styles.text}>For more information read our <a href={Whitepaper}>Whitepaper</a></p>
+        <p className={styles.text}>for more information, read our <a href={Whitepaper}>Whitepaper</a></p>
 
       <div className={styles.founders}>
         <h3 className={styles.title}>For Founders:</h3>

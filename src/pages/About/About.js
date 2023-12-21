@@ -1,5 +1,6 @@
 import React from 'react';
 import styles from "./style.module.css";
+import Whitepaper from './whitePaper.pdf'
 import Bruce from '../../images/bruce.png'
 import Darious from '../../images/darious.png'
 import TheMan from '../../images/theMan.png'
@@ -10,6 +11,8 @@ const About = () => {
     <div className='container'>
     <div className={styles.textContainer} >
     <h2 className={styles.mainTitle}>About Us</h2>
+    <br/>
+    <p className={styles.text}>Lear more about Lucky1 Protocol, by reading our <a href={Whitepaper}>Whitepaper</a></p>
       <div className="mission">
         <h2 className={styles.title}>Mission Statement : </h2>
         <p className={styles.text}>
@@ -41,7 +44,8 @@ const About = () => {
   <div className={styles.person}>
     <a href="https://www.linkedin.com/in/emmanuel-theman/"><img src={TheMan} alt="Emmanuel Tunda"/></a>
     <p className={styles.text}>
-      Emmanuel Tunda, Co-Founder and CEO: Emmanuel brings over seven years of experience in the finance industry, 
+      Emmanuel Tunda, 
+      <br/>Co-Founder and CEO: Emmanuel brings over seven years of experience in the finance industry, 
       with a focus on insurance management and investments in both the stock market and cryptocurrency.
     </p>
   </div>
@@ -49,7 +53,8 @@ const About = () => {
   <div className={styles.person}>
     <a href="https://www.linkedin.com/in/ganza-manegabe"><img src={Darious} alt="Ganza Managegabe"/></a>
     <p className={styles.text}>
-      Ganza Managegabe, Co-Founder and COO: With a rich background in operational management and strategic planning, 
+      Ganza Managegabe, 
+      <br/>Co-Founder and COO: With a rich background in operational management and strategic planning, 
       Ganza's expertise lies in steering companies towards efficiency and growth. 
       His experience in the tech and finance sectors has been instrumental in shaping the operational backbone of Lucky1.
     </p>
@@ -58,7 +63,8 @@ const About = () => {
   <div className={styles.person}>
     <a href="https://www.linkedin.com/in/brice-aminou"><img src={Bruce} alt="Brice Aminou"/></a>
     <p className={styles.text}>
-      Brice Aminou, Co-Founder and CTO: Brice is a technology visionary with extensive experience in blockchain and crypto technologies.
+      Brice Aminou, 
+      <br/>Co-Founder and CTO: Brice is a technology visionary with extensive experience in blockchain and crypto technologies.
       His innovative approach to tech solutions has been pivotal in developing Lucky1's robust and secure platform.
     </p>
   </div>

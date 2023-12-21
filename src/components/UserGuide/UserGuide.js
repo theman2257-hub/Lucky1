@@ -78,7 +78,7 @@ const UserGuide = () => {
                     <br/>
                     <p>On the lottery page, you'll find : </p>
                     <li>
-                        <span class={styles.subTitle}> Maximum Token Fee Symbol :   </span>
+                        <span class={styles.subTitle}> Max.Prize & Token Fee Symbol :   </span>
                         Shows the highest possible prize amount, which may vary based on the number of winners, affiliate fee, creator fee, and platform fee.
                      </li>
                      <li>
