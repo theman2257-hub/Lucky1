@@ -15,9 +15,13 @@ const Navbar = () => {
   const navItems = [
 
     { navItem: "Create Lottery", to: "/createLottery" },
+<<<<<<< HEAD
     { navItem: "About Us", to: "/about" },
     { navItem: "How it Works", to: "/HowitWorks" },
     { navItem: "Contact us", to: "/contact" },
+=======
+    { navItem: "Contact u", to: "/contact" },
+>>>>>>> 98c4b6379dbb1e53ab9d153acfc18ba1284affc3
     { navItem: `${address ? `Profile` : ""}`, to: `${address ? `/profile/${address}` : ""}` },
   ];
   return (
