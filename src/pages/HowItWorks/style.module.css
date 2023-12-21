@@ -1,0 +1,143 @@
+.howItWorksContainer {
+  background-repeat: no-repeat;
+  background-position: 80%;
+  background-size: 50%;
+}
+
+.textContainer {
+  max-width: 546px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  padding: 200px 0;
+}
+
+.privacyText {
+  /* Your styles for privacyText */
+}
+
+.privacyLink {
+  /* Your styles for privacyLink */
+}
+
+.title {
+  font-family: var(--fontFamily);
+  font-style: normal;
+  font-weight: 700;
+  font-size: 20px;
+  line-height: 172%;
+  color: #ecddff;
+}
+
+.mainTitle {
+  font-family: var(--fontFamily);
+  font-style: normal;
+  font-weight: 700;
+  font-size: 36px;
+  line-height: 172%;
+  color: #ecddff;
+  font-size: 30px;
+}
+.subTitle {
+  font-style: italic;
+  font-weight: 400;
+  font-weight: 700;
+}
+.italic {
+  font-style: italic;
+  font-weight: 400;
+}
+
+.normal {
+  text-transform: uppercase;
+}
+
+.text {
+  font-family: var(--fontFamily);
+  font-style: normal;
+  font-weight: 300;
+  font-size: 16px;
+  line-height: 200%;
+  color: rgba(229, 212, 251, 0.8);
+  padding-top: 15px;
+  padding-bottom: 30px;
+}
+
+.buttonContainer {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+
+.activeButton {
+  padding: 10px 25px;
+  background: #ecddff;
+  border: 1px solid #ecddff;
+  border-radius: 14px;
+  outline: none;
+}
+
+.buttonText {
+  font-family: var(--fontFamily);
+  font-style: normal;
+  font-weight: 600;
+  font-size: 16px;
+  line-height: 140%;
+  background: linear-gradient(114.79deg, #c040fc -17.76%, #4b3cff 99.88%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  text-fill-color: transparent;
+}
+
+.button {
+  font-family: var(--fontFamily);
+  font-style: normal;
+  font-weight: 600;
+  font-size: 16px;
+  line-height: 140%;
+  color: rgba(236, 221, 255, 0.7);
+  padding: 10px 25px;
+  background: transparent;
+  border: 1.4px solid rgba(208, 220, 231, 0.15);
+  border-radius: 14px;
+  outline: none;
+}
+
+@media only screen and (max-width: 991px) {
+  .howItWorksContainer {
+    background-size: 40%;
+    background-position: right;
+  }
+}
+
+@media only screen and (max-width: 767px) {
+  .howItWorksContainer {
+    background-size: 70%;
+    background-position: right;
+  }
+}
+
+@media only screen and (max-width: 575px) {
+  .title {
+    font-size: 32px;
+  }
+}
+
+@media only screen and (max-width: 520px) {
+  .textContainer {
+    align-items: center;
+  }
+  .title {
+    text-align: center;
+  }
+  .text {
+    text-align: center;
+  }
+}
+
+@media only screen and (max-width: 380px) {
+  .normal {
+    font-size: 28px;
+  }
+}

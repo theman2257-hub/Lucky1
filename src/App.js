@@ -3,6 +3,7 @@ import Footer from "./components/Footer/Footer";
 import Navbar from "./components/Navbar/Navbar";
 import Details from "./pages/Details/Details";
 import Home from "./pages/Home/Home";
+import About from "./pages/About/About";
 import CreateLottery from "./pages/CreateLottery/CreateLottery";
 import {
   EthereumClient,
@@ -16,6 +17,10 @@ import { ToastContainer, toast } from "react-toastify";
 import Profile from "./pages/Profile/Profile";
 import Privacy from "./components/Privacy/Privacy";
 import Contact from "./components/Contact/Contact";
+import HowitWorks from "./pages/HowItWorks/HowitWorks";
+import UserGuide from "./components/UserGuide/UserGuide";
+import FAQs from "./components/FAQ/FAQs";
+import WhitePaper from "./components/WhitePaper/WhitePaper";
 const chains = [bsc];
 const projectId = "e4600bbdb356ec1f0d2dd8930ce3e74c";
 
@@ -42,6 +47,11 @@ function App() {
           />
           <Route path="/:id/:affiliateAddress?" element={<Details />}></Route>
           <Route path="/profile/:id" element={<Profile />}></Route>
+          <Route path="/about" element={<About/>}></Route>
+          <Route path="/HowItWorks" element={<HowitWorks/>}></Route>
+          <Route path="/userGuide" element={<UserGuide/>}></Route>
+          <Route path="/faqs" element={<FAQs/>}></Route>
+          <Route path="/whitePaper" element={<WhitePaper/>}></Route>
           <Route path="/privacy" element={<Privacy />}>
             {" "}
           </Route>
