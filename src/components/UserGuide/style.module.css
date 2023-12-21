@@ -1,0 +1,106 @@
+.userGuidContainer {
+  background-repeat: no-repeat;
+  background-position: 80%;
+  background-size: 50%;
+}
+
+.textContainer {
+  max-width: 546px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  padding: 200px 0;
+}
+
+.title {
+  font-family: var(--fontFamily);
+  font-style: normal;
+  font-weight: 700;
+  font-size: 36px;
+  line-height: 172%;
+  font-feature-settings: "cv11" on, "cv10" on, "cv09" on, "cv08" on, "cv07" on,
+    "sinf" on, "cv06" on, "cv05" on, "cv04" on, "cv03" on, "cv02" on, "cv01" on,
+    "ss04" on, "ss03" on, "ss02" on, "zero" on, "cpsp" on, "case" on, "liga" off,
+    "kern" off;
+  color: #ecddff;
+  font-size: 20px;
+}
+
+.text {
+  font-family: var(--fontFamily);
+  font-style: normal;
+  font-weight: 300;
+  font-size: 16px;
+  line-height: 200%;
+  font-feature-settings: "cv11" on, "cv10" on, "cv09" on, "cv08" on, "cv07" on,
+    "cv06" on, "cv05" on, "cv04" on, "cv03" on, "cv02" on, "cv01" on, "ss04" on,
+    "zero" on, "cpsp" on, "case" on, "liga" off, "kern" off;
+  color: rgba(229, 212, 251, 0.8);
+  padding-top: 15px;
+  padding-bottom: 30px;
+}
+.createLottery{
+  margin-top: 15px;
+  
+}
+
+.subTitle {
+  font-style: italic;
+  font-weight: 700;
+}
+
+.text ol {
+  list-style: none;
+  counter-reset: my-counter;
+  padding-left: 0;
+}
+
+.text ol li {
+  counter-increment: my-counter;
+  position: relative;
+  margin-bottom: 20px;
+}
+
+.text ol li:before {
+  content: counter(my-counter) ".";
+  position: absolute;
+  left: -25px;
+  font-weight: bold;
+}
+
+/* Media Queries - Adjust as needed */
+@media only screen and (max-width: 991px) {
+  .userGuidContainer {
+    background-size: 40%;
+    background-position: right;
+  }
+}
+
+@media only screen and (max-width: 767px) {
+  .userGuidContainer {
+    background-size: 70%;
+    background-position: right;
+  }
+}
+
+@media only screen and (max-width: 575px) {
+  .title {
+    font-size: 32px;
+  }
+}
+
+@media only screen and (max-width: 520px) {
+  .textContainer {
+    align-items: center;
+  }
+  .title,
+  .text {
+    text-align: center;
+  }
+}
+
+@media only screen and (max-width: 380px) {
+  .normal {
+    font-size: 28px;
+  }
+}

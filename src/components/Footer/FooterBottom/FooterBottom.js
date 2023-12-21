@@ -3,6 +3,7 @@ import styles from "./styles.module.css";
 import { Link } from "react-router-dom";
 import {FaTwitter} from 'react-icons/fa';
 import {BsTelegram} from 'react-icons/bs'
+import Whitepaper from './whitePaper.pdf'
 const FooterBottom = () => {
   return (
     <div className={styles.footerBottom}>
@@ -10,6 +11,9 @@ const FooterBottom = () => {
         <div className={styles.wrapper}>
           <div className={styles.items}>
           <Link className={styles.text} to='/privacy'>Privacy Policy</Link>
+          <Link className={styles.text} to='/userGuide'>User Guide</Link>
+          <Link className={styles.text} to='/faqs'>FAQs</Link>
+          <a href={Whitepaper}>Whitepaper</a>
 
             <a href="#/" target="_blank" className={styles.text}>
             Patent (pending)
