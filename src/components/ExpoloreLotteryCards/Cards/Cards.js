@@ -3,7 +3,8 @@ import axios from "axios";
 import Counter from "../../Counter/Counter/Counter";
 import styles from "./styles.module.css";
 import { ethers } from "ethers";
-import { useSigner, useEnsName } from "wagmi";
+import { useSigner, useEnsName, useNetwork } from "wagmi";
+import { getClient } from "../../Utils/graphClient";
 let abierc = [
   { inputs: [], stateMutability: "nonpayable", type: "constructor" },
   {
@@ -247,6 +248,7 @@ const Cards = ({
   const [totalTicketsPurchased, setTotalPurchased] = React.useState(0);
   const { data } = useSigner();
   let rpc = "https://bsc-dataseed1.binance.org/";
+  const { chain } = useNetwork();
 
   // getSymbol(lotteryAddress).then((res) => {
   //   console.log(res)
@@ -282,13 +284,12 @@ const Cards = ({
           amount
         }
       }`;
-      let url =
-        "https://api.thegraph.com/subgraphs/name/sallystix/test-lottery";
-      const response = await axios.post(url, { query });
-      const data = response.data;
+
+      const client = getClient(chain.name);
+      const { data } = await client.query(query).toPromise();
 
       let totalPurchased = 0;
-      data.data.ticketPurchaseds.map((item) => {
+      data.ticketPurchaseds.map((item) => {
         totalPurchased += parseInt(item.amount);
       });
       console.log(totalPurchased);
@@ -325,7 +326,7 @@ const Cards = ({
 
           //open in same tab
 
-          window.location.href = `/${lotteryAddress}`;
+          window.location.href = `/${chain.id}/${lotteryAddress}`;
         }}
       >
         <div className={styles.counter}>
@@ -375,8 +376,7 @@ const Cards = ({
             // window.open(`${window.location.origin}/${lotteryAddress}`)
 
             //open in same tab
-
-            window.location.href = `/${lotteryAddress}`;
+            window.location.href = `/${chain.id}/${lotteryAddress}`;
           }}
           className={styles.button}
         >

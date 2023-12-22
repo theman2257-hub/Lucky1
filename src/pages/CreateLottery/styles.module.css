@@ -23,6 +23,19 @@
   color: #ecddff;
 }
 
+.dropdown {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  position: relative;
+  border: 1.4px solid rgba(208, 220, 231, 0.15);
+  background: #30303e;
+  border-radius: 31px;
+
+  padding: 7px 15px;
+  cursor: pointer;
+}
+
 .text {
   font-family: var(--fontFamily);
   font-style: normal;

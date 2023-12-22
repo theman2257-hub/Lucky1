@@ -7,13 +7,13 @@ import {
 } from "react-icons/bi";
 import { arrow } from "../../../images/images";
 import { useParams } from "react-router-dom";
-import { useAccount } from "wagmi";
-
+import { useAccount, useNetwork } from "wagmi";
+import { getClient, chainDict } from "../../Utils/graphClient";
 import styles from "./styles.module.css";
 
 const AllTickets = () => {
   const { address } = useAccount();
-  const { id } = useParams();
+  const { id, chain } = useParams();
   const [searchValue, setSearchValue] = useState("");
   const [filterBy, setFilterBy] = useState("Newest");
   const allFilterByItems = ["Newest", "Oldest", "Best"].filter(
@@ -37,9 +37,11 @@ const AllTickets = () => {
     }
     `;
     try {
-      const { data } = await axios.post(url, { query });
+      console.log(chainDict[chain]);
+      const client = getClient(chainDict[chain]);
+      const { data } = await client.query(query).toPromise();
       console.log(data);
-      setAllTicket(data.data.ticketPurchaseds);
+      setAllTicket(data.ticketPurchaseds);
     } catch (error) {}
   };
 

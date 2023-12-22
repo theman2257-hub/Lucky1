@@ -12,7 +12,7 @@ import CompetitionEnded from "./Modal/CompetitionEnded";
 import ImageUpload from "../../components/Details/DropImage/ImageUpload";
 import axios from "axios";
 const Details = () => {
-  const { id, affiliateAddress } = useParams();
+  const { id, affiliateAddress, chain } = useParams();
   const [buyNowModal, setBuyNowModal] = useState(false);
   const [competitionEndedModal, setCompetitionEndedModal] = useState(false);
   const [hash, setHash] = useState("");
@@ -38,6 +38,7 @@ const Details = () => {
      */
     setHash(data.hash);
   };
+
   React.useEffect(() => {
     fetchDescription();
     fetchHash();

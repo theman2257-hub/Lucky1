@@ -19,6 +19,7 @@ import card8 from "./card/card8.png";
 import beast from "./card/beast.png";
 import copy from "./copy.svg";
 import bnb from "./bnb.svg";
+import arb from "./arb.png";
 import arrow from "./arrow.svg";
 import user from "./user.svg";
 import oponent from "./oponent.svg";
@@ -64,6 +65,7 @@ export {
   card8,
   copy,
   bnb,
+  arb,
   arrow,
   beast,
   user,

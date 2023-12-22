@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { ethers } from "ethers";
-import { erc20ABI } from "wagmi";
+import { erc20ABI, useNetwork } from "wagmi";
 import {
   BiSearch,
   BiChevronUpCircle,
@@ -19,6 +19,7 @@ import {
 } from "../../images/images";
 import Cards from "./Cards/Cards";
 import styles from "./styles.module.css";
+import { getClient } from "../Utils/graphClient";
 const ExploreLotteryCareds = () => {
   const [data, setLotterydata] = useState([]);
   let abierc = [
@@ -243,6 +244,7 @@ const ExploreLotteryCareds = () => {
       type: "function",
     },
   ];
+  const { chain } = useNetwork();
 
   console.log(typeof data);
 
@@ -272,8 +274,10 @@ const ExploreLotteryCareds = () => {
       }
     }`;
     let url = "https://api.thegraph.com/subgraphs/name/sallystix/test-lottery";
-    const { data } = await axios.post(url, { query });
-    console.log(data.data.lotteries);
+    const client = getClient(chain.name);
+    const { data } = await client.query(query).toPromise();
+    console.log(data);
+    console.log(data.lotteries);
     let rpc = "https://bsc-dataseed1.binance.org/";
     let provider = new ethers.providers.JsonRpcProvider(rpc);
 
@@ -288,7 +292,7 @@ const ExploreLotteryCareds = () => {
       }
       return symbol;
     };
-    let lotteryData = data.data.lotteries.map((el, index) => {
+    let lotteryData = data.lotteries.map((el, index) => {
       return {
         id: el.id,
         creator: el.creator,
@@ -315,7 +319,7 @@ const ExploreLotteryCareds = () => {
 
   React.useEffect(() => {
     fetchLottery();
-  }, []);
+  }, [chain]);
   const [searchValue, setSearchValue] = useState("");
   const [filterBy, setFilterBy] = useState("Newest");
   const allFilterByItems = ["Oldest", "Newest"].filter(

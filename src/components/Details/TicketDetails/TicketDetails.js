@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { BiPlus, BiMinus } from "react-icons/bi";
 import Counter from "../../Counter/Counter/Counter";
 import { copy, bnb } from "../../../images/images";
-import { useAccount } from "wagmi";
+import { useAccount, useNetwork } from "wagmi";
 import { useWeb3Modal } from "@web3modal/react";
 import styles from "./styles.module.css";
 import { lotteryABI, erc20Abi } from "../../../constants/abis/abi";
@@ -12,6 +12,7 @@ import { ToastContainer, toast } from "react-toastify";
 import axios from "axios";
 import "react-toastify/dist/ReactToastify.css";
 import { redirectDocument, useParams } from "react-router-dom";
+import { getClient, chainDict } from "../../Utils/graphClient";
 import Loader from "../../Loader";
 
 const TicketDetails = ({
@@ -34,7 +35,8 @@ const TicketDetails = ({
   const [maxWinners, setMaxWinners] = React.useState(0);
   const [distribution, setDistribution] = useState([]);
 
-  const { id } = useParams();
+  const { id, chain } = useParams();
+  const network = useNetwork();
   const txSuccess = (msg) =>
     toast.success(`Successfully Purchased ${msg} Tickets}`);
   const { data } = useSigner();
@@ -67,8 +69,8 @@ const TicketDetails = ({
       }
     }`;
     let url = "https://api.thegraph.com/subgraphs/name/sallystix/test-lottery";
-    const response = await axios.post(url, { query });
-    const data = response.data;
+    const client = getClient(chainDict[chain]);
+    const { data } = await client.query(query).toPromise();
     // let lotteryData = data.data.lotteries.map((el) => {
     //   return {
     //     id: el.id,
@@ -90,9 +92,9 @@ const TicketDetails = ({
     //     tokenSymbol: el.tokenSymbol,
     //   };
 
-    let lotteryData = data.data.lotteries[0];
-    console.log(data.data.lotteries[0]);
-    setLotteryDetails(data.data.lotteries[0]);
+    let lotteryData = data.lotteries[0];
+    console.log(data.lotteries[0]);
+    setLotteryDetails(data.lotteries[0]);
     console.log(lotteryDetails);
 
     // setLotteryDetails(lotteryData);
@@ -162,9 +164,9 @@ const TicketDetails = ({
       }
     }`;
     let url = "https://api.thegraph.com/subgraphs/name/sallystix/test-lottery";
-    const response = await axios.post(url, { query });
-    const data = response.data;
-    const amountPurchased = data.data.ticketPurchaseds[0].amount;
+    const client = getClient(chainDict[chain]);
+    const { data } = await client.query(query).toPromise();
+    const amountPurchased = data.ticketPurchaseds[0].amount;
     console.log(amountPurchased);
     const purchaseableAmount =
       lotteryDetails.maxTicketsPerWallet - amountPurchased;
@@ -231,6 +233,7 @@ const TicketDetails = ({
 
   const purchaseTickets = async (t) => {
     console.log(affiliateAddress, String(t), lotteryAddress);
+
     let lotteryContract = new ethers.Contract(lotteryAddress, lotteryABI, data);
 
     try {
@@ -277,6 +280,7 @@ const TicketDetails = ({
 
   async function approve() {
     if (!lotteryDetails.feeToken) return;
+
     let contract = new ethers.Contract(lotteryDetails.feeToken, erc20Abi, data);
     setShow(true);
     try {
@@ -337,11 +341,11 @@ const TicketDetails = ({
       }`;
       let url =
         "https://api.thegraph.com/subgraphs/name/sallystix/test-lottery";
-      const response = await axios.post(url, { query });
-      const data = response.data;
+      const client = getClient(chainDict[chain]);
+      const { data } = await client.query(query).toPromise();
 
       let totalPurchased = 0;
-      data.data.ticketPurchaseds.map((item) => {
+      data.ticketPurchaseds.map((item) => {
         totalPurchased += parseInt(item.amount);
       });
       console.log(totalPurchased);
@@ -583,14 +587,36 @@ const TicketDetails = ({
             </div>
           </div>
         </div>
-        <div className={styles.buttonContainer}>
-          <button onClick={bigButton.function} className={styles.button}>
-            {bigButton.title}
-          </button>
-          {bigButton.title2 && (
-            <button onClick={bigButton.function2} className={styles.button}>
-              {bigButton.title2}
+        <div className={styles.container}>
+          <div className={styles.buttonContainer}>
+            <button
+              disabled={network.chain.name !== chainDict[chain]}
+              onClick={bigButton.function}
+              className={styles.button}
+            >
+              {bigButton.title}
             </button>
+            {network.chain.name !== chainDict[chain] && (
+              <p style={{ color: "red" }}>
+                connect to {chainDict[chain]} first
+              </p>
+            )}
+          </div>
+          {bigButton.title2 && (
+            <div className={styles.buttonContainer}>
+              <button
+                disabled={network.chain.name !== chainDict[chain]}
+                onClick={bigButton.function2}
+                className={styles.button}
+              >
+                {bigButton.title2}
+              </button>
+              {network.chain.name !== chainDict[chain] && (
+                <p style={{ color: "red" }}>
+                  connect to {chainDict[chain]} first
+                </p>
+              )}
+            </div>
           )}
         </div>
       </div>

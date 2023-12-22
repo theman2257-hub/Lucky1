@@ -14,12 +14,12 @@ const Input = ({
   switchs,
   disable,
   setDisable,
+  options, // New prop for dropdown options
 }) => {
-  // const handleKeyDown = (event) => {
-  //   if (event.key !== "Backspace" && !/[0-9]/.test(event.key)) {
-  //     event.preventDefault();
-  //   }
-  // };
+  const selectedOptionIcon = options?.find(
+    (option) => option.value === value
+  )?.icon;
+
   const handleKeyDown = (event) => {
     if (
       type === "number" &&
@@ -27,6 +27,43 @@ const Input = ({
       !/[0-9]/.test(event.key)
     ) {
       event.preventDefault();
+    }
+  };
+
+  // Function to render dropdown or input based on 'options' prop
+  const renderInputOrDropdown = () => {
+    if (options && options.length) {
+      return (
+        <select
+          disabled={disable}
+          id={name}
+          name={name}
+          value={value}
+          className={`${styles.input} ${styles.text}`}
+          onChange={onChange}
+        >
+          {options.map((option) => (
+            <option key={option.value} value={option.value}>
+              {option.label}
+            </option>
+          ))}
+        </select>
+      );
+    } else {
+      return (
+        <input
+          type={type}
+          disabled={disable}
+          id={name}
+          name={name}
+          value={value}
+          className={`${styles.input} ${styles.text}`}
+          placeholder={placeholder}
+          onChange={onChange}
+          min={type === "number" ? 1 : ""}
+          onKeyDown={handleKeyDown}
+        />
+      );
     }
   };
 
@@ -55,19 +92,13 @@ const Input = ({
             disable && styles.inputDisabled
           }`}
         >
-          <img src={icon} alt="#" className={styles.icon} />
-          <input
-            type={type}
-            disabled={disable}
-            id={name}
-            name={name}
-            value={value}
-            className={`${styles.input} ${styles.text}`}
-            placeholder={placeholder}
-            onChange={onChange}
-            min={type === "number" ? 1 : ""}
-            onKeyDown={handleKeyDown}
+          <img
+            src={selectedOptionIcon || icon}
+            alt="#"
+            className={styles.icon}
           />
+          {renderInputOrDropdown()}{" "}
+          {/* Use the function to decide what to render */}
         </div>
         {labelExplainer && (
           <label

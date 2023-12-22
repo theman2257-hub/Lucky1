@@ -77,11 +77,19 @@
   align-items: center;
   flex-wrap: wrap;
 }
-.buttonContainer {
+.container {
   width: 100%;
   display: flex;
   justify-content: center;
   gap: 10px; /* Add the desired spacing between the buttons */
+}
+
+.buttonContainer {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
 }
 
 .headerContainer {

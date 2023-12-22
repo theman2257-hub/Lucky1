@@ -11,6 +11,9 @@ import { useSigner } from "wagmi";
 import Loader from "../../components/Loader";
 import SetPrizeAmountModal from "../../components/CreateLottery/SetPrizeAmountModal/SetPrizeAmountModal";
 import { erc20Abi } from "../../constants/abis/abi";
+import { bnb, arb } from "../../images/images";
+import { useNetwork } from "wagmi";
+import { chainDict, getClient } from "../../components/Utils/graphClient";
 
 const CreateLottery = () => {
   const { data: signer } = useSigner();
@@ -21,6 +24,7 @@ const CreateLottery = () => {
   const [lotteryAddress, setLotteryAddress] = useState("");
   const { affiliateAddress } = useParams();
   const navigate = useNavigate();
+  const { chain } = useNetwork();
 
   React.useEffect(() => {
     console.log(imgurl);
@@ -664,13 +668,18 @@ const CreateLottery = () => {
     // window.open(`${window.location.origin}/profile/${address}`)
   };
 
-  let factoryContract = "0xF2266dACaB52B90CdD00dDA7A486517CEa23F7aD";
+  let factoryContractBSC = "0xF2266dACaB52B90CdD00dDA7A486517CEa23F7aD";
+  let factoryContractARB = "0xc7C99E811B619db618daDeB8b17E4d151f309147";
   // let factoryContract = "0x6A1dEB92664Caa00bc58a2A7286Dd3a998DC5F07";
   const { address } = useAccount();
   const { open } = useWeb3Modal();
 
   // let signer2 = new ethers.providers.Web3Provider(window.ethereum).getSigner();
-  let factory = new ethers.Contract(factoryContract, factoryABI, signer);
+  let factory = new ethers.Contract(
+    chain.id === 56 ? factoryContractBSC : factoryContractARB,
+    factoryABI,
+    signer
+  );
 
   const newLottery = async () => {
     console.log(values);
@@ -788,10 +797,15 @@ const CreateLottery = () => {
     prizeDistribution: ["50", "50"],
     affiliateFee: "0",
     affiliateAddress: "0x0000000000000000000000000000000000000000",
+    chain: 42161,
   });
 
   const onChange = (e) => {
-    setValues({ ...values, [e.target.name]: e.target.value });
+    let value = e.target.value;
+    if (e.target.name === "chain") {
+      value = parseInt(value);
+    }
+    setValues({ ...values, [e.target.name]: value });
   };
 
   const inputs = [
@@ -950,6 +964,20 @@ const CreateLottery = () => {
       setDisable: setDisable,
       onChange: onChange,
     },
+    {
+      label: "Chain",
+      labelExplainer: "Chain/Network you want to deploy on",
+      type: "text",
+      min: 1,
+      name: "chain",
+      disable: false,
+      setDisable: setDisable,
+      onChange: onChange,
+      options: [
+        { value: 56, label: "BSC", icon: bnb },
+        { value: 42161, label: "ARB", icon: arb },
+      ],
+    },
   ];
 
   return (
@@ -969,15 +997,32 @@ const CreateLottery = () => {
                 <Input {...input} key={i} value={values[input.name]} />
               ))}
             </div>
-            <button
-              onClick={(e) => {
-                e.preventDefault();
-                b.func();
+            <div
+              style={{
+                display: "flex",
+                flexDirection: "column",
+                alignItems: "center",
+                gap: "10px",
               }}
-              className={styles.button}
             >
-              {b.title}
-            </button>
+              <button
+                disabled={values["chain"] !== chain.id}
+                onClick={(e) => {
+                  console.log(values["chain"], chain.id);
+
+                  e.preventDefault();
+                  b.func();
+                }}
+                className={styles.button}
+              >
+                {b.title}
+              </button>
+              {values["chain"] !== chain.id && (
+                <p style={{ color: "red" }}>
+                  Connect to {chainDict[values["chain"]]} first
+                </p>
+              )}
+            </div>
           </form>
         </div>
       </div>
