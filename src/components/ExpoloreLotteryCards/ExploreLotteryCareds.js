@@ -274,7 +274,7 @@ const ExploreLotteryCareds = () => {
       }
     }`;
     let url = "https://api.thegraph.com/subgraphs/name/sallystix/test-lottery";
-    const client = getClient(chain.name);
+    const client = getClient(chain?.name);
     const { data } = await client.query(query).toPromise();
     console.log(data);
     console.log(data.lotteries);

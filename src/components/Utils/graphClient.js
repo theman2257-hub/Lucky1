@@ -19,4 +19,7 @@ export const getClient = (chainName) => {
   console.log(chainName);
   if (chainName === "BNB Smart Chain") return bscClient;
   else if (chainName === "Arbitrum One") return arbitrumClient;
+  else {
+    return bscClient;
+  }
 };

@@ -11,7 +11,7 @@ import { useSigner } from "wagmi";
 import { ToastContainer, toast } from "react-toastify";
 import axios from "axios";
 import "react-toastify/dist/ReactToastify.css";
-import { redirectDocument, useParams } from "react-router-dom";
+import { redirectDocument, useParams, useNavigate } from "react-router-dom";
 import { getClient, chainDict } from "../../Utils/graphClient";
 import Loader from "../../Loader";
 
@@ -34,6 +34,7 @@ const TicketDetails = ({
   const [prizeAmount, setPrizeAmount] = React.useState(0);
   const [maxWinners, setMaxWinners] = React.useState(0);
   const [distribution, setDistribution] = useState([]);
+  const navigate = useNavigate();
 
   const { id, chain } = useParams();
   const network = useNetwork();
@@ -462,7 +463,8 @@ const TicketDetails = ({
           <div className={styles.infoButtons}>
             <button
               onClick={() => {
-                window.open("profile/" + lotteryDetails?.creator, "_blank");
+                // window.open("profile/" + lotteryDetails?.creator, "_blank");
+                navigate(`/profile/${lotteryDetails?.creator}/`);
               }}
               className={styles.liveButton}
             >
@@ -590,13 +592,13 @@ const TicketDetails = ({
         <div className={styles.container}>
           <div className={styles.buttonContainer}>
             <button
-              disabled={network.chain.name !== chainDict[chain]}
+              disabled={network.chain?.name !== chainDict[chain]}
               onClick={bigButton.function}
               className={styles.button}
             >
               {bigButton.title}
             </button>
-            {network.chain.name !== chainDict[chain] && (
+            {network.chain?.name !== chainDict[chain] && (
               <p style={{ color: "red" }}>
                 connect to {chainDict[chain]} first
               </p>

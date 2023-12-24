@@ -326,7 +326,7 @@ const Cards = ({
 
           //open in same tab
 
-          window.location.href = `/${chain.id}/${lotteryAddress}`;
+          window.location.href = `/${chain?.id || 56}/${lotteryAddress}`;
         }}
       >
         <div className={styles.counter}>
@@ -369,11 +369,13 @@ const Cards = ({
         </div>
         <a
           onClick={() => {
-            //open base url + lottery address
+            //open base url + chain id + lottery address
             //i dont want to hardcode the base url
             //so i will use the window.location.origin
             //to get the base url
             // window.open(`${window.location.origin}/${lotteryAddress}`)
+
+            //
 
             //open in same tab
             window.location.href = `/${chain.id}/${lotteryAddress}`;
