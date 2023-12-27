@@ -1,11 +1,11 @@
 import React, { useState } from "react";
 import { RxHamburgerMenu } from "react-icons/rx";
 import { MdOutlineClose } from "react-icons/md";
-import { NavLink,Link } from "react-router-dom";
+import { NavLink, Link } from "react-router-dom";
 import { logo } from "../../images/images";
-import Logo  from "../../images/logo.png"
+import Logo from "../../images/logo.png";
 import styles from "./styles.module.css";
-import { useWeb3Modal } from "@web3modal/react";
+import { useWeb3Modal, Web3NetworkSwitch } from "@web3modal/react";
 import { useAccount } from "wagmi";
 
 const Navbar = () => {
@@ -13,20 +13,24 @@ const Navbar = () => {
   const { address } = useAccount();
   const [sidebar, setSidebar] = useState(false);
   const navItems = [
-
     { navItem: "Create Lottery", to: "/createLottery" },
 
     { navItem: "About Us", to: "/about" },
     { navItem: "How it Works", to: "/HowitWorks" },
     { navItem: "Contact us", to: "/contact" },
 
-    { navItem: `${address ? `Profile` : ""}`, to: `${address ? `/profile/${address}` : ""}` },
+    {
+      navItem: `${address ? `Profile` : ""}`,
+      to: `${address ? `/profile/${address}` : ""}`,
+    },
   ];
   return (
     <section className={styles.navbar}>
       <div className="container">
         <div className={styles.navs}>
-        <Link to = "/"><img src={logo} width="50" alt="#" className={styles.logo} /></Link>
+          <Link to="/">
+            <img src={logo} width="50" alt="#" className={styles.logo} />
+          </Link>
           <div className={`${styles.navItems} ${sidebar && styles.sidebar}`}>
             {navItems.map((el, i) => (
               <NavLink
@@ -63,6 +67,7 @@ const Navbar = () => {
               className={styles.hamburger}
               onClick={() => setSidebar((prev) => !prev)}
             />
+            <Web3NetworkSwitch />
           </div>
         </div>
       </div>

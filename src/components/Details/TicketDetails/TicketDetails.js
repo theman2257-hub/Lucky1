@@ -391,7 +391,7 @@ const TicketDetails = ({
       return {
         title: "End Lottery",
         function: async () => {
-          let url = `https://api.lucky1.io/end/end/${lotteryAddress}`;
+          let url = `https://api.lucky1.io/end/end/${chain}/${lotteryAddress}`;
           const { data } = await axios.post(url);
           console.log(data);
           alert("Lottery Ended");
