@@ -73,3 +73,125 @@ input[type="date"]::-webkit-calendar-picker-indicator {
   border-radius: 100vh;
   border: none;
 }
+
+/* Overlay style */
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+/* Modal content style */
+.modal-content {
+  background: rgb(30, 30, 34);
+  padding: 20px;
+  border-radius: 10px; /* Rounded corners */
+  max-width: 400px;
+  width: 100%;
+  box-shadow: 0 4px 10px rgba(155, 147, 147, 0.633);
+}
+
+h2 {
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.network-list {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.network-item,
+.network-item-selected {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 10px;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background 0.3s ease;
+}
+
+.network-item {
+  background: #605e5e;
+}
+
+.modal-connector-container {
+  display: flex;
+  width: 50%;
+  align-content: center;
+  justify-content: start;
+  /* background-color: white; */
+}
+
+.wallet-adapter-button-evm {
+  background-color: #0d98ba !important;
+  border: none;
+  color: #fff;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  font-family: "DM Sans", "Roboto", "Helvetica Neue", Helvetica, Arial,
+    sans-serif;
+  font-size: 16px;
+  font-weight: 600;
+  height: 48px;
+  line-height: 48px;
+  padding: 0 24px;
+  border-radius: 4px;
+}
+
+.network-item-selected {
+  background: white;
+}
+
+.network-item-container {
+  width: 60%;
+  display: flex;
+  align-items: center;
+}
+
+.network-item:hover {
+  background: #f1f1f1;
+}
+
+.network-icon {
+  width: 30px;
+  height: 30px;
+  margin-right: 10px;
+}
+
+.network-info {
+  display: flex;
+  flex-direction: column;
+}
+
+.network-name {
+  font-weight: bold;
+}
+
+.network-id {
+  font-size: 0.9em;
+  color: #555;
+}
+
+/* button {
+  padding: 10px 20px;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+} */
+
+button:hover {
+  background-color: #0056b3;
+}

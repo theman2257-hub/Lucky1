@@ -2,7 +2,8 @@ import React, { useState } from "react";
 import { useParams, useLocation } from "react-router-dom";
 import { beast } from "../../images/images";
 import AllTickets from "../../components/Details/AllTickets/AllTickets";
-import TicketDetails from "../../components/Details/TicketDetails/TicketDetails";
+import TicketDetailsEvm from "../../components/Details/TicketDetails/TicketDetailsEvm";
+import TicketDetailsSolana from "../../components/Details/TicketDetails/TicketDetailsSolana";
 import styles from "./styles.module.css";
 import ChatBox from "../../components/Details/ChatBox/ChatBox";
 import ExploreLotteryCareds from "../../components/ExpoloreLotteryCards/ExploreLotteryCareds";
@@ -11,7 +12,11 @@ import BuyNowModal from "./Modal/BuyNow";
 import CompetitionEnded from "./Modal/CompetitionEnded";
 import ImageUpload from "../../components/Details/DropImage/ImageUpload";
 import axios from "axios";
+import { useChain } from "../../wallet/WalletContext";
 const Details = () => {
+  const { chainId } = useChain();
+  console.log("Current Chain ID:", chainId);
+
   const { id, affiliateAddress, chain } = useParams();
   const [buyNowModal, setBuyNowModal] = useState(false);
   const [competitionEndedModal, setCompetitionEndedModal] = useState(false);
@@ -60,25 +65,42 @@ const Details = () => {
         <div className="container">
           {" "}
           <div className={styles.details}>
-            {img !=
-            "https://assets-global.website-files.com/637359c81e22b715cec245ad/63f5feb3302f223a19af4dca_Midnight%20society.png?2322232" ? (
-              <img src={img} alt="#" className={styles.image} />
+            {chainId === "97" ? (
+              <>
+                {img !=
+                "https://assets-global.website-files.com/637359c81e22b715cec245ad/63f5feb3302f223a19af4dca_Midnight%20society.png?2322232" ? (
+                  <img src={img} alt="#" className={styles.image} />
+                ) : // <ImageUpload owner={owner} />
+                null}
+                <TicketDetailsEvm
+                  setOwner={setOwner}
+                  setNumberOfWinners={setNumberOfWinners}
+                  setHash={setHash}
+                  setDescription={setDescription}
+                  setCompetitionEndedModal={setCompetitionEndedModal}
+                  setImg={setImg}
+                  setAddress={setLotteryAddress}
+                  affiliateAddress={
+                    affiliateAddress ||
+                    "0x0000000000000000000000000000000000000000"
+                  }
+                />
+              </>
             ) : (
-              <ImageUpload owner={owner} />
+              <TicketDetailsSolana
+                setOwner={setOwner}
+                setNumberOfWinners={setNumberOfWinners}
+                setHash={setHash}
+                setDescription={setDescription}
+                setCompetitionEndedModal={setCompetitionEndedModal}
+                setImg={setImg}
+                setAddress={setLotteryAddress}
+                affiliateAddress={
+                  affiliateAddress ||
+                  "0x0000000000000000000000000000000000000000"
+                }
+              />
             )}
-
-            <TicketDetails
-              setOwner={setOwner}
-              setNumberOfWinners={setNumberOfWinners}
-              setHash={setHash}
-              setDescription={setDescription}
-              setCompetitionEndedModal={setCompetitionEndedModal}
-              setImg={setImg}
-              setAddress={setLotteryAddress}
-              affiliateAddress={
-                affiliateAddress || "0x0000000000000000000000000000000000000000"
-              }
-            />
           </div>
           <div
             className={[styles.details, styles.ticketAndDescription].join(" ")}

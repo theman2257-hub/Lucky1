@@ -3,7 +3,7 @@ import React, { useState } from "react";
 import { MdClose } from "react-icons/md";
 import styles from "./AddWhitelistModal.module.css";
 import { ethers } from "ethers"; // Import ethers library
-import { useAccount, useSigner } from "wagmi";
+import { useAccount } from "wagmi";
 import { lotteryABI } from "../../../../constants/abis/abi";
 
 const AddWhitelistModal = ({
@@ -13,7 +13,7 @@ const AddWhitelistModal = ({
   setModal,
   onWhitelistAdded,
 }) => {
-  const { data } = useSigner();
+  const { data } = useAccount();
   const [addresses, setAddresses] = useState("");
   const { address } = useAccount(); // Assuming useAccount() gives the user's address
 

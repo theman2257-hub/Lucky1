@@ -73,9 +73,35 @@ export const lotteryABI = [
         name: "_feeParams",
         type: "tuple",
       },
+      {
+        internalType: "uint64",
+        name: "_subId",
+        type: "uint64",
+      },
+      {
+        internalType: "address",
+        name: "_vrfCoordinator",
+        type: "address",
+      },
     ],
     stateMutability: "nonpayable",
     type: "constructor",
+  },
+  {
+    inputs: [
+      {
+        internalType: "address",
+        name: "have",
+        type: "address",
+      },
+      {
+        internalType: "address",
+        name: "want",
+        type: "address",
+      },
+    ],
+    name: "OnlyCoordinatorCanFulfill",
+    type: "error",
   },
   {
     anonymous: false,
@@ -350,6 +376,32 @@ export const lotteryABI = [
     type: "function",
   },
   {
+    inputs: [
+      {
+        internalType: "uint32",
+        name: "_gasAmount",
+        type: "uint32",
+      },
+    ],
+    name: "endLottery",
+    outputs: [],
+    stateMutability: "nonpayable",
+    type: "function",
+  },
+  {
+    inputs: [],
+    name: "factory",
+    outputs: [
+      {
+        internalType: "contract LotteryFactory",
+        name: "",
+        type: "address",
+      },
+    ],
+    stateMutability: "view",
+    type: "function",
+  },
+  {
     inputs: [],
     name: "feeAddress",
     outputs: [
@@ -389,6 +441,19 @@ export const lotteryABI = [
         internalType: "address",
         name: "",
         type: "address",
+      },
+    ],
+    stateMutability: "view",
+    type: "function",
+  },
+  {
+    inputs: [],
+    name: "getPurchasedTickets",
+    outputs: [
+      {
+        internalType: "uint256",
+        name: "",
+        type: "uint256",
       },
     ],
     stateMutability: "view",
@@ -500,9 +565,9 @@ export const lotteryABI = [
     name: "maxWinners",
     outputs: [
       {
-        internalType: "uint256",
+        internalType: "uint32",
         name: "",
-        type: "uint256",
+        type: "uint32",
       },
     ],
     stateMutability: "view",
@@ -598,6 +663,19 @@ export const lotteryABI = [
   },
   {
     inputs: [],
+    name: "pancakeSwapRouter",
+    outputs: [
+      {
+        internalType: "address",
+        name: "",
+        type: "address",
+      },
+    ],
+    stateMutability: "view",
+    type: "function",
+  },
+  {
+    inputs: [],
     name: "platformFee",
     outputs: [
       {
@@ -642,6 +720,24 @@ export const lotteryABI = [
       },
     ],
     name: "purchaseLottery",
+    outputs: [],
+    stateMutability: "payable",
+    type: "function",
+  },
+  {
+    inputs: [
+      {
+        internalType: "uint256",
+        name: "requestId",
+        type: "uint256",
+      },
+      {
+        internalType: "uint256[]",
+        name: "randomWords",
+        type: "uint256[]",
+      },
+    ],
+    name: "rawFulfillRandomWords",
     outputs: [],
     stateMutability: "nonpayable",
     type: "function",
@@ -723,19 +819,6 @@ export const lotteryABI = [
     type: "function",
   },
   {
-    inputs: [
-      {
-        internalType: "uint256[]",
-        name: "tokenIds",
-        type: "uint256[]",
-      },
-    ],
-    name: "setWinners",
-    outputs: [],
-    stateMutability: "nonpayable",
-    type: "function",
-  },
-  {
     inputs: [],
     name: "startTime",
     outputs: [
@@ -743,6 +826,19 @@ export const lotteryABI = [
         internalType: "uint256",
         name: "",
         type: "uint256",
+      },
+    ],
+    stateMutability: "view",
+    type: "function",
+  },
+  {
+    inputs: [],
+    name: "subId",
+    outputs: [
+      {
+        internalType: "uint64",
+        name: "",
+        type: "uint64",
       },
     ],
     stateMutability: "view",
@@ -813,6 +909,19 @@ export const lotteryABI = [
     type: "function",
   },
   {
+    inputs: [],
+    name: "totalTicketsPurchased",
+    outputs: [
+      {
+        internalType: "uint16",
+        name: "",
+        type: "uint16",
+      },
+    ],
+    stateMutability: "view",
+    type: "function",
+  },
+  {
     inputs: [
       {
         internalType: "address",
@@ -850,7 +959,7 @@ export const lotteryABI = [
   },
   {
     inputs: [],
-    name: "usdt",
+    name: "vrfCoordinator",
     outputs: [
       {
         internalType: "address",
@@ -877,6 +986,19 @@ export const lotteryABI = [
     name: "whitelistAddresses",
     outputs: [],
     stateMutability: "nonpayable",
+    type: "function",
+  },
+  {
+    inputs: [],
+    name: "whitelistedBuyers",
+    outputs: [
+      {
+        internalType: "uint256",
+        name: "",
+        type: "uint256",
+      },
+    ],
+    stateMutability: "view",
     type: "function",
   },
   {

@@ -5,12 +5,17 @@ import { NavLink, Link } from "react-router-dom";
 import { logo } from "../../images/images";
 import Logo from "../../images/logo.png";
 import styles from "./styles.module.css";
-import { useWeb3Modal, Web3NetworkSwitch } from "@web3modal/react";
-import { useAccount } from "wagmi";
+import { useChain } from "../../wallet/WalletContext";
+import { solana_chain_names, evm_chain_names } from "../../constants/chainInfo";
+import {
+  WalletMultiButton,
+  BaseWalletMultiButton,
+} from "@solana/wallet-adapter-react-ui";
+import WagmiButton from "../WagmiButton";
+import ConnectWalletButton from "./ConnectWalletButton";
 
-const Navbar = () => {
-  const { open } = useWeb3Modal();
-  const { address } = useAccount();
+const Navbar = ({ openSelectNetwork }) => {
+  const { foo, chainId } = useChain();
   const [sidebar, setSidebar] = useState(false);
   const navItems = [
     { navItem: "Create Lottery", to: "/createLottery" },
@@ -20,10 +25,20 @@ const Navbar = () => {
     { navItem: "Contact us", to: "/contact" },
 
     {
-      navItem: `${address ? `Profile` : ""}`,
-      to: `${address ? `/profile/${address}` : ""}`,
+      navItem: `${foo ? `Profile` : ""}`,
+      to: `${foo ? `/profile/${foo}` : ""}`,
     },
   ];
+
+  const LABELS = {
+    "change-wallet": "Change wallet",
+    connecting: "Connecting ...",
+    "copy-address": "Copy address",
+    copied: "Copied",
+    disconnect: "Disconnect",
+    "has-wallet": "Connect",
+    "no-wallet": "Select Wallet",
+  };
   return (
     <section className={styles.navbar}>
       <div className="container">
@@ -51,14 +66,20 @@ const Navbar = () => {
               />
             )}
           </div>
+          <ConnectWalletButton />
           <div className={styles.buttonContainer}>
-            <button onClick={open} className={styles.button}>
-              {!address && (
-                <span className={styles.buttonText}>Connect Wallet</span>
+            <button
+              onClick={() => {
+                openSelectNetwork();
+              }}
+              className={styles.button}
+            >
+              {!chainId && (
+                <span className={styles.buttonText}>Select Network</span>
               )}
-              {address && (
+              {chainId && (
                 <span className={styles.buttonText}>
-                  {address.slice(0, 6)}...{address.slice(-4)}
+                  {solana_chain_names[chainId] || evm_chain_names[chainId]}
                 </span>
               )}
             </button>
@@ -67,7 +88,6 @@ const Navbar = () => {
               className={styles.hamburger}
               onClick={() => setSidebar((prev) => !prev)}
             />
-            <Web3NetworkSwitch />
           </div>
         </div>
       </div>

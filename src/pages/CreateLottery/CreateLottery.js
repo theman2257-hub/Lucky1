@@ -4,19 +4,17 @@ import { textIcon, dollar, usdt, calender, winner } from "../../images/images";
 import styles from "./styles.module.css";
 import { useParams, useNavigate } from "react-router-dom";
 import axios from "axios";
-import { useWeb3Modal } from "@web3modal/react";
-import { useAccount } from "wagmi";
+import { useAccount, useWriteContract, useConfig } from "wagmi";
+import { waitForTransactionReceipt } from "@wagmi/core";
 import { ethers } from "ethers";
-import { useSigner } from "wagmi";
 import Loader from "../../components/Loader";
 import SetPrizeAmountModal from "../../components/CreateLottery/SetPrizeAmountModal/SetPrizeAmountModal";
 import { erc20Abi } from "../../constants/abis/abi";
 import { bnb, arb } from "../../images/images";
-import { useNetwork } from "wagmi";
 import { chainDict, getClient } from "../../components/Utils/graphClient";
 
 const CreateLottery = () => {
-  const { data: signer } = useSigner();
+  // const { signer } = useAccount();
   const [imgurl, setImgurl] = useState("");
   const [showLoader, setShowLoader] = useState(false);
   const [showPrizeAmountModal, setShowPrizeAmountModal] = useState(false);
@@ -24,7 +22,47 @@ const CreateLottery = () => {
   const [lotteryAddress, setLotteryAddress] = useState("");
   const { affiliateAddress } = useParams();
   const navigate = useNavigate();
-  const { chain } = useNetwork();
+  const { chainId } = useAccount();
+  const config = useConfig();
+  const { writeContract } = useWriteContract();
+
+  const handleCreateError = async (data) => {
+    console.log(data);
+    setShowLoader(false);
+  };
+
+  const handleCreateSuccessful = async (txHash) => {
+    const receipt = await waitForTransactionReceipt(config, {
+      hash: `${txHash}`,
+    });
+
+    // at this point the tx was mined
+
+    if (receipt.status === "success") {
+      // execute your logic here
+      setShowLoader(false);
+      console.log(receipt);
+      let lotteryAddress = receipt.logs[4].topics[2];
+      lotteryAddress = ethers.utils.defaultAbiCoder.decode(
+        ["address"],
+        lotteryAddress
+      );
+
+      setLotteryAddress(lotteryAddress);
+      // await sleep(1000);
+      // // updateImage(receipt.events[0].args.lottery);
+      // await sleep(1000);
+      alert(
+        "*** Lottery Created Successfully ***Congratulations! Your lottery has been created.Please remember to add a description and image to enhance your lottery listing.Good luck!"
+      );
+      if (values.entranceFee === "0") setShowPrizeAmountModal(true);
+      else {
+        navigate(`/${chainId}/${lotteryAddress}`, {
+          state: { createdNow: true },
+        });
+      }
+    }
+  };
 
   React.useEffect(() => {
     console.log(imgurl);
@@ -42,7 +80,7 @@ const CreateLottery = () => {
   } else {
     // Display a message to the user or implement alternative logic
   }
-  let factoryABI = [
+  const factoryABI = [
     {
       inputs: [],
       stateMutability: "nonpayable",
@@ -670,19 +708,14 @@ const CreateLottery = () => {
 
   let factoryContractBSC = "0xF2266dACaB52B90CdD00dDA7A486517CEa23F7aD";
   let factoryContractARB = "0xc7C99E811B619db618daDeB8b17E4d151f309147";
-  // let factoryContract = "0x6A1dEB92664Caa00bc58a2A7286Dd3a998DC5F07";
+  let factoryContractBSCT = "0xC30145ba0Ec71EB7b62cAB2eD8C533F1974107BF";
   const { address } = useAccount();
-  const { open } = useWeb3Modal();
 
   // let signer2 = new ethers.providers.Web3Provider(window.ethereum).getSigner();
-  let factory = new ethers.Contract(
-    chain.id === 56 ? factoryContractBSC : factoryContractARB,
-    factoryABI,
-    signer
-  );
 
   const newLottery = async () => {
     console.log(values);
+    console.log(chainId);
     const lotteryFee = {
       feeToken: values.FeeToken,
       charity: values.charityAddress,
@@ -696,45 +729,33 @@ const CreateLottery = () => {
 
     setShowLoader(true);
     let tx;
-    try {
-      tx = await factory.createLottery(
-        values.lotteryName,
-        ethers.utils.parseEther(values.entranceFee),
-        values.numberofTickets,
-        // //convert date to epoch time
-        new Date(values.lottryEndDate).getTime() / 1000,
-        lotteryFee,
-        values.maxTicketPerWallet,
-        values.prizeDistribution // Convert prize distribution percentages to numbers
-      );
-    } catch (error) {
-      console.log(error);
-      setShowLoader(false);
-    }
 
-    let sleep = (ms) => {
-      return new Promise((resolve) => setTimeout(resolve, ms));
-    };
+    console.log(chainId);
 
-    let receipt = await tx.wait();
-
-    if (receipt) {
-      //direct to profile page
-      setShowLoader(false);
-      console.log(receipt);
-      let lotteryAddress = receipt.events[3].args.lottery;
-      setLotteryAddress(lotteryAddress);
-      await sleep(1000);
-      // updateImage(receipt.events[0].args.lottery);
-      await sleep(1000);
-      alert(
-        "*** Lottery Created Successfully ***Congratulations! Your lottery has been created.Please remember to add a description and image to enhance your lottery listing.Good luck!"
-      );
-      if (values.entranceFee === "0") setShowPrizeAmountModal(true);
-      else {
-        navigate(`/${lotteryAddress}`, { state: { createdNow: true } });
-      }
-    }
+    writeContract(
+      {
+        abi: factoryABI,
+        chainId: chainId,
+        address:
+          chainId === 56
+            ? factoryContractBSC
+            : chainId == 97
+            ? factoryContractBSCT
+            : factoryContractARB,
+        functionName: "createLottery",
+        args: [
+          values.lotteryName,
+          ethers.utils.parseEther(values.entranceFee),
+          values.numberofTickets,
+          // //convert date to epoch time
+          new Date(values.lottryEndDate).getTime() / 1000,
+          lotteryFee,
+          values.maxTicketPerWallet,
+          values.prizeDistribution, // Convert prize distribution percentages to numbers
+        ],
+      },
+      { onSuccess: handleCreateSuccessful, onError: handleCreateError }
+    );
   };
 
   const depositPrizeAmount = async () => {
@@ -745,32 +766,34 @@ const CreateLottery = () => {
     );
     if (lotteryAddress === "") return;
 
-    let feeToken = new ethers.Contract(values.FeeToken, erc20Abi, signer);
-    try {
-      setShowLoader(true);
-      let tx = await feeToken.transfer(
-        lotteryAddress,
-        ethers.utils.parseEther(prizeAmount)
-      );
+    // let feeToken = new ethers.Contract(values.FeeToken, erc20Abi, signer);
+    // try {
+    //   setShowLoader(true);
+    //   let tx = await feeToken.transfer(
+    //     lotteryAddress,
+    //     ethers.utils.parseEther(prizeAmount)
+    //   );
 
-      let receipt = await tx.wait();
+    //   let receipt = await tx.wait();
 
-      if (receipt) {
-        setShowLoader(false);
-        setShowPrizeAmountModal(false);
-        alert("Prize Amount Deposited successfully!");
-        window.open(`${window.location.origin}/profile/${address}`);
-      }
-    } catch (error) {
-      console.log(error);
-    }
+    //   if (receipt) {
+    //     setShowLoader(false);
+    //     setShowPrizeAmountModal(false);
+    //     alert("Prize Amount Deposited successfully!");
+    //     window.open(`${window.location.origin}/profile/${address}`);
+    //   }
+    // } catch (error) {
+    //   console.log(error);
+    // }
   };
 
   let buttonTitle = () => {
     if (!address) {
       return {
         title: "Connect Wallet",
-        func: open,
+        func: () => {
+          console.log("not configured");
+        },
       };
     } else {
       return {
@@ -975,6 +998,7 @@ const CreateLottery = () => {
       onChange: onChange,
       options: [
         { value: 56, label: "BSC", icon: bnb },
+        { value: 97, label: "BSCT", icon: bnb },
         { value: 42161, label: "ARB", icon: arb },
       ],
     },
@@ -1006,9 +1030,9 @@ const CreateLottery = () => {
               }}
             >
               <button
-                disabled={values["chain"] !== chain.id}
+                disabled={values["chain"] !== chainId}
                 onClick={(e) => {
-                  console.log(values["chain"], chain.id);
+                  console.log(values["chain"], chainId);
 
                   e.preventDefault();
                   b.func();
@@ -1017,7 +1041,7 @@ const CreateLottery = () => {
               >
                 {b.title}
               </button>
-              {values["chain"] !== chain.id && (
+              {values["chain"] !== chainId && (
                 <p style={{ color: "red" }}>
                   Connect to {chainDict[values["chain"]]} first
                 </p>

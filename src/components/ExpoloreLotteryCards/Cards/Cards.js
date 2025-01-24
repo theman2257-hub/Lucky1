@@ -3,8 +3,10 @@ import axios from "axios";
 import Counter from "../../Counter/Counter/Counter";
 import styles from "./styles.module.css";
 import { ethers } from "ethers";
-import { useSigner, useEnsName, useNetwork } from "wagmi";
-import { getClient } from "../../Utils/graphClient";
+import { getEvmClient } from "../../Utils/graphClient";
+import { useChain } from "../../../wallet/WalletContext";
+import { useNavigate } from "react-router-dom";
+
 let abierc = [
   { inputs: [], stateMutability: "nonpayable", type: "constructor" },
   {
@@ -234,6 +236,7 @@ const Cards = ({
   maxTickets,
   tokenSymbol,
   feeToken,
+  decimals,
 }) => {
   const date = new Date(endDate * 1000);
   const pastDate = new Date(
@@ -246,9 +249,10 @@ const Cards = ({
   );
   const [prizeAmount, setPrizeAmount] = React.useState(0.0);
   const [totalTicketsPurchased, setTotalPurchased] = React.useState(0);
-  const { data } = useSigner();
+
   let rpc = "https://bsc-dataseed1.binance.org/";
-  const { chain } = useNetwork();
+  const { chainId } = useChain();
+  const navigate = useNavigate();
 
   // getSymbol(lotteryAddress).then((res) => {
   //   console.log(res)
@@ -285,7 +289,7 @@ const Cards = ({
         }
       }`;
 
-      const client = getClient(chain.name);
+      const client = getEvmClient("");
       const { data } = await client.query(query).toPromise();
 
       let totalPurchased = 0;
@@ -318,6 +322,7 @@ const Cards = ({
       <div
         className={styles.card}
         onClick={() => {
+          console.log(lotteryAddress);
           //open base url + lottery address
           //i dont want to hardcode the base url
           //so i will use the window.location.origin
@@ -326,7 +331,8 @@ const Cards = ({
 
           //open in same tab
 
-          window.location.href = `/${chain?.id || 56}/${lotteryAddress}`;
+          // window.location.href = `/${chain.id}/${lotteryAddress}`;
+          navigate(`/${chainId}/${lotteryAddress}`);
         }}
       >
         <div className={styles.counter}>
@@ -350,7 +356,7 @@ const Cards = ({
         <p className={styles.name}>
           {" "}
           {ticketPrice !== "0"
-            ? Number(ticketPrice * (maxTickets / 10 ** 18)).toFixed(2)
+            ? Number(ticketPrice * (maxTickets / 10 ** decimals)).toFixed(2)
             : prizeAmount}{" "}
           {tokenSymbol}
         </p>
@@ -378,7 +384,7 @@ const Cards = ({
             //
 
             //open in same tab
-            window.location.href = `/${chain.id}/${lotteryAddress}`;
+            navigate(`/${chainId}/${lotteryAddress}`);
           }}
           className={styles.button}
         >

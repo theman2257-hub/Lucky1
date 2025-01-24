@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { ethers } from "ethers";
-import { erc20ABI, useNetwork } from "wagmi";
+import { erc20ABI, useAccount } from "wagmi";
 import {
   BiSearch,
   BiChevronUpCircle,
@@ -19,307 +19,34 @@ import {
 } from "../../images/images";
 import Cards from "./Cards/Cards";
 import styles from "./styles.module.css";
-import { getClient } from "../Utils/graphClient";
+import { getEvmClient, getSolanaConnection } from "../Utils/graphClient";
+import { fetchLotteriesSolana } from "../Utils/solanaActions";
+import { useChain } from "../../wallet/WalletContext";
+import LotteryDetails from "../Utils/lotteryActions";
+
 const ExploreLotteryCareds = () => {
   const [data, setLotterydata] = useState([]);
-  let abierc = [
-    { inputs: [], stateMutability: "nonpayable", type: "constructor" },
-    {
-      anonymous: false,
-      inputs: [
-        {
-          indexed: true,
-          internalType: "address",
-          name: "owner",
-          type: "address",
-        },
-        {
-          indexed: true,
-          internalType: "address",
-          name: "spender",
-          type: "address",
-        },
-        {
-          indexed: false,
-          internalType: "uint256",
-          name: "value",
-          type: "uint256",
-        },
-      ],
-      name: "Approval",
-      type: "event",
-    },
-    {
-      anonymous: false,
-      inputs: [
-        {
-          indexed: true,
-          internalType: "address",
-          name: "issuer",
-          type: "address",
-        },
-        { indexed: false, internalType: "bool", name: "value", type: "bool" },
-      ],
-      name: "IssuerRights",
-      type: "event",
-    },
-    {
-      anonymous: false,
-      inputs: [
-        {
-          indexed: true,
-          internalType: "address",
-          name: "from",
-          type: "address",
-        },
-        { indexed: true, internalType: "address", name: "to", type: "address" },
-        {
-          indexed: false,
-          internalType: "uint256",
-          name: "value",
-          type: "uint256",
-        },
-      ],
-      name: "Transfer",
-      type: "event",
-    },
-    {
-      anonymous: false,
-      inputs: [
-        {
-          indexed: true,
-          internalType: "address",
-          name: "previousOwner",
-          type: "address",
-        },
-        {
-          indexed: true,
-          internalType: "address",
-          name: "newOwner",
-          type: "address",
-        },
-      ],
-      name: "TransferOwnership",
-      type: "event",
-    },
-    {
-      inputs: [
-        { internalType: "address", name: "", type: "address" },
-        { internalType: "address", name: "", type: "address" },
-      ],
-      name: "allowance",
-      outputs: [{ internalType: "uint256", name: "", type: "uint256" }],
-      stateMutability: "view",
-      type: "function",
-    },
-    {
-      inputs: [
-        { internalType: "address", name: "_spender", type: "address" },
-        { internalType: "uint256", name: "_amount", type: "uint256" },
-      ],
-      name: "approve",
-      outputs: [{ internalType: "bool", name: "success", type: "bool" }],
-      stateMutability: "nonpayable",
-      type: "function",
-    },
-    {
-      inputs: [{ internalType: "address", name: "", type: "address" }],
-      name: "balanceOf",
-      outputs: [{ internalType: "uint256", name: "", type: "uint256" }],
-      stateMutability: "view",
-      type: "function",
-    },
-    {
-      inputs: [{ internalType: "uint256", name: "_amount", type: "uint256" }],
-      name: "burn",
-      outputs: [{ internalType: "bool", name: "success", type: "bool" }],
-      stateMutability: "nonpayable",
-      type: "function",
-    },
-    {
-      inputs: [
-        { internalType: "address", name: "_from", type: "address" },
-        { internalType: "uint256", name: "_amount", type: "uint256" },
-      ],
-      name: "burnFrom",
-      outputs: [{ internalType: "bool", name: "success", type: "bool" }],
-      stateMutability: "nonpayable",
-      type: "function",
-    },
-    {
-      inputs: [],
-      name: "decimals",
-      outputs: [{ internalType: "uint8", name: "", type: "uint8" }],
-      stateMutability: "view",
-      type: "function",
-    },
-    {
-      inputs: [],
-      name: "getOwner",
-      outputs: [{ internalType: "address", name: "", type: "address" }],
-      stateMutability: "view",
-      type: "function",
-    },
-    {
-      inputs: [{ internalType: "address", name: "", type: "address" }],
-      name: "isIssuer",
-      outputs: [{ internalType: "bool", name: "", type: "bool" }],
-      stateMutability: "view",
-      type: "function",
-    },
-    {
-      inputs: [
-        { internalType: "address", name: "_to", type: "address" },
-        { internalType: "uint256", name: "_amount", type: "uint256" },
-      ],
-      name: "mint",
-      outputs: [{ internalType: "bool", name: "success", type: "bool" }],
-      stateMutability: "nonpayable",
-      type: "function",
-    },
-    {
-      inputs: [],
-      name: "name",
-      outputs: [{ internalType: "string", name: "", type: "string" }],
-      stateMutability: "view",
-      type: "function",
-    },
-    {
-      inputs: [],
-      name: "owner",
-      outputs: [{ internalType: "address", name: "", type: "address" }],
-      stateMutability: "view",
-      type: "function",
-    },
-    {
-      inputs: [
-        { internalType: "address", name: "_issuer", type: "address" },
-        { internalType: "bool", name: "_value", type: "bool" },
-      ],
-      name: "setIssuerRights",
-      outputs: [],
-      stateMutability: "nonpayable",
-      type: "function",
-    },
-    {
-      inputs: [],
-      name: "symbol",
-      outputs: [{ internalType: "string", name: "", type: "string" }],
-      stateMutability: "view",
-      type: "function",
-    },
-    {
-      inputs: [],
-      name: "totalSupply",
-      outputs: [{ internalType: "uint256", name: "", type: "uint256" }],
-      stateMutability: "view",
-      type: "function",
-    },
-    {
-      inputs: [
-        { internalType: "address", name: "_to", type: "address" },
-        { internalType: "uint256", name: "_amount", type: "uint256" },
-      ],
-      name: "transfer",
-      outputs: [{ internalType: "bool", name: "success", type: "bool" }],
-      stateMutability: "nonpayable",
-      type: "function",
-    },
-    {
-      inputs: [
-        { internalType: "address", name: "_from", type: "address" },
-        { internalType: "address", name: "_to", type: "address" },
-        { internalType: "uint256", name: "_amount", type: "uint256" },
-      ],
-      name: "transferFrom",
-      outputs: [{ internalType: "bool", name: "success", type: "bool" }],
-      stateMutability: "nonpayable",
-      type: "function",
-    },
-    {
-      inputs: [{ internalType: "address", name: "_newOwner", type: "address" }],
-      name: "transferOwnership",
-      outputs: [],
-      stateMutability: "nonpayable",
-      type: "function",
-    },
-  ];
-  const { chain } = useNetwork();
+  const [chain, setChain] = useState();
 
-  console.log(typeof data);
-
-  //import lottery from api
+  const { chainId } = useChain();
 
   const fetchLottery = async () => {
-    let query = `
-    {
-      lotteries {
-        id
-        creator
-        lotteryAddress
-        name
-        symbol
-        ticketPrice
-        maxTickets
-        endDate
-        charity
-        feeToken
-        creatorFee
-        charityFee
-        maxTicketsPerWallet
-        maxWinners
-        prizeDistribution
-        startTime
-        tokenSymbol
-      }
-    }`;
-    let url = "https://api.thegraph.com/subgraphs/name/sallystix/test-lottery";
-    const client = getClient(chain?.name);
-    const { data } = await client.query(query).toPromise();
-    console.log(data);
-    console.log(data.lotteries);
-    let rpc = "https://bsc-dataseed1.binance.org/";
-    let provider = new ethers.providers.JsonRpcProvider(rpc);
+    const lotteryInstance = new LotteryDetails({ chainId });
 
-    const getSymbol = async (address) => {
-      console.log(address);
-      let provider = new ethers.providers.JsonRpcProvider(rpc);
-      let contract = new ethers.Contract(address, abierc, provider);
-      let symbol = await contract.symbol();
-      console.log(symbol);
-      if (!symbol) {
-        return "NULL";
-      }
-      return symbol;
-    };
-    let lotteryData = data.lotteries.map((el, index) => {
-      return {
-        id: el.id,
-        creator: el.creator,
-        lotteryAddress: el.lotteryAddress,
-        name: el.name,
-        symbol: el.symbol,
-        ticketPrice: el.ticketPrice,
-        maxTickets: el.maxTickets,
-        maxWinners: el.maxWinners,
-        endDate: el.endDate,
-        charity: el.charity,
-        feeToken: el.feeToken,
-        creatorFee: el.creatorFee,
-        charityFee: el.charityFee,
-        prizeDistribution: el.prizeDistribution,
-        maxTicketsPerWallet: el.maxTicketsPerWallet,
-        startTime: el.startTime,
-        tokenSymbol: el.tokenSymbol,
-      };
-    });
-
+    const lotteryData = await lotteryInstance.getLotteries();
     setLotterydata(lotteryData);
   };
 
   React.useEffect(() => {
-    fetchLottery();
-  }, [chain]);
+    console.log(chainId);
+    if (!chainId) return;
+    if (chainId !== chain) {
+      console.log(`changing ${chain} to - `, chainId);
+      setLotterydata([]);
+      setChain(chainId);
+      fetchLottery();
+    }
+  }, [chainId]);
   const [searchValue, setSearchValue] = useState("");
   const [filterBy, setFilterBy] = useState("Newest");
   const allFilterByItems = ["Oldest", "Newest"].filter(
@@ -356,7 +83,6 @@ const ExploreLotteryCareds = () => {
       return 0;
     });
 
-  console.log(data);
   return (
     <section className={styles.exploreLotteryContainer}>
       <div className="container">

@@ -2,18 +2,19 @@ import React, { useEffect, useState } from "react";
 import { BiPlus, BiMinus } from "react-icons/bi";
 import Counter from "../../Counter/Counter/Counter";
 import { copy, bnb } from "../../../images/images";
-import { useAccount, useNetwork } from "wagmi";
-import { useWeb3Modal } from "@web3modal/react";
+import { useAccount, useConfig, useWriteContract } from "wagmi";
+import { waitForTransactionReceipt, readContract } from "@wagmi/core";
 import styles from "./styles.module.css";
 import { lotteryABI, erc20Abi } from "../../../constants/abis/abi";
 import { Signer, ethers } from "ethers";
-import { useSigner } from "wagmi";
 import { ToastContainer, toast } from "react-toastify";
 import axios from "axios";
 import "react-toastify/dist/ReactToastify.css";
 import { redirectDocument, useParams, useNavigate } from "react-router-dom";
-import { getClient, chainDict } from "../../Utils/graphClient";
+import { getEvmClient, chainDict } from "../../Utils/graphClient";
 import Loader from "../../Loader";
+import LotteryDetails from "../../Utils/lotteryActions/";
+import { useEvmModal } from "../../../wallet/EvmWallet/EvmWalletProvider";
 
 const TicketDetails = ({
   setOwner,
@@ -35,77 +36,38 @@ const TicketDetails = ({
   const [maxWinners, setMaxWinners] = React.useState(0);
   const [distribution, setDistribution] = useState([]);
   const navigate = useNavigate();
+  const config = useConfig();
+  const { writeContract } = useWriteContract();
 
-  const { id, chain } = useParams();
-  const network = useNetwork();
-  const txSuccess = (msg) =>
-    toast.success(`Successfully Purchased ${msg} Tickets}`);
-  const { data } = useSigner();
+  const { id, chainIdParam } = useParams();
+  const { handleToggle } = useEvmModal();
+
+  const txSuccess = (txHash) => {
+    setShow(false);
+    toast.success(`Successfully Purchased Tickets`);
+  };
   let lotteryAddress = id;
-  let rpc = "https://bsc-dataseed1.binance.org/";
+  let rpc = "https://bsc-testnet-rpc.publicnode.com";
   let provider = new ethers.providers.JsonRpcProvider(rpc);
 
   const [lotteryDetails, setLotteryDetails] = useState({});
   let getDetails = async () => {
-    let query = `{
-      lotteries(where: {lotteryAddress: "${lotteryAddress}"}) {
-        id
-        creator
-    lotteryAddress
-    name
-    symbol
-    ticketPrice
-    maxTickets
-    
-		endDate
-		charity
-		feeToken
-		creatorFee
-    charityFee
-    maxTicketsPerWallet
-    maxWinners
-    prizeDistribution
-    startTime
-    tokenSymbol
-      }
-    }`;
-    let url = "https://api.thegraph.com/subgraphs/name/sallystix/test-lottery";
-    const client = getClient(chainDict[chain]);
-    const { data } = await client.query(query).toPromise();
-    // let lotteryData = data.data.lotteries.map((el) => {
-    //   return {
-    //     id: el.id,
-    //     creator: el.creator,
-    //     lotteryAddress: el.lotteryAddress,
-    //     name: el.name,
-    //     symbol: el.symbol,
-    //     ticketPrice: el.ticketPrice,
-    //     maxTickets: el.maxTickets,
-    //     maxWinners: el.maxWinners,
-    //     endDate: el.endDate,
-    //     charity: el.charity,
-    //     feeToken: el.feeToken,
-    //     creatorFee: el.creatorFee,
-    //     charityFee: el.charityFee,
-    //     prizeDistribution: el.prizeDistribution,
-    //     maxTicketsPerWallet: el.maxTicketsPerWallet,
-    //     startTime: el.startTime,
-    //     tokenSymbol: el.tokenSymbol,
-    //   };
+    const lotteryDetailsInstance = new LotteryDetails({
+      chainId: chainIdParam,
+    });
 
-    let lotteryData = data.lotteries[0];
-    console.log(data.lotteries[0]);
-    setLotteryDetails(data.lotteries[0]);
-    console.log(lotteryDetails);
+    const lottery = await lotteryDetailsInstance.getLotteryDetails(
+      lotteryAddress
+    );
 
-    // setLotteryDetails(lotteryData);
+    console.log(lottery);
 
-    setOwner(lotteryData.creator);
-    setAddress(lotteryData.lotteryAddress);
-    if (lotteryData.description) setDescription(lotteryData.description);
-
+    setLotteryDetails(lottery);
+    setOwner(lottery.creator);
+    setAddress(lottery.lotteryAddress);
+    if (lottery.description) setDescription(lottery.description);
     let imageURL = `https://api.lucky1.io/images/${
-      lotteryData.lotteryAddress
+      lottery.lotteryAddress
     }.png?${new Date().getTime()}`;
     //check if image exists
     axios
@@ -131,7 +93,7 @@ const TicketDetails = ({
       let res = await feeTokenContract.balanceOf(
         lotteryDetails?.lotteryAddress
       );
-      console.log(ethers.utils.formatEther(res.toString()).toString());
+
       setPrizeAmount(ethers.utils.formatEther(res.toString()).toString());
     } catch (error) {}
   };
@@ -157,18 +119,18 @@ const TicketDetails = ({
 
   let buyMax = async () => {
     let query = `{
-      ticketPurchaseds( where: {lotteryAddress:"${lotteryAddress}", buyer:"${address}"}) {
+      ticketPurchaseds( where: {lotteryAddress:"${lotteryAddress}", buyer:"${address.toLocaleLowerCase()}"}) {
         id
-        lotteryAddress
         buyer
         amount
       }
     }`;
     let url = "https://api.thegraph.com/subgraphs/name/sallystix/test-lottery";
-    const client = getClient(chainDict[chain]);
+    const client = getEvmClient(chainDict[chainIdParam]);
     const { data } = await client.query(query).toPromise();
-    const amountPurchased = data.ticketPurchaseds[0].amount;
-    console.log(amountPurchased);
+    const amountPurchased = data.ticketPurchaseds[0]
+      ? data.ticketPurchaseds[0].amount
+      : 0;
     const purchaseableAmount =
       lotteryDetails.maxTicketsPerWallet - amountPurchased;
     if (purchaseableAmount < 1) {
@@ -189,13 +151,10 @@ const TicketDetails = ({
   useEffect(() => {
     if (lotteryDetails?.ticketPrice && lotteryDetails?.ticketPrice !== "0") {
       setPrizeAmount(
-        ethers.utils
-          .formatEther(
-            (
-              parseInt(lotteryDetails?.ticketPrice) * lotteryDetails?.maxTickets
-            ).toString()
-          )
-          .toString()
+        (
+          ethers.utils.formatEther(lotteryDetails?.ticketPrice) *
+          parseInt(lotteryDetails?.maxTickets)
+        ).toString()
       );
       return;
     }
@@ -230,30 +189,31 @@ const TicketDetails = ({
   useEffect(() => {
     getIsRunning();
     getDetails();
-  }, [data]);
+  }, []);
 
   const purchaseTickets = async (t) => {
-    console.log(affiliateAddress, String(t), lotteryAddress);
-
-    let lotteryContract = new ethers.Contract(lotteryAddress, lotteryABI, data);
-
     try {
       setShow(true);
-      let tx = await lotteryContract.purchaseLottery(
-        String(t),
-        affiliateAddress
+      writeContract(
+        {
+          abi: lotteryABI,
+          chainId: chainId,
+          address: lotteryAddress,
+          functionName: "purchaseLottery",
+          args: [String(t), affiliateAddress],
+        },
+        { onSuccess: txSuccess, onError: handleWriteCallError }
       );
-      const reciept = await tx.wait();
-      setShow(false);
-      txSuccess(t);
+
       setTimeout(() => {
         window.location.reload();
       }, 2000);
-    } catch (error) {}
+    } catch (error) {
+      setShow(false);
+    }
   };
 
-  const { address } = useAccount();
-  const { open } = useWeb3Modal();
+  const { address, chainId, chain } = useAccount();
   const [quantity, setQuantity] = useState(1);
   const [priceInBnb, setPriceInBnb] = useState(20);
   const [priceInUsd, setPriceInUsd] = useState(30);
@@ -265,7 +225,7 @@ const TicketDetails = ({
       let lotteryContract = new ethers.Contract(
         lotteryAddress,
         lotteryABI,
-        data
+        provider
       );
 
       let isRunning = await lotteryContract.isRunning();
@@ -279,22 +239,46 @@ const TicketDetails = ({
     }
   };
 
+  const handleWriteCallError = async (data) => {
+    setShow(false);
+    console.log(data);
+  };
+
+  const handleApproveSuccessful = async (txHash) => {
+    const receipt = await waitForTransactionReceipt(config, {
+      hash: `${txHash}`,
+    });
+
+    // at this point the tx was mined
+
+    if (receipt.status === "success") {
+      setShow(false);
+
+      const newAllowance = await readContract(config, {
+        abi: erc20Abi,
+        address: lotteryDetails.feeToken,
+        functionName: "allowance",
+        args: [address, lotteryAddress],
+      });
+
+      setAllowance(newAllowance.toString());
+    }
+  };
+
   async function approve() {
     if (!lotteryDetails.feeToken) return;
 
-    let contract = new ethers.Contract(lotteryDetails.feeToken, erc20Abi, data);
     setShow(true);
     try {
-      let tx = await contract.approve(
-        lotteryAddress,
-        ethers.constants.MaxUint256
+      writeContract(
+        {
+          abi: erc20Abi,
+          address: lotteryDetails.feeToken,
+          functionName: "approve",
+          args: [lotteryAddress, ethers.constants.MaxUint256],
+        },
+        { onSuccess: handleApproveSuccessful, onError: handleWriteCallError }
       );
-      let reciept = await tx.wait();
-      setShow(false);
-      if (reciept && reciept.status) {
-        let newAllowance = await contract.allowance(address, lotteryAddress);
-        setAllowance(newAllowance.toString());
-      }
     } catch (err) {
       console.log(err);
       setShow(false);
@@ -303,15 +287,14 @@ const TicketDetails = ({
 
   useEffect(() => {
     const getMyTickets = async () => {
-      let lotteryContract = new ethers.Contract(
-        lotteryAddress,
-        lotteryABI,
-        data
-      );
-
       if (!address) return;
       try {
-        let tickets = await lotteryContract.balanceOf(address);
+        const tickets = await readContract(config, {
+          abi: lotteryABI,
+          address: lotteryAddress,
+          functionName: "balanceOf",
+          args: [address],
+        });
         setmyTickets(tickets);
       } catch (error) {}
     };
@@ -320,13 +303,13 @@ const TicketDetails = ({
       if (!address) return;
       if (!lotteryDetails?.feeToken) return;
       try {
-        let contract = new ethers.Contract(
-          lotteryDetails.feeToken,
-          erc20Abi,
-          data
-        );
-        let allowance = await contract.allowance(address, lotteryAddress);
-        console.log("IN ALLOWANCE FUNCTION", allowance);
+        const allowance = await readContract(config, {
+          abi: erc20Abi,
+          address: lotteryDetails.feeToken,
+          functionName: "allowance",
+          args: [address, lotteryAddress],
+        });
+
         if (allowance > 0) {
           setAllowance(allowance);
         }
@@ -342,16 +325,16 @@ const TicketDetails = ({
       }`;
       let url =
         "https://api.thegraph.com/subgraphs/name/sallystix/test-lottery";
-      const client = getClient(chainDict[chain]);
+      const client = getEvmClient(chainDict[chainIdParam]);
       const { data } = await client.query(query).toPromise();
 
       let totalPurchased = 0;
       data.ticketPurchaseds.map((item) => {
         totalPurchased += parseInt(item.amount);
       });
-      console.log(totalPurchased);
 
       setTotalPurchased(totalPurchased);
+
       // setLotteryDetails(lotteryData);
     };
 
@@ -375,14 +358,16 @@ const TicketDetails = ({
     getTotalTicketsPurchased();
     getAffiliateFee();
     getMaxWinners();
-  }, [address, lotteryDetails, data, lotteryAddress]);
+  }, [address, lotteryDetails, lotteryAddress]);
 
   const titleAndFunction = () => {
     const totalCost = quantity * lotteryDetails.ticketPrice;
     if (!address) {
       return {
         title: "Connect Wallet",
-        function: open,
+        function: () => {
+          handleToggle();
+        },
       };
     } else if (
       lotteryDetails.endDate * 1000 < Date.now() ||
@@ -391,16 +376,15 @@ const TicketDetails = ({
       return {
         title: "End Lottery",
         function: async () => {
-          let url = `https://api.lucky1.io/end/end/${chain}/${lotteryAddress}`;
+          let url = `https://api.lucky1.io/end/end/${chainIdParam}/${lotteryAddress}`;
           const { data } = await axios.post(url);
-          console.log(data);
           alert("Lottery Ended");
           setCompetitionEndedModal(true);
         },
       };
     } else if (allowance < totalCost) {
       return {
-        title: "Approve",
+        title: `Approve`,
         function: () => approve(),
       };
     } else if (address) {
@@ -592,30 +576,30 @@ const TicketDetails = ({
         <div className={styles.container}>
           <div className={styles.buttonContainer}>
             <button
-              disabled={network.chain?.name !== chainDict[chain]}
+              // disabled={chain?.name !== chainDict[chainIdParam]}
               onClick={bigButton.function}
               className={styles.button}
             >
               {bigButton.title}
             </button>
-            {network.chain?.name !== chainDict[chain] && (
+            {chainId != chainIdParam && (
               <p style={{ color: "red" }}>
-                connect to {chainDict[chain]} first
+                connect your wallet to {chainDict[chainIdParam]} first
               </p>
             )}
           </div>
           {bigButton.title2 && (
             <div className={styles.buttonContainer}>
               <button
-                disabled={network.chain.name !== chainDict[chain]}
+                disabled={chainId == chainIdParam}
                 onClick={bigButton.function2}
                 className={styles.button}
               >
                 {bigButton.title2}
               </button>
-              {network.chain.name !== chainDict[chain] && (
+              {chainIdParam != chainId && (
                 <p style={{ color: "red" }}>
-                  connect to {chainDict[chain]} first
+                  connect to {chainDict[chainId]} first
                 </p>
               )}
             </div>
