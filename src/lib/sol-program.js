@@ -231,3 +231,67 @@ export const findMasterEditionPda = (mint) => {
     );
 };
 
+// Helper function to generate mint creation instructions
+export async function getCreateMintInstructions(
+    provider,
+    authority,
+    payer,
+    mintKeypair,
+    freezeAuthority = null,
+    decimals = 9
+) {
+    const lamports = await getMinimumBalanceForRentExemptMint(provider.connection);
+
+    return [
+        SystemProgram.createAccount({
+            fromPubkey: payer,
+            newAccountPubkey: mintKeypair.publicKey,
+            space: MINT_SIZE,
+            lamports,
+            programId: TOKEN_PROGRAM_ID,
+        }),
+        createInitializeMint2Instruction(
+            mintKeypair.publicKey,
+            decimals,
+            authority,
+            freezeAuthority,
+            TOKEN_PROGRAM_ID
+        )
+    ];
+}
+
+// Helper function to generate token account creation instructions
+export async function getCreateTokenAccountInstructions(
+    provider,
+    mint,
+    owner,
+    payer,
+    tokenAccountKeypair
+) {
+    const lamports = await getMinimumBalanceForRentExemptAccount(provider.connection);
+
+    return [
+        SystemProgram.createAccount({
+            fromPubkey: payer,
+            newAccountPubkey: tokenAccountKeypair.publicKey,
+            space: TOKEN_ACCOUNT_SIZE,
+            lamports,
+            programId: TOKEN_PROGRAM_ID,
+        }),
+        createInitializeAccountInstruction(
+            tokenAccountKeypair.publicKey,
+            mint,
+            owner,
+            TOKEN_PROGRAM_ID
+        )
+    ];
+}
+
+export function isValidPublicKey(publicKey) {
+    try {
+        new PublicKey(publicKey);
+        return true;
+    } catch (e) {
+        return false;
+    }
+}

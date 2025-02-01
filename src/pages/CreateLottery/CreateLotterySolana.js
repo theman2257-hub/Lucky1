@@ -6,13 +6,15 @@ import { useParams, useNavigate } from "react-router-dom";
 import Loader from "../../components/Loader";
 import SetPrizeAmountModal from "../../components/CreateLottery/SetPrizeAmountModal/SetPrizeAmountModal";
 import { useWallet } from "@solana/wallet-adapter-react";
-import { create_mint, create_token_account, findMasterEditionPda, initProgram } from "../../lib/sol-program";
+import { create_mint, create_token_account, findMasterEditionPda, getCreateMintInstructions, getCreateTokenAccountInstructions, initProgram, isValidPublicKey } from "../../lib/sol-program";
 import { useRecoilValue } from "recoil";
 import { GlobalStateState } from "../../state/solana";
 import InitSolanaProgram from "../../components/InitSolanaProgram";
-import { Keypair, PublicKey, sendAndConfirmTransaction, SystemProgram, SYSVAR_RENT_PUBKEY, Transaction } from "@solana/web3.js";
-import { ASSOCIATED_TOKEN_PROGRAM_ID, createAccount, createInitializeMint2Instruction, getMinimumBalanceForRentExemptMint, MINT_SIZE, TOKEN_PROGRAM_ID } from "@solana/spl-token";
+import { Keypair, PublicKey, SystemProgram, SYSVAR_RENT_PUBKEY, Transaction } from "@solana/web3.js";
+import { ASSOCIATED_TOKEN_PROGRAM_ID, createInitializeMint2Instruction, getMinimumBalanceForRentExemptMint, MINT_SIZE, TOKEN_PROGRAM_ID } from "@solana/spl-token";
 import { BN } from "@coral-xyz/anchor";
+import { useChain } from "../../wallet/WalletContext";
+import { getMint } from "@solana/spl-token";
 
 const CreateLottery = () => {
   const globalState = useRecoilValue(GlobalStateState);
@@ -22,6 +24,8 @@ const CreateLottery = () => {
   const { wallet, connected, connecting, publicKey, signTransaction } = useWallet();
   const depositPrizeAmount = async () => {
   };
+  const navigate = useNavigate();
+  const { chainId } = useChain();
 
 
   const [disable, setDisable] = React.useState(true);
@@ -33,7 +37,7 @@ const CreateLottery = () => {
     lottryEndDate: "",
 
     charityAddress: "0x62cEFa2920Aa80D67e38C00A84723b3Fc9fA866B",
-    FeeToken: "0x55d398326f99059fF775485246999027B3197955",
+    FeeToken: "Gh9ZwEmdLJ8DscKNTkTqPbNwLNNBjuSzaG9Vp2KGtKJr",
     CreatorFee: "15",
     charityFee: "0",
     numberofTickets: "100",
@@ -72,13 +76,13 @@ const CreateLottery = () => {
       onChange: onChange,
     },
 
-    // {
-    //   icon: usdt,
-    //   label: "Lottery Symbol",
-    //   type: "text",
-    //   name: "lottrySymbol",
-    //   placeholder: "Enter symbol",
-    // },
+    {
+      icon: dollar,
+      label: "Lottery Symbol",
+      type: "text",
+      name: "lottrySymbol",
+      placeholder: "Enter symbol",
+    },
     {
       icon: usdt,
       label: "Fee Token",
@@ -89,16 +93,16 @@ const CreateLottery = () => {
       placeholder: "Enter token to pay fee",
       onChange: onChange,
     },
-    {
-      icon: usdt,
-      label: "Creator Fee",
-      labelExplainer:
-        "Lottery creator’s fee to be rewarded for creating this lottery",
-      type: "text",
-      name: "CreatorFee",
-      placeholder: "Enter creator fee",
-      onChange: onChange,
-    },
+    // {
+    //   icon: usdt,
+    //   label: "Creator Fee",
+    //   labelExplainer:
+    //     "Lottery creator’s fee to be rewarded for creating this lottery",
+    //   type: "text",
+    //   name: "CreatorFee",
+    //   placeholder: "Enter creator fee",
+    //   onChange: onChange,
+    // },
     {
       icon: calender,
       label: "lottery end date",
@@ -107,6 +111,7 @@ const CreateLottery = () => {
 
       placeholder: "Enter date",
       onChange: onChange,
+      required: true
     },
 
     {
@@ -170,45 +175,45 @@ const CreateLottery = () => {
         setValues({ ...values, [e.target.name]: e.target.value });
       },
     },
-    {
-      icon: dollar,
-      label: "Charity Fee",
-      labelExplainer:
-        "The % of the lottery revenue that you want to share with a charity",
-      type: "text",
-      min: 1,
-      name: "charityFee",
-      placeholder: "Enter charity fee",
-      switchs: true,
-      disable: disable,
-      setDisable: setDisable,
-      onChange: onChange,
-    },
-    {
-      icon: winner,
-      label: "Charity Address",
-      type: "text",
-      name: "charityAddress",
-      placeholder: "Enter address",
-      switchs: true,
-      disable: disable,
-      setDisable: setDisable,
-      onChange: onChange,
-    },
-    {
-      icon: dollar,
-      label: "Affiliate Fee",
-      labelExplainer:
-        "Reward commission for those referring your project to others",
-      type: "text",
-      min: 1,
-      name: "affiliateFee",
-      placeholder: "Enter affiliate fee",
-      switchs: true,
-      disable: disable,
-      setDisable: setDisable,
-      onChange: onChange,
-    },
+    // {
+    //   icon: dollar,
+    //   label: "Charity Fee",
+    //   labelExplainer:
+    //     "The % of the lottery revenue that you want to share with a charity",
+    //   type: "text",
+    //   min: 1,
+    //   name: "charityFee",
+    //   placeholder: "Enter charity fee",
+    //   switchs: true,
+    //   disable: disable,
+    //   setDisable: setDisable,
+    //   onChange: onChange,
+    // },
+    // {
+    //   icon: winner,
+    //   label: "Charity Address",
+    //   type: "text",
+    //   name: "charityAddress",
+    //   placeholder: "Enter address",
+    //   switchs: true,
+    //   disable: disable,
+    //   setDisable: setDisable,
+    //   onChange: onChange,
+    // },
+    // {
+    //   icon: dollar,
+    //   label: "Affiliate Fee",
+    //   labelExplainer:
+    //     "Reward commission for those referring your project to others",
+    //   type: "text",
+    //   min: 1,
+    //   name: "affiliateFee",
+    //   placeholder: "Enter affiliate fee",
+    //   switchs: true,
+    //   disable: disable,
+    //   setDisable: setDisable,
+    //   onChange: onChange,
+    // },
     // {
     //   label: "Chain",
     //   labelExplainer: "Chain/Network you want to deploy on",
@@ -226,207 +231,163 @@ const CreateLottery = () => {
     // },
   ];
 
-  async function handleCreateLottery() {
+  // Modified main handler with batched transactions
+  async function handleCreateLottery(e) {
+    e.preventDefault();
 
-    if (!publicKey) {
-      return console.log("Wallet Not Connected")
-    }
+    try {
+      if (!publicKey) return console.error("Wallet Not Connected");
+      if (!isValidPublicKey(values.FeeToken)) {
+        return console.error("Invalid Fee Token");
+      }
 
-    const ticketPrice = new BN(10 * 10 ** 9);
-    const maxTickets = new BN(100);
-    const maxTicketsPerUser = 5;
-    const maxWinners = 3;
-    const prizeDistributionLength = 3;
-    let prizeDistribution = Buffer.alloc(prizeDistributionLength);
+      setShowLoader(true);
 
-    prizeDistribution[0] = 50;
-    prizeDistribution[1] = 25;
-    prizeDistribution[2] = 25;
+      const lotteryCurrencyMint = new PublicKey(values.FeeToken);
+      const tokenAccountKeypair = Keypair.generate();
+      const ticketMintKeypair = Keypair.generate();
 
-    const program = initProgram(wallet);
-    const provider = program.provider;
-    const mint = await create_mint(provider, signTransaction, publicKey, publicKey);
+      console.log(values);
+      const program = initProgram(wallet);
+      const provider = program.provider;
 
-    console.log("Here")
-
-    // const lotteryTokenAccount = Keypair.generate();
-    const ticket_mint = Keypair.generate();
-
-    const [lotteryCentralAuthority, bump] = PublicKey.findProgramAddressSync(
-      [Buffer.from("lottery-central-authority")],
-      program.programId
-    );
-
-    const lotteryTokenAccount = await create_token_account(
-      provider,
-      signTransaction,
-      // provider.wallet.payer,
-      mint.publicKey,
-      lotteryCentralAuthority,
-      publicKey
-    );
-
-    // // Fund the initializer account to make it rent-exempt
-    // await provider.connection.confirmTransaction(
-    //   await provider.connection.requestAirdrop(
-    //     initializer.publicKey,
-    //     LAMPORTS_PER_SOL
-    //   )
-    // );
-
-    // PublicKey.findProgramAddressSync(
-    //   [
-    //     user1.publicKey.toBuffer(),
-    //     TOKEN_PROGRAM_ID.toBuffer(),
-    //     ticket_collection_mint.toBuffer(),
-    //   ],
-    //   ASSOCIATED_TOKEN_PROGRAM_ID
-    // )[0];
-    // await getAssociatedTokenAddress(
-    //   ticket_collection_mint,
-    //   initializer.publicKey
-    // );
-
-    const [ticket_mint_metadata, _] = PublicKey.findProgramAddressSync(
-      [
-        Buffer.from("metadata"),
-        new PublicKey("metaqbxxUerdq28cj1RbAWkYQm3ybzjb6a8bt518x1s").toBuffer(),
-        ticket_mint.publicKey.toBuffer(),
-      ],
-      new PublicKey("metaqbxxUerdq28cj1RbAWkYQm3ybzjb6a8bt518x1s")
-    );
-    const mint_lamports = await getMinimumBalanceForRentExemptMint(
-      provider.connection
-    );
-
-    const create_ticket_mint_ix = SystemProgram.createAccount({
-      fromPubkey: publicKey,
-      newAccountPubkey: ticket_mint.publicKey,
-      space: MINT_SIZE,
-      lamports: mint_lamports,
-      programId: TOKEN_PROGRAM_ID,
-    });
-
-    const init_ticket_mint_ix = createInitializeMint2Instruction(
-      ticket_mint.publicKey,
-      0,
-      lotteryCentralAuthority,
-      lotteryCentralAuthority
-    );
-
-    const [masterEdition] = findMasterEditionPda(new PublicKey(globalState.lotteryCollectionMint));
+      const mintState = await getMint(provider.connection, lotteryCurrencyMint);
+      // Existing parameter setup
+      const priceAmount = parseInt(values.entranceFee);
+      const ticketPrice = new BN(priceAmount * 10 ** mintState.decimals);
+      const maxTickets = new BN(parseInt(values.numberofTickets));
+      const maxTicketsPerUser = parseInt(values.maxTicketPerWallet);
+      const prizeDistribution = Buffer.from(values.prizeDistribution.map((v) => parseInt(v)));
+      const endTime = Math.floor(new Date(values.lottryEndDate).getTime() / 1000);
 
 
-    const endTime = Math.floor(
-      new Date("January 31, 2025 03:24:00").getTime() / 1000
-    );
+      // Get all PDAs and addresses
+      const [lotteryCentralAuthority] = PublicKey.findProgramAddressSync(
+        [Buffer.from("lottery-central-authority")],
+        program.programId
+      );
 
-    const lotteryAccount_A = PublicKey.findProgramAddressSync(
-      [Buffer.from("lottery-state"), ticket_mint.publicKey.toBuffer()],
-      program.programId
-    )[0];
+      const [lotteryAccount] = PublicKey.findProgramAddressSync(
+        [Buffer.from("lottery-state"), ticketMintKeypair.publicKey.toBuffer()],
+        program.programId
+      );
 
-    const [lottery_collection_mint_metadata] =
-      PublicKey.findProgramAddressSync(
+      const [globalStateAddress] = PublicKey.findProgramAddressSync(
+        [Buffer.from("global_state")],
+        program.programId
+      );
+
+      const [ticketMintMetadata] = PublicKey.findProgramAddressSync(
         [
           Buffer.from("metadata"),
-          new PublicKey(
-            "metaqbxxUerdq28cj1RbAWkYQm3ybzjb6a8bt518x1s"
-          ).toBuffer(),
-          (new PublicKey(globalState.lotteryCollectionMint)).toBuffer(),
+          new PublicKey("metaqbxxUerdq28cj1RbAWkYQm3ybzjb6a8bt518x1s").toBuffer(),
+          ticketMintKeypair.publicKey.toBuffer(),
         ],
         new PublicKey("metaqbxxUerdq28cj1RbAWkYQm3ybzjb6a8bt518x1s")
       );
 
-    console.log("got to this pint")
-    const globalStateAddress = PublicKey.findProgramAddressSync(
-      [Buffer.from("global_state")],
-      program.programId
-    )[0];
+      const [lotteryCollectionMetadata] = PublicKey.findProgramAddressSync(
+        [
+          Buffer.from("metadata"),
+          new PublicKey("metaqbxxUerdq28cj1RbAWkYQm3ybzjb6a8bt518x1s").toBuffer(),
+          new PublicKey(globalState.lotteryCollectionMint).toBuffer(),
+        ],
+        new PublicKey("metaqbxxUerdq28cj1RbAWkYQm3ybzjb6a8bt518x1s")
+      );
 
-    console.log(JSON.stringify({
-      lotteryCreator: publicKey,
-      globalState: globalStateAddress,
-      mint: mint.publicKey,
-      lotteryCentralAuthority: lotteryCentralAuthority,
-      ticketMint: ticket_mint.publicKey,
-      lotteryCollectionMint: globalState.lotteryCollectionMint,
-      lotteryCollectionMaster: masterEdition,
-      lotteryCollectionMetadata: lottery_collection_mint_metadata,
-      ticketMintMetadata: ticket_mint_metadata,
-      lottery: lotteryAccount_A,
-      lotteryTokenAccount: lotteryTokenAccount.publicKey,
-      rent: SYSVAR_RENT_PUBKEY,
-      associatedTokenProgram: ASSOCIATED_TOKEN_PROGRAM_ID,
-      tokenProgram: TOKEN_PROGRAM_ID,
-      systemProgram: SystemProgram.programId,
-      tokenMetadataProgram: new PublicKey(
-        "metaqbxxUerdq28cj1RbAWkYQm3ybzjb6a8bt518x1s"
-      ),
-    }, null, 2))
+      const [masterEdition] = findMasterEditionPda(new PublicKey(globalState.lotteryCollectionMint));
 
-    // // Create the lottery
-    const create_lottery_ix = await program.methods
-      .createLottery(
-        "NAME",
-        "SYM",
-        "URI",
-        ticketPrice,
-        maxTickets,
-        maxTicketsPerUser,
-        new BN(endTime),
-        prizeDistribution
-      )
-      .accounts({
-        lotteryCreator: publicKey,
-        globalState: globalStateAddress,
-        mint: mint.publicKey,
-        lotteryCentralAuthority: lotteryCentralAuthority,
-        ticketMint: ticket_mint.publicKey,
-        lotteryCollectionMint: globalState.lotteryCollectionMint,
-        lotteryCollectionMaster: masterEdition,
-        lotteryCollectionMetadata: lottery_collection_mint_metadata,
-        ticketMintMetadata: ticket_mint_metadata,
-        lottery: lotteryAccount_A,
-        lotteryTokenAccount: lotteryTokenAccount.publicKey,
-        rent: SYSVAR_RENT_PUBKEY,
-        associatedTokenProgram: ASSOCIATED_TOKEN_PROGRAM_ID,
-        tokenProgram: TOKEN_PROGRAM_ID,
-        systemProgram: SystemProgram.programId,
-        tokenMetadataProgram: new PublicKey(
-          "metaqbxxUerdq28cj1RbAWkYQm3ybzjb6a8bt518x1s"
-        ),
-      })
-      .instruction();
+      const createTokenAccountIxs = await getCreateTokenAccountInstructions(
+        provider,
+        lotteryCurrencyMint, // TODO:
+        lotteryCentralAuthority,
+        publicKey,
+        tokenAccountKeypair
+      );
 
-    const transaction = new Transaction();
+      // Ticket mint instructions
+      const ticketMintLamports = await getMinimumBalanceForRentExemptMint(provider.connection);
+      const createTicketMintIx = SystemProgram.createAccount({
+        fromPubkey: publicKey,
+        newAccountPubkey: ticketMintKeypair.publicKey,
+        space: MINT_SIZE,
+        lamports: ticketMintLamports,
+        programId: TOKEN_PROGRAM_ID,
+      });
 
-    transaction.feePayer = publicKey;
-    transaction.recentBlockhash = (await provider.connection.getRecentBlockhash()).blockhash;
+      const initTicketMintIx = createInitializeMint2Instruction(
+        ticketMintKeypair.publicKey,
+        0,
+        lotteryCentralAuthority,
+        lotteryCentralAuthority
+      );
 
-    transaction.add(
-      create_ticket_mint_ix,
-      init_ticket_mint_ix,
-      create_lottery_ix
-    );
-    // const signers = [publicKey, ticket_mint];
+      // Lottery creation instruction
+      const createLotteryIx = await program.methods
+        .createLottery(
+          values.lotteryName,
+          values.lottrySymbol,
+          "URI",
+          ticketPrice,
+          maxTickets,
+          maxTicketsPerUser,
+          new BN(endTime),
+          prizeDistribution
+        )
+        .accounts({
+          lotteryCreator: publicKey,
+          globalState: globalStateAddress,
+          mint: lotteryCurrencyMint,
+          lotteryCentralAuthority: lotteryCentralAuthority,
+          ticketMint: ticketMintKeypair.publicKey,
+          lotteryCollectionMint: globalState.lotteryCollectionMint,
+          lotteryCollectionMaster: masterEdition,
+          lotteryCollectionMetadata: lotteryCollectionMetadata,
+          ticketMintMetadata: ticketMintMetadata,
+          lottery: lotteryAccount,
+          lotteryTokenAccount: tokenAccountKeypair.publicKey,
+          rent: SYSVAR_RENT_PUBKEY,
+          associatedTokenProgram: ASSOCIATED_TOKEN_PROGRAM_ID,
+          tokenProgram: TOKEN_PROGRAM_ID,
+          systemProgram: SystemProgram.programId,
+          tokenMetadataProgram: new PublicKey("metaqbxxUerdq28cj1RbAWkYQm3ybzjb6a8bt518x1s"),
+        })
+        .instruction();
 
-    // await sendAndConfirmTransaction(
-    //   provider.connection,
-    //   create_lottery_transaction,
-    //   signers
-    // ).catch((e) => console.error(e));
+      // Build and send single transaction
+      const transaction = new Transaction().add(...createTokenAccountIxs).add(
+        createTicketMintIx,
+        initTicketMintIx,
+        createLotteryIx
+      );
 
-    const signed = await signTransaction(transaction);
-    signed.partialSign(ticket_mint)
-    const txid = await provider.connection.sendRawTransaction(signed.serialize())
-    await provider.connection.confirmTransaction(txid, 'confirmed');
+      const recentBlockhash = (await provider.connection.getRecentBlockhash()).blockhash;
+      transaction.feePayer = publicKey;
+      transaction.recentBlockhash = recentBlockhash;
 
-    const lotteryStateAcc = await provider.connection.getAccountInfo(
-      lotteryAccount_A
-    );
+      const signedTx = await signTransaction(transaction);
+      signedTx.partialSign(ticketMintKeypair, tokenAccountKeypair);
 
-    console.log(lotteryStateAcc)
+      const txid = await provider.connection.sendRawTransaction(signedTx.serialize());
+      await provider.connection.confirmTransaction(txid);
+      console.log("Transaction completed:", txid);
+
+      console.log("Mint:", lotteryCurrencyMint.toBase58());
+      console.log("Token Account:", tokenAccountKeypair.publicKey.toBase58());
+      console.log("Ticket Mint:", ticketMintKeypair.publicKey.toBase58());
+
+      // Verify lottery account creation
+      const lotteryStateAcc = await provider.connection.getAccountInfo(lotteryAccount);
+      console.log("Lottery account created:", !!lotteryStateAcc);
+
+      alert(
+        "*** Lottery Created Successfully ***Congratulations! Your lottery has been created.Please remember to add a description and image to enhance your lottery listing.Good luck!"
+      );
+    } catch (error) {
+      console.log(error);
+    }
+
+    setShowLoader(false);
   }
 
   if (!globalState) {
@@ -446,7 +407,7 @@ const CreateLottery = () => {
           </p>
         </div>
         <div className={styles.wrapper}>
-          <form className={styles.details}>
+          <form onSubmit={handleCreateLottery} className={styles.details}>
             <div className={styles.inputWrapper}>
               {inputs.map((input, i) => (
                 // @ts-ignore
@@ -462,10 +423,7 @@ const CreateLottery = () => {
               }}
             >
               <button
-                onClick={(e) => {
-                  e.preventDefault();
-                  handleCreateLottery()
-                }}
+                type="submit"
                 className={styles.button}
               >
                 Create Lottery On Solana
