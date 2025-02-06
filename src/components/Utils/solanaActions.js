@@ -31,7 +31,7 @@ export const fetchLotteriesSolana = async (networkConnection) => {
 
   // Fetch accounts with filters
   const accounts = await connection.getProgramAccounts(
-    new PublicKey("5X6xVcL5Fc9qzWXrRSJfnqLu6xXpLmHZX1szaGoj5NHr"),
+    new PublicKey("5hpeVw74cYJNfbASxss5zRvLygiUWdinHEJCruPoCd1a"),
     {
       filters: filters,
     }

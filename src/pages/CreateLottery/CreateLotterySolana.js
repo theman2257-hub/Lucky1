@@ -37,7 +37,7 @@ const CreateLottery = () => {
     lottryEndDate: "",
 
     charityAddress: "0x62cEFa2920Aa80D67e38C00A84723b3Fc9fA866B",
-    FeeToken: "Gh9ZwEmdLJ8DscKNTkTqPbNwLNNBjuSzaG9Vp2KGtKJr",
+    FeeToken: "5DRQ4WkeM1URSZkxSKTsLSodAYLgX4Q3uRGUcTPA9Cje",
     CreatorFee: "15",
     charityFee: "0",
     numberofTickets: "100",
@@ -82,6 +82,7 @@ const CreateLottery = () => {
       type: "text",
       name: "lottrySymbol",
       placeholder: "Enter symbol",
+      onChange: onChange
     },
     {
       icon: usdt,
