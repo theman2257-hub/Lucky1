@@ -12,6 +12,7 @@ const Input = ({
   onChange,
   value,
   switchs,
+  required,
   disable,
   setDisable,
   options, // New prop for dropdown options
@@ -39,6 +40,7 @@ const Input = ({
           id={name}
           name={name}
           value={value}
+          required={required}
           className={`${styles.input} ${styles.text}`}
           onChange={onChange}
         >
@@ -57,6 +59,7 @@ const Input = ({
           id={name}
           name={name}
           value={value}
+          required={required}
           className={`${styles.input} ${styles.text}`}
           placeholder={placeholder}
           onChange={onChange}
@@ -72,9 +75,8 @@ const Input = ({
       <div className={`${styles.inputContainer}`}>
         <label
           htmlFor={name}
-          className={`${styles.label} ${styles.text} ${
-            switchs && styles.swithcWrapper
-          }`}
+          className={`${styles.label} ${styles.text} ${switchs && styles.swithcWrapper
+            }`}
         >
           {label}{" "}
           {switchs && (
@@ -88,9 +90,8 @@ const Input = ({
         </label>
 
         <div
-          className={` ${styles.inputAndIcon}  ${
-            disable && styles.inputDisabled
-          }`}
+          className={` ${styles.inputAndIcon}  ${disable && styles.inputDisabled
+            }`}
         >
           <img
             src={selectedOptionIcon || icon}
@@ -103,9 +104,8 @@ const Input = ({
         {labelExplainer && (
           <label
             htmlFor={name}
-            className={`${styles.labelExplainer} ${styles.text} ${
-              styles.secondary
-            } ${switchs && styles.swithcWrapper}`}
+            className={`${styles.labelExplainer} ${styles.text} ${styles.secondary
+              } ${switchs && styles.swithcWrapper}`}
           >
             {labelExplainer}{" "}
           </label>

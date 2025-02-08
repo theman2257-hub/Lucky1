@@ -17,7 +17,8 @@ const Details = () => {
   const { chainId } = useChain();
   console.log("Current Chain ID:", chainId);
 
-  const { id, affiliateAddress, chain } = useParams();
+  const { id, affiliateAddress, chain,...others } = useParams();
+  console.log({ id, affiliateAddress, chain,others });
   const [buyNowModal, setBuyNowModal] = useState(false);
   const [competitionEndedModal, setCompetitionEndedModal] = useState(false);
   const [hash, setHash] = useState("");
@@ -68,10 +69,10 @@ const Details = () => {
             {chainId === "97" ? (
               <>
                 {img !=
-                "https://assets-global.website-files.com/637359c81e22b715cec245ad/63f5feb3302f223a19af4dca_Midnight%20society.png?2322232" ? (
+                  "https://assets-global.website-files.com/637359c81e22b715cec245ad/63f5feb3302f223a19af4dca_Midnight%20society.png?2322232" ? (
                   <img src={img} alt="#" className={styles.image} />
                 ) : // <ImageUpload owner={owner} />
-                null}
+                  null}
                 <TicketDetailsEvm
                   setOwner={setOwner}
                   setNumberOfWinners={setNumberOfWinners}
