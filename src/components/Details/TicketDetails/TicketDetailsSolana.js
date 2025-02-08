@@ -12,7 +12,9 @@ import Loader from "../../Loader";
 import LotteryDetails from "../../Utils/lotteryActions/";
 import { useWallet, useConnection } from "@solana/wallet-adapter-react";
 import { Program, AnchorProvider, Idl, Wallet } from "@project-serum/anchor";
-import { PublicKey, Transaction, SystemProgram } from "@solana/web3.js";
+import { PublicKey, Transaction, SystemProgram, SYSVAR_RENT_PUBKEY } from "@solana/web3.js";
+import { initProgram } from "../../../lib/sol-program";
+import { ASSOCIATED_TOKEN_PROGRAM_ID, getAssociatedTokenAddressSync, TOKEN_PROGRAM_ID } from "@solana/spl-token";
 
 const TicketDetails = ({
   setOwner,
@@ -35,6 +37,7 @@ const TicketDetails = ({
   const [distribution, setDistribution] = useState([]);
   const navigate = useNavigate();
   const { publicKey, sendTransaction } = useWallet();
+  const wallet = useWallet();
   const { connection } = useConnection();
 
   const { id, chainIdParam } = useParams();
@@ -64,9 +67,8 @@ const TicketDetails = ({
     setOwner(lottery.creator);
     setAddress(lottery.lotteryAddress);
     if (lottery.description) setDescription(lottery.description);
-    let imageURL = `https://api.lucky1.io/images/${
-      lottery.lotteryAddress
-    }.png?${new Date().getTime()}`;
+    let imageURL = `https://api.lucky1.io/images/${lottery.lotteryAddress
+      }.png?${new Date().getTime()}`;
     //check if image exists
     axios
       .get(imageURL)
@@ -137,6 +139,8 @@ const TicketDetails = ({
     // await purchaseTickets(purchaseableAmount);
   };
 
+  // console.log(lotteryDetails);
+
   const setModal = () => {
     if (lotteryDetails?.hash) {
       setCompetitionEndedModal(true);
@@ -190,8 +194,34 @@ const TicketDetails = ({
   }, []);
 
   const purchaseTickets = async (t) => {
+    const buyerTokenAta = getAssociatedTokenAddressSync(lotteryDetails.tokenMint, publicKey);
+    const buyerTicketAta = getAssociatedTokenAddressSync(lotteryDetails.ticketMint, publicKey);
     try {
-    } catch {}
+      if (wallet) {
+        const program = initProgram(wallet);
+        const [lotteryCentralAuthority] = PublicKey.findProgramAddressSync(
+          [Buffer.from("lottery-central-authority")],
+          program.programId
+        );
+        const txId = await program.methods.purchaseLotteryTicket(t).accounts({
+          lottery: id,
+          lotteryTokenAccount: lotteryDetails.tokenAccount,
+          buyer: publicKey,
+          ticketMint: lotteryDetails.ticketMint,
+          buyerTokenAccount: buyerTokenAta,
+          buyerTicketAccount: buyerTicketAta,
+          lotteryCentralAuthority: lotteryCentralAuthority,
+          systemProgram: SystemProgram.programId,
+          tokenProgram: TOKEN_PROGRAM_ID,
+          tokenMetadataProgram: new PublicKey(
+            "metaqbxxUerdq28cj1RbAWkYQm3ybzjb6a8bt518x1s"
+          ),
+          associatedTokenProgram: ASSOCIATED_TOKEN_PROGRAM_ID,
+          rent: SYSVAR_RENT_PUBKEY,
+        }).rpc();
+        console.log("Transaction ID:", txId);
+      }
+    } catch { }
   };
 
   const [quantity, setQuantity] = useState(1);
@@ -489,7 +519,7 @@ const TicketDetails = ({
               <p className={styles.bnb}>
                 {lotteryDetails.ticketPrice
                   ? (lotteryDetails.ticketPrice.toNumber() * quantity) /
-                    10 ** lotteryDetails.feeTokenDecimals
+                  10 ** lotteryDetails.feeTokenDecimals
                   : 0}{" "}
                 {lotteryDetails.tokenSymbol}
               </p>

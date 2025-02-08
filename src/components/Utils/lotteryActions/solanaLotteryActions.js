@@ -594,7 +594,8 @@ class SolanaLottery {
     let state_array = [];
 
     await Promise.all(
-      accounts.map(async ({ pubkey, account: state }) => {
+      accounts.map(async ({ publicKey, account: state }) => {
+        console.log({ lotteryAddress: publicKey.toString() });
         const data = await this.getMetadata(
           program.provider.connection,
           state.ticketMint.toString(),
@@ -608,6 +609,7 @@ class SolanaLottery {
         state.name = metadata.name;
         state.symbol = metadata.symbol;
         state.tokenSymbol = feeToken.symbol;
+        state.lotteryAddress = publicKey.toString();
 
         state_array.push(state);
       })
@@ -618,7 +620,7 @@ class SolanaLottery {
         id: index,
         // creator: el.creator,
         creator: "",
-        lotteryAddress: el.ticketMint,
+        lotteryAddress: el.lotteryAddress,
         name: el.name,
         symbol: el.symbol,
         ticketPrice: el.ticketPrice.toString(),
@@ -657,17 +659,12 @@ class SolanaLottery {
   };
 
   async getLotteryDetails(lotteryAddress) {
-    console.log(lotteryAddress);
-    const lotterypubkey = new PublicKey(lotteryAddress);
-    console.log(lotterypubkey);
-    const lottery_state_key = PublicKey.findProgramAddressSync(
-      [Buffer.from("lottery-state"), lotterypubkey.toBuffer()],
-      new PublicKey("5hpeVw74cYJNfbASxss5zRvLygiUWdinHEJCruPoCd1a")
-    )[0];
+
     // Use Metaplex to fetch Solana lottery details
-    const accountData = await this.connection.getAccountInfo(lottery_state_key);
+    const program = getProgram();
     try {
-      const lottery_state = LotteryState.deserialize(accountData.data);
+      console.log(program.account.lotteryState, program.idl.accounts);
+      const lottery_state = await program.account.lotteryState.fetch(new PublicKey(lotteryAddress));
 
       const [metadata, feeTokenMetadata] = await this.getMetadata(
         this.connection,
